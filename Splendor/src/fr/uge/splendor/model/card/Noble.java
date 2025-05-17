@@ -1,12 +1,6 @@
 package fr.uge.splendor.model.card;
 
-import fr.uge.splendor.model.token.Color;
-import fr.uge.splendor.model.token.Token;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public enum Noble {
     CATHERINE_DE_MEDICI {
