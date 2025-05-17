@@ -18,7 +18,7 @@ public class Player {
     private final List<Cards> cardsReservedList; 
     private final Map<Color, Integer> tokens;
     
-    private static final int MAX_TOKENS= 10; 
+    private static final int MAX_TOKENS = 10;
 
     public Player(String name) {
     	

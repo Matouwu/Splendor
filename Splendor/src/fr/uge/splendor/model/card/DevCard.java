@@ -2,28 +2,26 @@ package fr.uge.splendor.model.card;
 
 import fr.uge.splendor.model.token.Token;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class DevCard implements Cards {
-    private final Set<Token> tokenRequire = new HashSet<>();
+    private final Map<Token, Integer> tokenRequire = new HashMap<>();
     private final Token tokenReduction;
-    private final int point;
+    private final int prestigePoints;
     private final int level;
 
-    public DevCard(Set<Token> tokenRequire, Token tokenReduction, int point, int level) {
+    public DevCard(Map<Token, Integer> tokenRequire, Token tokenReduction, int prestigePoints, int level) {
         Objects.requireNonNull(tokenRequire);
         Objects.requireNonNull(tokenReduction);
 
-        this.tokenRequire.addAll(tokenRequire);
+        this.tokenRequire.putAll(tokenRequire);
         this.tokenReduction = tokenReduction;
-        this.point = point;
+        this.prestigePoints = prestigePoints;
         this.level = level;
     }
 
     @Override
-    public Set<Token> tokenRequire() {
+    public Map<Token, Integer> tokenRequire() {
         return tokenRequire;
     }
 
@@ -34,7 +32,7 @@ public class DevCard implements Cards {
 
     @Override
     public int prestigePoints() {
-        return point;
+        return prestigePoints;
     }
 
     @Override
@@ -44,6 +42,6 @@ public class DevCard implements Cards {
 
     @Override
     public String toString() {
-        return "DevCard : \ntokenRequire=" + tokenRequire + "\ntokenReduction=" + tokenReduction + "\npoint=" + point + "\nlevel=" + level;
+        return "DevCard : \ntokenRequire=" + tokenRequire + "\ntokenReduction=" + tokenReduction + "\nprestigePoints=" + prestigePoints + "\nlevel=" + level;
     }
 }

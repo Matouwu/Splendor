@@ -3,29 +3,29 @@ package fr.uge.splendor.model.card;
 
 import fr.uge.splendor.model.token.Token;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class NobleCard implements Cards {
-    private final Set<Token> tokenRequire = new HashSet<>();
-    private final int point;
+    private final String name;
+    private final Map<Token, Integer> tokenRequire = new HashMap<>();
+    private final int prestigePoints;
 
-    public NobleCard(Set<Token> tokenRequire, int point) {
+    public NobleCard(String name, Map<Token, Integer> tokenRequire, int prestigePoints) {
         Objects.requireNonNull(tokenRequire);
 
-        this.tokenRequire.addAll(tokenRequire);
-        this.point = point;
+        this.name = name;
+        this.tokenRequire.putAll(tokenRequire);
+        this.prestigePoints = prestigePoints;
     }
 
     @Override
-    public Set<Token> tokenRequire() {
+    public Map<Token, Integer> tokenRequire() {
         return tokenRequire;
     }
 
     @Override
     public int prestigePoints() {
-        return point;
+        return prestigePoints;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class NobleCard implements Cards {
 
     @Override
     public String toString() {
-        return "NobleCard : \ntokenRequire=" + tokenRequire + "\npoint=" + point;
+        return "NobleCard " + name + ": \ntokenRequire= [" + tokenRequire + "]\nprestigePoints=" + prestigePoints;
     }
 }
