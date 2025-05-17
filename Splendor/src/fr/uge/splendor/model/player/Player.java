@@ -17,8 +17,7 @@ public class Player {
     private final List<Cards> cardsList;
     private final List<Cards> cardsReservedList; 
     private final Map<Color, Integer> tokens;
-    
-    private static final int MAX_TOKENS= 10; 
+
 
     public Player(String name) {
     	
@@ -34,35 +33,6 @@ public class Player {
     	return name;
     }
     
-    
-    public void addToken(Token token) {
-    	
-    	int totalTokens = 0; 
-    	
-    	for(int count : tokens.values()) {
-    		totalTokens += count;
-    	}
-    	
-    	if(totalTokens >= MAX_TOKENS) {
-    		throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + MAX_TOKENS);
-    	}
-    	
-    	Color color= token.token(); 
-    	tokens.put(color, tokens.getOrDefault(color,0) + 1);
-    }
-    
-    
-    public boolean removeToken(Color color) {
-    	int count = tokens.getOrDefault(color, 0);
-        if (count > 0) {
-            tokens.put(color, count - 1);
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-
     public List<Cards> cardList() {
         return cardsList;
     }
@@ -71,8 +41,67 @@ public class Player {
         return cardsList.size();
     }
     
+    public void addCardsList(DevCard devcard) {
+    	Objects.requireNonNull(devcard); 
+    	
+    	cardsList.add(devcard); 
+    }
     
+    
+    public boolean removeCardsList(DevCard devcard) {
+    	Objects.requireNonNull(devcard); 
+    	
+		return cardsList.remove(devcard);
+    	
+    }
+    
+    
+    public void addCardsReservedList(DevCard devcard) {
+    	Objects.requireNonNull(devcard); 
+    	
+    	cardsReservedList.add(devcard); 
+    }
+    
+    
+    public boolean removeCardsReservedList(DevCard devcard) {
+    	Objects.requireNonNull(devcard); 
+    	
+		return cardsReservedList.remove(devcard);
+    	
+    }
+ 
+    public void addToken(Token token) {
+    	Objects.requireNonNull(token); 
+
+    	var totalTokens = tokens.values()
+    							.stream()
+    							.mapToInt(Integer::intValue)
+    							.sum(); 
+    	if(totalTokens >= 10) {
+    		throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
+    	}
+    	
+    	Color color= token.token(); 
+    	tokens.put(color, tokens.getOrDefault(color,0) + 1);
+    }
+    
+    
+    public boolean removeToken(Color color) {
+    	Objects.requireNonNull(color); 
+
+    	int count = tokens.getOrDefault(color, 0);
+        if (count > 0) {
+            tokens.put(color, count - 1);
+            return true;
+        } else {
+            return false;
+        }
+    }
+   
+  
     public int tokenCount(Color color) {
+    	Objects.requireNonNull(color); 
+
     	return tokens.getOrDefault(color,0); 
     }
 
