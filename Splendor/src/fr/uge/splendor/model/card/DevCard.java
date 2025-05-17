@@ -44,6 +44,6 @@ public class DevCard implements Cards {
 
     @Override
     public String toString() {
-        return "DevCard [tokenRequire=" + tokenRequire + ", tokenReduction=" + tokenReduction + ", point=" + point + ", level=" + level + "]";
+        return "DevCard : \ntokenRequire=" + tokenRequire + "\ntokenReduction=" + tokenReduction + "\npoint=" + point + "\nlevel=" + level;
     }
 }

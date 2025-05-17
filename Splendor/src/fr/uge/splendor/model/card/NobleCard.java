@@ -39,6 +39,6 @@ public class NobleCard implements Cards {
 
     @Override
     public String toString() {
-        return "NobleCard [tokenRequire=" + tokenRequire + ", point=" + point + "]";
+        return "NobleCard : \ntokenRequire=" + tokenRequire + "\npoint=" + point;
     }
 }
