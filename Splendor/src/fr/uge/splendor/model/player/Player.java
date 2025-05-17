@@ -15,6 +15,7 @@ public class Player {
 
     private final String name;
     private final List<Cards> cardsList;
+    private final List<Cards> cardsReservedList; 
     private final Map<Color, Integer> tokens;
 
     public Player(String name) {
@@ -24,6 +25,7 @@ public class Player {
         this.name = name;
         this.cardsList = new ArrayList<>(); 
         this.tokens = new  HashMap<>();
+        this.cardsReservedList = new ArrayList<>(); 
     }
     
     public String name() {
@@ -58,7 +60,7 @@ public class Player {
     
     @Override
     public String toString() {
-    	 return "Player " + name + " - Prestige: " + prestigePoints();
+    	 return "Player : \nname=" + name + "\nPointPrestige=" + prestigePoints() + "\nCardList=" + cardsList;
     }
     
     
