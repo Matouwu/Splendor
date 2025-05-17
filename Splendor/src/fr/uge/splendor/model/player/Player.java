@@ -17,12 +17,6 @@ public class Player {
     private final List<Cards> cardsList;
     private final List<Cards> cardsReservedList; 
     private final Map<Color, Integer> tokens;
-<<<<<<< HEAD
-
-=======
-    
-    private static final int MAX_TOKENS = 10;
->>>>>>> branch 'base-feature' of https://github.com:443/Matouwu/Splendor.git
 
     public Player(String name) {
     	
