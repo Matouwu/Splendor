@@ -33,7 +33,7 @@ public class DevCard implements Cards {
     }
 
     @Override
-    public int point() {
+    public int prestigePoints() {
         return point;
     }
 

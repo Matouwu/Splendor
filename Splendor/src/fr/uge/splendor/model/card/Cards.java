@@ -7,6 +7,6 @@ import java.util.Set;
 public interface Cards {
     Set<Token> tokenRequire();
     Token tokenReduction();
-    int point();
+    int prestigePoints();
     int level();
 }

@@ -24,7 +24,7 @@ public class NobleCard implements Cards {
     }
 
     @Override
-    public int point() {
+    public int prestigePoints() {
         return point;
     }
 
