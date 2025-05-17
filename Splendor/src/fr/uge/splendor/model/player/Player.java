@@ -27,12 +27,12 @@ public class Player {
     }
     
     public String name() {
-    	return name; 
+    	return name;
     }
     
     
     public void addToken(Token token) {
-    	Color color= token.colorToken(); 
+    	Color color= token.token(); 
     	tokens.put(color, tokens.get(color));
     }
     

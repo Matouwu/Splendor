@@ -2,13 +2,17 @@ package fr.uge.splendor.model.token;
 
 import java.util.Objects;
 
-public record Token(Color colorToken) {
+public record Token(Color token) {
 	
     public Token {
-        Objects.requireNonNull(colorToken);
+        Objects.requireNonNull(token);
     }
-    
-  
-    
-    
+    public Color color() {
+        return token;
+    }
+
+    @Override
+    public String toString() {
+        return token.toString();
+    }
 }
