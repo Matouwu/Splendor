@@ -80,7 +80,7 @@ public class Player {
     		throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
     	}
     	
-    	Color color= token.token(); 
+    	Color color= token.color(); 
     	tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
     
