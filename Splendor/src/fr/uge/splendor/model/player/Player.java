@@ -3,7 +3,6 @@ package fr.uge.splendor.model.player;
 import fr.uge.splendor.model.card.Cards;
 import fr.uge.splendor.model.card.DevCard;
 import fr.uge.splendor.model.token.Color;
-import fr.uge.splendor.model.token.Token;
 
 import java.util.ArrayList;
 import java.util.HashMap;
