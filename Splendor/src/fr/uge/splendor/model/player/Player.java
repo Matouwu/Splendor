@@ -17,6 +17,8 @@ public class Player {
     private final List<Cards> cardsList;
     private final List<Cards> cardsReservedList; 
     private final Map<Color, Integer> tokens;
+    
+    private static final int MAX_TOKENS= 10; 
 
     public Player(String name) {
     	
@@ -34,8 +36,19 @@ public class Player {
     
     
     public void addToken(Token token) {
+    	
+    	int totalTokens = 0; 
+    	
+    	for(int count : tokens.values()) {
+    		totalTokens += count;
+    	}
+    	
+    	if(totalTokens >= MAX_TOKENS) {
+    		throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + MAX_TOKENS);
+    	}
+    	
     	Color color= token.token(); 
-    	tokens.put(color, tokens.get(color));
+    	tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
     
     
@@ -49,6 +62,7 @@ public class Player {
         }
     }
     
+
     public List<Cards> cardList() {
         return cardsList;
     }
@@ -56,11 +70,16 @@ public class Player {
     public int prestigePoints() {
         return cardsList.size();
     }
+    
+    
+    public int tokenCount(Color color) {
+    	return tokens.getOrDefault(color,0); 
+    }
 
     
     @Override
     public String toString() {
-    	 return "Player : \nname=" + name + "\nPointPrestige=" + prestigePoints() + "\nCardList=" + cardsList;
+    	 return "Player " + name + "\nPointPrestige=" + prestigePoints() + "\nToken=" + tokens +  "\nCardList=" + cardsList + "\nCardReserved=" + cardsReservedList;
     }
     
     
