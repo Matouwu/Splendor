@@ -1,14 +1,16 @@
 package fr.uge.splendor.model.card;
 
 
+import fr.uge.splendor.model.token.Color;
+
 import java.util.*;
 
 public class NobleCard implements Cards {
     private final String name;
-    private final Map<Token, Integer> tokenRequire = new HashMap<>();
+    private final Map<Color, Integer> tokenRequire = new HashMap<>();
     private final int prestigePoints;
 
-    public NobleCard(String name, Map<Token, Integer> tokenRequire, int prestigePoints) {
+    public NobleCard(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
         Objects.requireNonNull(tokenRequire);
 
         this.name = name;
@@ -17,7 +19,7 @@ public class NobleCard implements Cards {
     }
 
     @Override
-    public Map<Token, Integer> tokenRequire() {
+    public Map<Color, Integer> tokenRequire() {
         return tokenRequire;
     }
 
@@ -27,7 +29,7 @@ public class NobleCard implements Cards {
     }
 
     @Override
-    public Token tokenReduction() {
+    public Color tokenReduction() {
         return null;
     }
     @Override

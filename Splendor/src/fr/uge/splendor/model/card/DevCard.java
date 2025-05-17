@@ -1,14 +1,16 @@
 package fr.uge.splendor.model.card;
 
+import fr.uge.splendor.model.token.Color;
+
 import java.util.*;
 
 public class DevCard implements Cards {
-    private final Map<Token, Integer> tokenRequire = new HashMap<>();
-    private final Token tokenReduction;
+    private final Map<Color, Integer> tokenRequire = new HashMap<>();
+    private final Color tokenReduction;
     private final int prestigePoints;
     private final int level;
 
-    public DevCard(Map<Token, Integer> tokenRequire, Token tokenReduction, int prestigePoints, int level) {
+    public DevCard(Map<Color, Integer> tokenRequire, Color tokenReduction, int prestigePoints, int level) {
         Objects.requireNonNull(tokenRequire);
         Objects.requireNonNull(tokenReduction);
 
@@ -19,12 +21,12 @@ public class DevCard implements Cards {
     }
 
     @Override
-    public Map<Token, Integer> tokenRequire() {
+    public Map<Color, Integer> tokenRequire() {
         return tokenRequire;
     }
 
     @Override
-    public Token tokenReduction() {
+    public Color tokenReduction() {
         return tokenReduction;
     }
 
