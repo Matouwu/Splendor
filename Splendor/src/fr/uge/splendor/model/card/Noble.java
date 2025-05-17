@@ -10,7 +10,8 @@ import java.util.Map;
 
 
 public enum Noble {
-    CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(GREEN, 3, BLUE, 3, RED, 3), 3)
+    CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(GREEN, 3, BLUE, 3, RED, 3), 3),
+    ELISABETH_OF_AUSTRIA ("Elisabeth Of Autrisa", Map.of(BLACK, 3, BLUE, 3, WHITE, 3), 3),
     ;
 
     private final String name;
