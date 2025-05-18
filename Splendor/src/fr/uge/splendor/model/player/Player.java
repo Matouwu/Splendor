@@ -68,8 +68,8 @@ public class Player {
     	
     }
  
-    public void addToken(Token token) {
-    	Objects.requireNonNull(token); 
+    public void addToken(Color color) {
+    	Objects.requireNonNull(color); 
 
     	var totalTokens = tokens.values()
     							.stream()
@@ -78,8 +78,7 @@ public class Player {
     	if(totalTokens >= 10) {
     		throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
     	}
-    	
-    	Color color= token.color(); 
+    
     	tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
     
