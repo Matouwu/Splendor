@@ -11,7 +11,9 @@ public class NobleCard implements Cards {
     private final int prestigePoints;
 
     public NobleCard(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
+        Objects.requireNonNull(name);
         Objects.requireNonNull(tokenRequire);
+        if(prestigePoints < 0) throw new IllegalArgumentException();
 
         this.name = name;
         this.tokenRequire.putAll(tokenRequire);

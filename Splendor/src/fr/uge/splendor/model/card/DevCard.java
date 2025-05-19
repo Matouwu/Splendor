@@ -13,6 +13,7 @@ public class DevCard implements Cards {
     public DevCard(Map<Color, Integer> tokenRequire, Color tokenReduction, int prestigePoints, int level) {
         Objects.requireNonNull(tokenRequire);
         Objects.requireNonNull(tokenReduction);
+        if(prestigePoints < 0 || level < 0) throw new IllegalArgumentException();
 
         this.tokenRequire.putAll(tokenRequire);
         this.tokenReduction = tokenReduction;
