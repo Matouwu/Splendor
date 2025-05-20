@@ -19,4 +19,9 @@ public class CardP1 {
         this.level = 1;
     }
 
+    public int getPrestigePoints() {
+        return prestigePoints;
+    }
+
+
 }

@@ -10,7 +10,7 @@ import java.util.*;
 public class PlayerP1 {
     private final String name;
     private final int age;
-    private final int prestigePoints;
+    private int prestigePoints;
     private final List<CardP1> cardsList;
     private final Map<Color, Integer> tokens;
 
@@ -38,33 +38,20 @@ public class PlayerP1 {
 public List<Cards> cardList() {return cardsList;}
 public int prestigePoints() {return cardsList.size();}*/
 
-
     public void addCardsList(CardP1 cardP1) {
         Objects.requireNonNull(cardP1);
         cardsList.add(cardP1);
+        prestigePoints += cardP1.getPrestigePoints();
     }
 
-
-    public boolean removeCardsList(DevCard devcard) {
-        Objects.requireNonNull(devcard);
-
-        return cardsList.remove(devcard);
+/*    public void addCardsReservedList(CardP1 cardP1) {
+        Objects.requireNonNull(cardP1);
+        cardsReservedList.add(cardP1);
     }
-
-
-    public void addCardsReservedList(DevCard devcard) {
-        Objects.requireNonNull(devcard);
-
-        cardsReservedList.add(devcard);
-    }
-
-
     public boolean removeCardsReservedList(DevCard devcard) {
         Objects.requireNonNull(devcard);
-
         return cardsReservedList.remove(devcard);
-
-    }
+    }*/
 
     public void addToken(Color color) {
         Objects.requireNonNull(color);
@@ -76,10 +63,8 @@ public int prestigePoints() {return cardsList.size();}*/
         if(totalTokens >= 10) {
             throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
         }
-
         tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
-
 
     public boolean removeToken(Color color) {
         Objects.requireNonNull(color);
