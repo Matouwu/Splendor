@@ -18,7 +18,7 @@ public class Player {
     private final String name;
     private final List<Cards> cardsList;
     private final List<Cards> cardsReservedList; 
-    private final List<NobleCard> cardNobleList; 
+    private final List<NobleCard> cardsNobleList; 
     private final Map<Color, Integer> tokens;
    
 
@@ -29,7 +29,7 @@ public class Player {
         this.name = name;
         this.cardsList = new ArrayList<>();
         this.cardsReservedList = new ArrayList<>(); 
-    	this.cardNobleList = new ArrayList<>(); 
+    	this.cardsNobleList = new ArrayList<>(); 
         this.tokens = new  HashMap<>();
     }
     
@@ -46,7 +46,7 @@ public class Player {
     }
     
     public List<NobleCard> cardNobleList(){
-    	return cardNobleList; 
+    	return cardsNobleList; 
     }
     
     public int prestigePoints() {
@@ -55,7 +55,7 @@ public class Player {
     	    for (Cards card : cardsList) {
     	        points += card.prestigePoints(); 
     	    }
-    	    for (NobleCard nobleCard : cardNobleList) {
+    	    for (NobleCard nobleCard : cardsNobleList) {
     	        points += nobleCard.prestigePoints(); 
     	    }
     	    return points;
@@ -74,10 +74,10 @@ public class Player {
     	cardsReservedList.add(devcard); 
     }
     
-    public void cardNobleList(NobleCard nobleCard) {
+    public void addCardNobleList(NobleCard nobleCard) {
     	Objects.requireNonNull(nobleCard); 
     	
-    	cardsReservedList.add(nobleCard); 
+    	cardsNobleList.add(nobleCard); 
     }
     
     
@@ -96,6 +96,7 @@ public class Player {
     }
     
     public void addToken(Color color) {
+    	
     	Objects.requireNonNull(color); 
 
     	var totalTokens = tokens.values()
@@ -122,8 +123,8 @@ public class Player {
         }
     }
    
-  
     public int tokenCount(Color color) {
+    	
     	Objects.requireNonNull(color); 
 
     	return tokens.getOrDefault(color,0); 
@@ -151,9 +152,7 @@ public class Player {
                     Color color = entry.getKey();
                     int needed = entry.getValue() - bonus.getOrDefault(color, 0);
                     return needed > tokenCount(color);
-                })
-             
-                	.count() == 0; 
+                }).count() == 0; 
     }
     
     @Override

@@ -35,7 +35,7 @@ public class GameController {
     }
 
     public void setTokenPickaxe() {
-        switch (playersNumber){ // streams ici à la place 
+        switch (playersNumber){ 
             case 4:
                 tokenPickaxe.put(Color.GREEN, 7);
                 tokenPickaxe.put(Color.BLUE, 7);
@@ -64,7 +64,8 @@ public class GameController {
     }
     
     public void setCardPickaxe() {
-        switch (playersNumber){ // on peut faire un stream ici 
+        switch (playersNumber){
+        
         case 4:
         	
         case 3:
@@ -75,7 +76,9 @@ public class GameController {
 
 
     public void setNobleCardPickaxe() {
-    				// streams ici à la place 
+    	 switch (playersNumber){ 
+    	 }
+    	
     	
     }
     
