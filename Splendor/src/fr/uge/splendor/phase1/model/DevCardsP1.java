@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static fr.uge.splendor.model.token.Color.*;
 
-public enum DevCards {
+public enum DevCardsP1 {
     GREEN_1(Map.of(GREEN,3)),
     GREEN_2(Map.of(GREEN,3)),
     GREEN_3(Map.of(GREEN,3)),
@@ -58,16 +58,16 @@ public enum DevCards {
     private final Map<Color, Integer> tokenRequire = new HashMap<>();
     private final int prestigePoints;
     private final int level;
-    DevCards(Map<Color, Integer> tokenRequire) {
+    DevCardsP1(Map<Color, Integer> tokenRequire) {
         this.tokenRequire.putAll(tokenRequire);
         this.prestigePoints = 1;
         this.level = 1;
     }
 
-    public List<Card> listDevCards() {
-        List<Card> result = new ArrayList<>();
-        for (DevCards card : DevCards.values()) {
-            result.add(new Card(card.tokenRequire));
+    public List<CardP1> listDevCards() {
+        List<CardP1> result = new ArrayList<>();
+        for (DevCardsP1 card : DevCardsP1.values()) {
+            result.add(new CardP1(card.tokenRequire));
         }
         return List.copyOf(result);
     }

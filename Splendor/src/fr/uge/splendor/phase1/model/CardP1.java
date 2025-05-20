@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Card {
+public class CardP1 {
     private final Map<Color, Integer> tokenRequire = new HashMap<>();
     private final int prestigePoints;
     private final int level;
 
-    public Card(Map<Color, Integer> tokenRequire) {
+    public CardP1(Map<Color, Integer> tokenRequire) {
         Objects.requireNonNull(tokenRequire);
 
         this.tokenRequire.putAll(tokenRequire);
