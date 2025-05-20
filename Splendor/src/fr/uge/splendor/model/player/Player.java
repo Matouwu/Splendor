@@ -2,6 +2,8 @@ package fr.uge.splendor.model.player;
 
 import fr.uge.splendor.model.card.Cards;
 import fr.uge.splendor.model.card.DevCard;
+import fr.uge.splendor.model.card.Noble;
+import fr.uge.splendor.model.card.NobleCard;
 import fr.uge.splendor.model.token.Color;
 
 import java.util.ArrayList;
@@ -9,22 +11,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Player {
 
     private final String name;
     private final List<Cards> cardsList;
     private final List<Cards> cardsReservedList; 
+    private final List<NobleCard> cardNobleList; 
     private final Map<Color, Integer> tokens;
+   
 
     public Player(String name) {
     	
         Objects.requireNonNull(name);
         
         this.name = name;
-        this.cardsList = new ArrayList<>(); 
-        this.tokens = new  HashMap<>();
+        this.cardsList = new ArrayList<>();
         this.cardsReservedList = new ArrayList<>(); 
+    	this.cardNobleList = new ArrayList<>(); 
+        this.tokens = new  HashMap<>();
     }
     
     public String name() {
@@ -35,8 +41,24 @@ public class Player {
         return cardsList;
     }
     
+    public List<Cards> cardsReservedList(){
+    	return cardsReservedList; 
+    }
+    
+    public List<NobleCard> cardNobleList(){
+    	return cardNobleList; 
+    }
+    
     public int prestigePoints() {
-        return cardsList.size();
+    	
+    	   int points = 0;
+    	    for (Cards card : cardsList) {
+    	        points += card.prestigePoints(); 
+    	    }
+    	    for (NobleCard nobleCard : cardNobleList) {
+    	        points += nobleCard.prestigePoints(); 
+    	    }
+    	    return points;
     }
     
     public void addCardsList(DevCard devcard) {
@@ -44,20 +66,18 @@ public class Player {
     	
     	cardsList.add(devcard); 
     }
-    
-    
-    public boolean removeCardsList(DevCard devcard) {
-    	Objects.requireNonNull(devcard); 
-    	
-		return cardsList.remove(devcard);
-    	
-    }
-    
+   
     
     public void addCardsReservedList(DevCard devcard) {
     	Objects.requireNonNull(devcard); 
     	
     	cardsReservedList.add(devcard); 
+    }
+    
+    public void cardNobleList(NobleCard nobleCard) {
+    	Objects.requireNonNull(nobleCard); 
+    	
+    	cardsReservedList.add(nobleCard); 
     }
     
     
@@ -68,6 +88,13 @@ public class Player {
     	
     }
  
+    public boolean removeCardsList(DevCard devcard) {
+    	Objects.requireNonNull(devcard); 
+    	
+		return cardsList.remove(devcard);
+    	
+    }
+    
     public void addToken(Color color) {
     	Objects.requireNonNull(color); 
 
@@ -102,6 +129,32 @@ public class Player {
     	return tokens.getOrDefault(color,0); 
     }
 
+    
+    public Map<Color, Integer> getBonusCount() {
+        return cardsList.stream()
+        				.map(Cards::tokenReduction) 
+        				.collect(Collectors.groupingBy(
+        				color -> color,
+        				Collectors.summingInt(x -> 1)
+        				));
+    }
+    
+    public boolean canBuyCard(DevCard card) {
+        
+        Map<Color, Integer> tokenRequire = card.tokenRequire();
+        Map<Color, Integer> bonus = getBonusCount();
+        
+        return tokenRequire
+        			.entrySet()
+        			.stream()
+                	.filter(entry -> {
+                    Color color = entry.getKey();
+                    int needed = entry.getValue() - bonus.getOrDefault(color, 0);
+                    return needed > tokenCount(color);
+                })
+             
+                	.count() == 0; 
+    }
     
     @Override
     public String toString() {
