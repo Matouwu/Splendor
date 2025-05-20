@@ -21,6 +21,20 @@ public class CardP1 {
     public int getPrestigePoints() {
         return prestigePoints;
     }
+    
+    public List<Token> getTokenRequire(){
+    	return tokenRequire; 
+    }
+    
+    public int getLevel() {
+    	return level;
+    }
 
+    @Override
+    public String toString() {
+        return "DevCard : \ntokenRequire=" + tokenRequire + 
+        		"\nprestigePoints=" + prestigePoints + 
+        		"\nlevel=" + level;
+    }
 
 }

@@ -25,22 +25,25 @@ public class PlayerP1 {
         this.cardsList = new ArrayList<>();
         this.tokens = new ArrayList<>();
     }
-
-    @Override
-    public String toString() {
-        return "[ Player " + name + " " + age +"y " +
-                ":\nPointPrestige= " + prestigePoints +
-                "\nToken= " + tokens +
-                "\nCardList= " + cardsList +
-                "]\n";
+    
+    
+    public String getName() {
+    	return name;
     }
-
+    
+    public int getPrestigePoints() {
+    	return prestigePoints; 
+    }
+    
+    public List<CardP1> getCardList(){
+    	return List.copyOf(cardsList); 
+    }
+    
     public int getTokenQuantity(List<Token> tokenList) {
         return tokenList.stream()
                 .mapToInt(Token::number)
                 .sum();
     }
-
 
     public void addCardsList(CardP1 cardP1) {
         Objects.requireNonNull(cardP1);
@@ -61,7 +64,7 @@ public class PlayerP1 {
             }
         }
         if(totalTokens >= 10) {
-            throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
+            throw new IllegalStateException("The player cannot have more than " + 10);
         }
         tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
@@ -86,6 +89,14 @@ public class PlayerP1 {
     }
 
 
+    @Override
+    public String toString() {
+        return "[ Player " + name + " " + age +"y " +
+                ":\nPointPrestige= " + prestigePoints +
+                "\nToken= " + tokens +
+                "\nCardList= " + cardsList +
+                "]\n";
+    }
 
 
 }
