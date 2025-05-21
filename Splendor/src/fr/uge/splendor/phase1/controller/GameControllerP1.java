@@ -54,20 +54,9 @@ public class GameControllerP1 {
         this.currentPlayerIndex = (currentPlayerIndex + 1)%2;
     }
 
-/*    public ColorP1 getInputColor() {
+    public ColorP1 getInputColor(int a) {
         Scanner sc = new Scanner(System.in);
-
-    }*/
-
-    public void action1(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Tu dois donc choisir 3 pierres précieuses entre : " + tokenPickaxe +
-                "\nPour cela tu va rentrer les couleurs que tu veux (green, blue, red, white, black):");
-
-        Map<ColorP1,Integer> tokenMap = new HashMap<>();
-        Set<String> tmp = new HashSet<>();
-        while(tokenMap.size() < 3) {
-            var input = sc.nextLine();
+                    var input = sc.nextLine();
             while(!isValidEnum(input)){
                 System.out.println("""
                     (Couleur invalide!)
@@ -76,7 +65,8 @@ public class GameControllerP1 {
                 input = sc.nextLine();
             }
             ColorP1 color = ColorP1.valueOf(input.toUpperCase());
-            while(tokenPickaxe.get(color) < 1){
+            while(a==1 && tokenPickaxe.get(color) < 1 ||
+            a==2 && tokenPickaxe.get(color) < 2) {
                 System.out.println("""
                     (Couleur indisponible!)
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
@@ -84,16 +74,26 @@ public class GameControllerP1 {
                 input = sc.nextLine();
                 color = ColorP1.valueOf(input.toUpperCase());
             }
-            if(tmp.contains(input)){
+            return color;
+    }
+
+    public void action1(){
+        System.out.println("Tu dois donc choisir 3 pierres précieuses entre : " + tokenPickaxe +
+                "\nPour cela tu va rentrer les couleurs que tu veux (green, blue, red, white, black):");
+
+        Map<ColorP1,Integer> tokenMap = new HashMap<>();
+        Set<String> tmp = new HashSet<>();
+        while(tokenMap.size() < 3) {
+            var color = getInputColor(1);
+            if(tmp.contains(color.name())){
                 System.out.println("""
                     (Couleur invalide!)
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
                     Tu dois rentrer une couleur different de ce que tu a déja rentré !""");
             } else {
-                color = ColorP1.valueOf(input.toUpperCase());
                 tokenPickaxe.put(color, tokenPickaxe.get(color)-1);
                 tokenMap.put(color, 1);
-                tmp.add(input);
+                tmp.add(color.name());
             }
         }
         System.out.println("Tu a récupéré : " + tokenMap);
@@ -106,10 +106,21 @@ public class GameControllerP1 {
     }
 
     public void action2(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Tu dois choisir 2 pierres identiques entre : " + tokenPickaxe+
-                "\nPour cela tu devra rentrer UNE couleur de ton choix (ex: green ou bleu ...):");
+        System.out.println("Tu va choisir 2 pierres identiques entre : " + tokenPickaxe+
+                "\nPour cela tu devra rentrer UNE couleur de ton choix entre (green, blue, red, white, black):");
 
+        Map<ColorP1,Integer> tokenMap = new HashMap<>();
+        var color = getInputColor(2);
+        tokenPickaxe.put(color, tokenPickaxe.get(color)-2);
+        tokenMap.put(color, 2);
+
+        System.out.println("Tu a récupéré : " + tokenMap);
+        System.out.println("Il ne reste plus que : " + tokenPickaxe);
+
+        PlayerP1 player = players.get(currentPlayerIndex);
+        player.addToken(tokenMap);
+        System.out.println(player);
+        nextPlayer();
     }
     public void action3(){
 
@@ -119,9 +130,9 @@ public class GameControllerP1 {
 
     public void oneRound(String action) {
         switch (action) {
-            case "a1" -> {action1();}
-            case "a2" -> {action2();}
-            case "a3" -> {action3();}
+            case "a1" -> action1();
+            case "a2" -> action2();
+            case "a3" -> action3();
         }
     }
 
