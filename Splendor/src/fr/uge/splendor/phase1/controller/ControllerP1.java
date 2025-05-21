@@ -20,6 +20,14 @@ public class ControllerP1 {
         return 1;
     }
 
+    public static boolean checkGameEnd(List<PlayerP1> playerP1List) {
+        for(PlayerP1 p: playerP1List) {
+            if(p.getPrestigePoints() >= 15) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public static void pickToken(){

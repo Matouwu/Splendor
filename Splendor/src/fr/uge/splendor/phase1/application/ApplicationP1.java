@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static fr.uge.splendor.phase1.controller.ControllerP1.checkGameEnd;
 import static fr.uge.splendor.phase1.controller.ControllerP1.startPlayer;
 
 public class ApplicationP1 {
@@ -17,9 +18,9 @@ public class ApplicationP1 {
     Vous incarnez des marchands de pierres précieuses, cherchant à accumuler des points de prestige, il vous en faut 15
     pour terminer le jeu.
     Pour cela, vous avez 3 actions possibles :
-        -   Prendre 3 pierres de couleurs différentes,
-        -   Prendre 2 pierres de couleurs identiques,
-        -   Acheter 1 carte de développement avec des pierres précieuses.
+        -   (a1) Prendre 3 pierres de couleurs différentes,
+        -   (a2) Prendre 2 pierres de couleurs identiques,
+        -   (a3) Acheter 1 carte de développement avec des pierres précieuses.
     Chaque carte rapportes 1 point de prestige pour un coût de 3 pierres précieuses.
     Un jeu simple à comprendre mais avec une profondeur stratégique qui garantit des heures de plaisir.
     Prêt à devenir le marchand le plus prestigieux de l'époque ?
@@ -47,11 +48,30 @@ public class ApplicationP1 {
         listPlayers.add(p2);
         var startPlayer = startPlayer(listPlayers);
         System.out.println(listPlayers.get(startPlayer).getName());
+        System.out.println("""
+                Eh ouai, parce que c'est le plus petit HAHAHAHHAHHAHA!!!!!
+                
+                Hum hum,
+                      Let the game begin ! :D
+                
+                Pour choisir votre actions vous devez soit rentrer a1, a2 ou bien a3 pour l'action choisi :).
+                Ah HA! *pointage de doigt* VOUS AVEZ OUBLIÉ LES ACTIONS! je le savais !
+                """);
 
         GameControllerP1 game = new GameControllerP1(listPlayers, startPlayer);
 
-
-        game.oneRound();
+        while (checkGameEnd(listPlayers)){
+            System.out.println("""
+                Rentrer a1 pour prendre 3 pierres differentes,
+                        a2 pour prendre 2 pierres identiques,
+                        a3 pour acheter 1 carte.
+                """);
+            var command = scan.nextLine();
+            while(!command.equals("a1") && !command.equals("a2") && !command.equals("a3")){
+                command = scan.nextLine();
+            }
+            game.oneRound(command);
+        }
 
 
 

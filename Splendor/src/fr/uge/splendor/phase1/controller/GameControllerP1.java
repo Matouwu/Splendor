@@ -9,7 +9,6 @@ import java.util.*;
 
 
 public class GameControllerP1 {
-    private boolean gameEnded;
     private int currentPlayerIndex;
     private final List<PlayerP1> players = new ArrayList<>();
     private final Map<ColorP1, Integer> tokenPickaxe;
@@ -21,7 +20,6 @@ public class GameControllerP1 {
         Objects.requireNonNull(players);
         if(players.size() != 2) throw new IllegalArgumentException("The number of players must equal 2");
 
-        this.gameEnded = false;
         this.currentPlayerIndex = currentPlayerIndex;
         this.players.addAll(players);
         this.tokenPickaxe = new HashMap<>();
@@ -43,7 +41,6 @@ public class GameControllerP1 {
         Random rand = new Random();
 
         while(cardPickaxe.size() < 3) {
-            assert devCards != null;
             if(devCards.isEmpty()) throw new IllegalArgumentException("DevCards is empty");
             int cardIndex = rand.nextInt(devCards.size());
             CardsP1 card = devCards.remove(cardIndex);
@@ -55,22 +52,30 @@ public class GameControllerP1 {
         this.currentPlayerIndex = (currentPlayerIndex + 1)%2;
     }
 
-    private void checkGameEnd() {
-        for(PlayerP1 p: players) {
-            if(p.getPrestigePoints() >= 15) {
-                gameEnded = true;
-            }
+    public void action1(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Tu dois donc choisir 3 pierres précieuses entre : " + tokenPickaxe +
+                "\nPour cela tu va rentrer les couleurs que tu veux (ex: green, bleu ...):");
+        /*ColorP1 c1= sc.nextLine().toUpperCase();*/
+
+
+    }
+
+    public void action2(){
+        System.out.println("Tu dois choisir 2 pierres identiques entre : " + tokenPickaxe);
+    }
+    public void action3(){
+
+    }
+
+
+
+    public void oneRound(String action) {
+        switch (action) {
+            case "a1" -> {action1();}
+            case "a2" -> {action2();}
+            case "a3" -> {action3();}
         }
-    }
-
-    public boolean isGameOver() {
-        return gameEnded;
-    }
-
-    public void oneRound() {
-        System.out.println("""
-                
-                """);
     }
 
 
