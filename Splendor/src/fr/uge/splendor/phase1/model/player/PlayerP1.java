@@ -2,15 +2,16 @@ package fr.uge.splendor.phase1.model.player;
 
 import fr.uge.splendor.model.token.Color;
 import fr.uge.splendor.model.token.Token;
-import fr.uge.splendor.phase1.model.card.CardP1;
+import fr.uge.splendor.phase1.model.card.CardsP1;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerP1 {
     private final String name;
     private final int age;
     private int prestigePoints;
-    private List<CardP1> cardsList;
+    private final List<CardsP1> cardsList;
     private List<Token> tokens;
 
     public PlayerP1(String name, int age) {
@@ -24,6 +25,16 @@ public class PlayerP1 {
         this.tokens = new ArrayList<>();
     }
 
+    public String getName() {
+        return name;
+    }
+    public int getPrestigePoints() {
+        return prestigePoints;
+    }
+    public List<CardsP1> getCardList() {
+        return List.copyOf(cardsList);
+    }
+
     @Override
     public String toString() {
         return "[ Player " + name + " " + age +"y " +
@@ -33,17 +44,14 @@ public class PlayerP1 {
                 "]\n";
     }
 
-    public void setCardsList(List<CardP1> cardsList) {
-        this.cardsList = cardsList;
-    }
     public void setTokens(List<Token> tokens) {
         this.tokens = tokens;
     }
 
-    public void addCardsList(CardP1 cardP1) {
-        Objects.requireNonNull(cardP1);
-        cardsList.add(cardP1);
-        prestigePoints += cardP1.getPrestigePoints();
+    public void addCardsList(CardsP1 cardsP1) {
+        Objects.requireNonNull(cardsP1);
+        cardsList.add(cardsP1);
+        prestigePoints += cardsP1.getPrestigePoints();
     }
 
     public int getTokenQuantity(List<Token> tokenList) {
@@ -72,20 +80,28 @@ public class PlayerP1 {
             for(var obj: newMap.entrySet()){
                 newList.add(new Token(obj.getKey(),obj.getValue()));
             }
-            this.tokens = newList;
+            setTokens(newList);
         }
     }
 
-    public boolean removeToken(Color color) {
-        Objects.requireNonNull(color);
+    public boolean removeToken(List<Token> tokenRequire) {
+        Objects.requireNonNull(tokenRequire);
 
-        int count = tokens.getOrDefault(color, 0);
-        if (count > 0) {
-            tokens.put(color, count - 1);
+        var newMap = tokens.stream()
+                .collect(Collectors.toMap(Token::color, Token::number));
+        for(var tok: tokenRequire){
+            newMap.put(tok.color(),newMap.getOrDefault(tok.color(),0)-tok.number());
+        };
+
+        if(newMap.values().stream().allMatch(v -> v>0)){
+            var newList = new ArrayList<Token>();
+            for(var obj: newMap.entrySet()){
+                newList.add(new Token(obj.getKey(),obj.getValue()));
+            }
+            setTokens(newList);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
 

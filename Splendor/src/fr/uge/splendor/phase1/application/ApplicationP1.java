@@ -24,6 +24,8 @@ public class ApplicationP1 {
         int age2 = scan.nextInt();
         PlayerP1 p2 = new PlayerP1(name2, age2);
         System.out.println(p2);
+        
+        System.out.println("Démarrage de la partie entre " + p1 + "et " + p2);
 
         scan.close();
     }

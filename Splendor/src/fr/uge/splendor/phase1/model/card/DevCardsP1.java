@@ -62,10 +62,10 @@ public enum DevCardsP1 {
         this.level = 1;
     }
 
-    public List<CardP1> listDevCards() {
-        List<CardP1> result = new ArrayList<>();
+    public List<CardsP1> listDevCards() {
+        List<CardsP1> result = new ArrayList<>();
         for (DevCardsP1 card : DevCardsP1.values()) {
-            result.add(new CardP1(card.tokenRequire));
+            result.add(new CardsP1(card.tokenRequire));
         }
         return List.copyOf(result);
     }

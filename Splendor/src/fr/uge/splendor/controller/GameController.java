@@ -1,6 +1,7 @@
 package fr.uge.splendor.controller;
 
 import fr.uge.splendor.model.card.Cards;
+import fr.uge.splendor.model.card.DevCard;
 import fr.uge.splendor.model.card.NobleCard;
 import fr.uge.splendor.model.player.Player;
 import fr.uge.splendor.model.token.Color;
@@ -21,7 +22,7 @@ public class GameController {
     private int currentPlayerIndex;
     private final Map<Color, Integer> tokenPickaxe;
     private final Map<Cards, Integer> cardPickaxe;
-    private final Map<Cards, Integer> nobleCardsPickaxe;
+    private final Map<NobleCard, Integer> nobleCardsPickaxe;
 
     public GameController(int playersNumber) {
         if (playersNumber < 2 || playersNumber > 4) throw new IllegalArgumentException("Number of player must be between 2 and 4.");
@@ -98,31 +99,52 @@ public class GameController {
     }
     
    
-    // A voir si on garde cette méthode car ce n'est pas vraiment une action du jeu
-    
-    /*public void checkNobleVisit(Player player) {
-        Objects.requireNonNull(player);
+    public boolean reserveCard(Player player, DevCard card) {
+        Objects.requireNonNull(player); 
+        Objects.requireNonNull(card);
         
-        List<NobleCard> eligibleNobles = 
-        		nobleCardsPickaxe.stream()
-        						  .filter(noble -> canNobleVisit(player, noble))
-        						  .collect(Collectors.toList());
-            
-        if (eligibleNobles.isEmpty()) {
-            return;
+        if (!player.equals(players.get(currentPlayerIndex))) {
+            return false;
         }
         
-        if (eligibleNobles.size() == 1) {
-            NobleCard noble = eligibleNobles.get(0);
+        if (player.cardsReservedList().size() >= 3) {
+            return false; 
+        }
+        return true;
+    }
+    
+   /* public boolean buyCard() {
+    	
+    }*/
+    
+    
+    
+    private boolean canNobleVisit(Player player, NobleCard nobleCard) {
+        Objects.requireNonNull(player); 
+        Objects.requireNonNull(nobleCard);
+
+        Map<Color, Integer> playerBonuses = player.getBonusCount(); 
+        Map<Color, Integer> requirements = nobleCard.tokenRequire(); 
+
+        return requirements.entrySet()
+        					.stream()
+        					.allMatch(entry -> playerBonuses.getOrDefault(entry.getKey(), 0) >= entry.getValue());
+    }
+    
+
+    public void checkNobleVisit(Player player) {
+        Objects.requireNonNull(player);
+
+        List<NobleCard> eligibleNobles = nobleCardsPickaxe.keySet().stream()
+            .filter(noble -> canNobleVisit(player, noble))
+            .toList(); 
+
+        if (!eligibleNobles.isEmpty()) {
+            NobleCard noble = eligibleNobles.get(0); 
             nobleCardsPickaxe.remove(noble);
             player.cardNobleList().add(noble);
-            return;
         }
-      
-        NobleCard chosenNoble = eligibleNobles.get(0);
-        nobleCardsPickaxe.remove(chosenNoble);
-        player.cardNobleList().add(chosenNoble);
-    }*/
+    }
     
     
     private void checkGameEnd() {

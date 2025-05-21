@@ -133,7 +133,8 @@ public enum Dev {
      public Map<Integer, List<DevCard>> listDevCards() {
          Map<Integer, List<DevCard>> devCardMap = new HashMap<>();
          for(Dev card : Dev.values()) {
-             devCardMap.computeIfAbsent(card.level, k -> new ArrayList<>()).add(new DevCard(tokenRequire, tokenReduction, prestigePoints, level));
+             devCardMap.computeIfAbsent(card.level, k -> new ArrayList<>())
+             .add(new DevCard(tokenRequire, tokenReduction, prestigePoints, level));
          }
 
          return devCardMap;
