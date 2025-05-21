@@ -2,7 +2,7 @@ package fr.uge.splendor.model.card;
 
 
 import fr.uge.splendor.model.token.Color;
-import static fr.uge.splendor.phase1.model.token.ColorP1.*;
+import static fr.uge.splendor.model.token.Color.*;
 
 import java.util.*;
 

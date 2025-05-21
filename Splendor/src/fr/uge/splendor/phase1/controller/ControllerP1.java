@@ -14,15 +14,12 @@ public class ControllerP1 {
         var p1 = playerP1List.get(0);
         var p2 = playerP1List.get(1);
 
-        if(p1.getAge() > p2.getAge()) {
+        if(p1.getAge() < p2.getAge()) {
             return 0;
         }
         return 1;
     }
 
-    public static int nextPlayer(int player) {
-        return (player + 1)%2;
-    }
 
 
     public static void pickToken(){

@@ -63,6 +63,6 @@ public enum DevCardsP1 {
         for (DevCardsP1 card : DevCardsP1.values()) {
             result.add(new CardsP1(card.tokenRequire));
         }
-        return List.copyOf(result);
+        return result;
     }
 }

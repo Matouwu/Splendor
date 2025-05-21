@@ -7,22 +7,27 @@ import fr.uge.splendor.phase1.model.player.PlayerP1;
 
 import java.util.*;
 
+
 public class GameControllerP1 {
     private boolean gameEnded;
     private int currentPlayerIndex;
     private final List<PlayerP1> players = new ArrayList<>();
     private final Map<ColorP1, Integer> tokenPickaxe;
-    private final Map<Integer, List<CardsP1>> cardPickaxe;
+    private final List<CardsP1> cardPickaxe;
+
+    private List<CardsP1> devCards;
 
     public GameControllerP1(List<PlayerP1> players, int currentPlayerIndex) {
         Objects.requireNonNull(players);
+        if(players.size() != 2) throw new IllegalArgumentException("The number of players must equal 2");
 
         this.gameEnded = false;
         this.currentPlayerIndex = currentPlayerIndex;
         this.players.addAll(players);
         this.tokenPickaxe = new HashMap<>();
         setTokenPickaxe();
-        this.cardPickaxe = new HashMap<>();
+        this.devCards = DevCardsP1.listDevCards();
+        this.cardPickaxe = new ArrayList<>();
         setCardPickaxe();
     }
 
@@ -35,17 +40,20 @@ public class GameControllerP1 {
     }
 
     public void setCardPickaxe() {
-        List<CardsP1> cards = DevCardsP1.listDevCards();
-
         Random rand = new Random();
-        int cardIndex = rand.nextInt(cards.size());
-        this.cardPickaxe.put();
+
+        while(cardPickaxe.size() < 3) {
+            assert devCards != null;
+            if(devCards.isEmpty()) throw new IllegalArgumentException("DevCards is empty");
+            int cardIndex = rand.nextInt(devCards.size());
+            CardsP1 card = devCards.remove(cardIndex);
+            cardPickaxe.add(card);
+        }
     }
 
-
-
-
-
+    public void nextPlayer() {
+        this.currentPlayerIndex = (currentPlayerIndex + 1)%2;
+    }
 
     private void checkGameEnd() {
         for(PlayerP1 p: players) {
@@ -59,16 +67,10 @@ public class GameControllerP1 {
         return gameEnded;
     }
 
-    public void initGame() {
-        setTokenPickaxe();
-        setCardPickaxe();
-
-        if (players.size() != playersNumber) {
-            throw new IllegalStateException("Nombre de joueurs incorrect : " + players.size() + "/" + playersNumber);
-        }
-
-        System.out.println("Initialisation de la partie");
-
+    public void oneRound() {
+        System.out.println("""
+                
+                """);
     }
 
 
