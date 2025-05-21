@@ -4,8 +4,10 @@ import fr.uge.splendor.phase1.model.token.ColorP1;
 import fr.uge.splendor.phase1.model.card.CardsP1;
 import fr.uge.splendor.phase1.model.card.DevCardsP1;
 import fr.uge.splendor.phase1.model.player.PlayerP1;
+import fr.uge.splendor.phase1.model.token.TokenP1;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static fr.uge.splendor.phase1.controller.ControllerP1.isValidEnum;
 
@@ -16,7 +18,7 @@ public class GameControllerP1 {
     private final Map<ColorP1, Integer> tokenPickaxe;
     private final List<CardsP1> cardPickaxe;
 
-    private List<CardsP1> devCards;
+    private final List<CardsP1> devCards;
 
     public GameControllerP1(List<PlayerP1> players, int currentPlayerIndex) {
         Objects.requireNonNull(players);
@@ -77,6 +79,20 @@ public class GameControllerP1 {
             return color;
     }
 
+    private boolean canBuy(PlayerP1 player, List<TokenP1> cost) {
+        Map<ColorP1, Integer> playerTokens = player.getTokens().stream()
+                .collect(Collectors.toMap(TokenP1::colorP1, TokenP1::number));
+
+        for (TokenP1 token : cost) {
+            int owned = playerTokens.getOrDefault(token.colorP1(), 0);
+            if (owned < token.number()) {
+                return false;
+            }
+        }
+        return true;
+    } ;
+
+
     public void action1(){
         System.out.println("Tu dois donc choisir 3 pierres précieuses entre : " + tokenPickaxe +
                 "\nPour cela tu va rentrer les couleurs que tu veux (green, blue, red, white, black):");
@@ -122,8 +138,45 @@ public class GameControllerP1 {
         System.out.println(player);
         nextPlayer();
     }
-    public void action3(){
+    public void action3() {
+        var currentPlayer = players.get(currentPlayerIndex);
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Tu peux acheter des cartes si tu le souhaites, voici les cartes à l'achat :");
+        int i = 1;
+        for (CardsP1 card : cardPickaxe) {
+            System.out.println(i + " -> " + card);
+            i++;
+        }
+
+        System.out.println("Quelle carte voulez-vous acheter ? (Entrez le numéro de 1 à " + cardPickaxe.size() + ")");
+        int choice = scanner.nextInt();
+        if (choice < 1 || choice > cardPickaxe.size()) {
+            System.out.println("Choix invalide.");
+            return;
+        }
+
+        var chosenCard = cardPickaxe.get(choice - 1);
+        List<TokenP1> cardCost = chosenCard.getTokenRequire();
+
+        System.out.println("Coût de la carte : " + cardCost);
+        System.out.println("Jetons du joueur : " + currentPlayer.getTokens());
+
+        if (canBuy(currentPlayer, cardCost)) {
+            var removed = currentPlayer.removeToken(cardCost);
+            if (removed) {
+                currentPlayer.addCardsList(chosenCard);
+                cardPickaxe.remove(choice - 1);
+                System.out.println("Carte achetée avec succès !");
+                if (!devCards.isEmpty()) {
+                    cardPickaxe.add(devCards.remove(0));
+                }
+            } else {
+                System.out.println("Erreur : les jetons n'ont pas pu être retirés.");
+            }
+        } else {
+            System.out.println("Vous n'avez pas assez de jetons pour acheter cette carte.");
+        }
     }
 
 
