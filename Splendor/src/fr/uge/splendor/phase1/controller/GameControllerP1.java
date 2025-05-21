@@ -62,7 +62,8 @@ public class GameControllerP1 {
     }
 
     public void action2(){
-        System.out.println("Tu dois choisir 2 pierres identiques entre : " + tokenPickaxe);
+        System.out.println("Tu dois choisir 2 pierres identiques entre : " + tokenPickaxe+
+                "\nPour cela tu devra rentrer UNE couleur de ton choi (ex: green ou bleu ...):");
     }
     public void action3(){
 
