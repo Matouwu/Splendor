@@ -35,30 +35,28 @@ public class PlayerP1 {
     public List<CardsP1> getCardList() {
         return List.copyOf(cardsList);
     }
+    public List<TokenP1> getTokens() {return tokens;}
+    public int getTokenQuantity(List<TokenP1> tokenList) {
+        return tokenList.stream()
+                .mapToInt(TokenP1::number)
+                .sum();
+    }
+
+    public void setTokens(List<TokenP1> tokens) {this.tokens = tokens;}
 
     @Override
     public String toString() {
-        return "[ Player " + name + " " + age +"y " +
+        return "[Player " + name + " " + age +"y " +
                 ":\nPointPrestige= " + prestigePoints +
                 "\nToken= " + tokens +
                 "\nCardList= " + cardsList +
                 "]\n";
     }
 
-    public void setTokens(List<TokenP1> tokens) {
-        this.tokens = tokens;
-    }
-
     public void addCardsList(CardsP1 cardsP1) {
         Objects.requireNonNull(cardsP1);
         cardsList.add(cardsP1);
         prestigePoints += cardsP1.getPrestigePoints();
-    }
-
-    public int getTokenQuantity(List<TokenP1> tokenList) {
-        return tokenList.stream()
-                .mapToInt(TokenP1::number)
-                .sum();
     }
 
     public void addToken(Map<ColorP1,Integer> tokenMap) {  /* ATTENTIONNNN EN ENTRER UN MAP PLS*/

@@ -3,12 +3,11 @@ package fr.uge.splendor.phase1.controller;
 import fr.uge.splendor.phase1.model.card.CardsP1;
 import fr.uge.splendor.phase1.model.card.DevCardsP1;
 import fr.uge.splendor.phase1.model.player.PlayerP1;
+import fr.uge.splendor.phase1.model.token.ColorP1;
 
 import java.util.List;
 
 public class ControllerP1 {
-    private List<CardsP1> cards = DevCardsP1.listDevCards();
-
 
     public static int startPlayer(List<PlayerP1> playerP1List) {
         var p1 = playerP1List.get(0);
@@ -29,8 +28,14 @@ public class ControllerP1 {
         return false;
     }
 
-
-    public static void pickToken(){
-
+    public static boolean isValidEnum(String input) {
+        for (ColorP1 color : ColorP1.values()) {
+            if (color.name().equals(input.toUpperCase())) {
+                return true; // Si la valeur existe dans l'énum, on retourne true
+            }
+        }
+        return false; // Sinon, retourne false
     }
+
+
 }

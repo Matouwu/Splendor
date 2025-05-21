@@ -55,20 +55,23 @@ public class ApplicationP1 {
                       Let the game begin ! :D
                 
                 Pour choisir votre actions vous devez soit rentrer a1, a2 ou bien a3 pour l'action choisi :).
-                Ah HA! *pointage de doigt* VOUS AVEZ OUBLIÉ LES ACTIONS! je le savais !
-                """);
+                Ah HA! *pointage de doigt* VOUS AVEZ OUBLIÉ LES ACTIONS! je le savais !""");
 
         GameControllerP1 game = new GameControllerP1(listPlayers, startPlayer);
-
-        while (checkGameEnd(listPlayers)){
+        while (!checkGameEnd(listPlayers)){
             System.out.println("""
                 Rentrer a1 pour prendre 3 pierres differentes,
                         a2 pour prendre 2 pierres identiques,
-                        a3 pour acheter 1 carte.
-                """);
-            var command = scan.nextLine();
+                        a3 pour acheter 1 carte.""");
+
+            var command = scan.next();
+
             while(!command.equals("a1") && !command.equals("a2") && !command.equals("a3")){
-                command = scan.nextLine();
+                System.out.println("""
+                        (Action invalide!)
+                        ATTENTION A TOI, JE SAIS OU TU HABITE !
+                        Donc rentre soit a1, a2 ou bien a3 pour l'action choisi :""");
+                command = scan.next();
             }
             game.oneRound(command);
         }
