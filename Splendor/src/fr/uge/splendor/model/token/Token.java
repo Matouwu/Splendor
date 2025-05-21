@@ -20,5 +20,4 @@ public record Token(Color color, int number) {
         return color.toString() + " :"+ number;
     }
 
-
 }

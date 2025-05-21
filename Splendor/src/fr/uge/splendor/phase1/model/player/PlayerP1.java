@@ -1,7 +1,7 @@
 package fr.uge.splendor.phase1.model.player;
 
-import fr.uge.splendor.model.token.Color;
-import fr.uge.splendor.model.token.Token;
+import fr.uge.splendor.phase1.model.token.ColorP1;
+import fr.uge.splendor.phase1.model.token.TokenP1;
 import fr.uge.splendor.phase1.model.card.CardsP1;
 
 import java.util.*;
@@ -12,7 +12,7 @@ public class PlayerP1 {
     private final int age;
     private int prestigePoints;
     private final List<CardsP1> cardsList;
-    private List<Token> tokens;
+    private List<TokenP1> tokens;
 
     public PlayerP1(String name, int age) {
         Objects.requireNonNull(name);
@@ -28,6 +28,7 @@ public class PlayerP1 {
     public String getName() {
         return name;
     }
+    public int getAge() {return age;}
     public int getPrestigePoints() {
         return prestigePoints;
     }
@@ -44,7 +45,7 @@ public class PlayerP1 {
                 "]\n";
     }
 
-    public void setTokens(List<Token> tokens) {
+    public void setTokens(List<TokenP1> tokens) {
         this.tokens = tokens;
     }
 
@@ -54,13 +55,13 @@ public class PlayerP1 {
         prestigePoints += cardsP1.getPrestigePoints();
     }
 
-    public int getTokenQuantity(List<Token> tokenList) {
+    public int getTokenQuantity(List<TokenP1> tokenList) {
         return tokenList.stream()
-                .mapToInt(Token::number)
+                .mapToInt(TokenP1::number)
                 .sum();
     }
 
-    public void addToken(Map<Color,Integer> tokenMap) {  /* ATTENTIONNNN EN ENTRER UN MAP PLS*/
+    public void addToken(Map<ColorP1,Integer> tokenMap) {  /* ATTENTIONNNN EN ENTRER UN MAP PLS*/
         Objects.requireNonNull(tokenMap);
         if(tokenMap.size() > 3) throw new IllegalArgumentException("tokenList size exceeds 3");
 
@@ -71,32 +72,32 @@ public class PlayerP1 {
             || totalTokens == 2 && tokenMap.size()==1){
             if(getTokenQuantity(tokens)+totalTokens >= 10) throw new IllegalArgumentException("tokenList size exceeds 10");
 
-            var newMap = new HashMap<Color,Integer>(tokenMap);
+            var newMap = new HashMap<ColorP1,Integer>(tokenMap);
             for(var token: tokens){
-                newMap.put(token.color(),newMap.getOrDefault(token.color(),0)+token.number());
+                newMap.put(token.colorP1(),newMap.getOrDefault(token.colorP1(),0)+token.number());
             };
 
-            var newList = new ArrayList<Token>();
+            var newList = new ArrayList<TokenP1>();
             for(var obj: newMap.entrySet()){
-                newList.add(new Token(obj.getKey(),obj.getValue()));
+                newList.add(new TokenP1(obj.getKey(),obj.getValue()));
             }
             setTokens(newList);
         }
     }
 
-    public boolean removeToken(List<Token> tokenRequire) {
+    public boolean removeToken(List<TokenP1> tokenRequire) {
         Objects.requireNonNull(tokenRequire);
 
         var newMap = tokens.stream()
-                .collect(Collectors.toMap(Token::color, Token::number));
+                .collect(Collectors.toMap(TokenP1::colorP1, TokenP1::number));
         for(var tok: tokenRequire){
-            newMap.put(tok.color(),newMap.getOrDefault(tok.color(),0)-tok.number());
+            newMap.put(tok.colorP1(),newMap.getOrDefault(tok.colorP1(),0)-tok.number());
         };
 
         if(newMap.values().stream().allMatch(v -> v>0)){
-            var newList = new ArrayList<Token>();
+            var newList = new ArrayList<TokenP1>();
             for(var obj: newMap.entrySet()){
-                newList.add(new Token(obj.getKey(),obj.getValue()));
+                newList.add(new TokenP1(obj.getKey(),obj.getValue()));
             }
             setTokens(newList);
             return true;

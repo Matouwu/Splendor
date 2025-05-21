@@ -1,19 +1,15 @@
 package fr.uge.splendor.controller;
 
 import fr.uge.splendor.model.card.Cards;
-import fr.uge.splendor.model.card.DevCard;
 import fr.uge.splendor.model.card.NobleCard;
 import fr.uge.splendor.model.player.Player;
 import fr.uge.splendor.model.token.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class GameController {
     private final int playersNumber;
@@ -98,7 +94,7 @@ public class GameController {
     	 currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
     
-   
+ /*
     public boolean reserveCard(Player player, DevCard card) {
         Objects.requireNonNull(player); 
         Objects.requireNonNull(card);
@@ -113,9 +109,9 @@ public class GameController {
         return true;
     }
     
-   /* public boolean buyCard() {
+   *//* public boolean buyCard() {
     	
-    }*/
+    }*//*
     
     
     
@@ -172,6 +168,6 @@ public class GameController {
 
     	System.out.println("Initialisation de la partie");
     	
-    }
+    }*/
 
 }
