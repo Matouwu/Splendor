@@ -1,10 +1,8 @@
-package fr.uge.splendor.phase1.player;
+package fr.uge.splendor.phase1.model.player;
 
-import fr.uge.splendor.model.card.Cards;
-import fr.uge.splendor.model.card.DevCard;
 import fr.uge.splendor.model.token.Color;
 import fr.uge.splendor.model.token.Token;
-import fr.uge.splendor.phase1.model.CardP1;
+import fr.uge.splendor.phase1.model.card.CardP1;
 
 import java.util.*;
 
@@ -12,8 +10,8 @@ public class PlayerP1 {
     private final String name;
     private final int age;
     private int prestigePoints;
-    private final List<CardP1> cardsList;
-    private final List<Token> tokens;
+    private List<CardP1> cardsList;
+    private List<Token> tokens;
 
     public PlayerP1(String name, int age) {
         Objects.requireNonNull(name);
@@ -35,12 +33,12 @@ public class PlayerP1 {
                 "]\n";
     }
 
-    public int getTokenQuantity(List<Token> tokenList) {
-        return tokenList.stream()
-                .mapToInt(Token::number)
-                .sum();
+    public void setCardsList(List<CardP1> cardsList) {
+        this.cardsList = cardsList;
     }
-
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
 
     public void addCardsList(CardP1 cardP1) {
         Objects.requireNonNull(cardP1);
@@ -48,22 +46,34 @@ public class PlayerP1 {
         prestigePoints += cardP1.getPrestigePoints();
     }
 
-    public void addToken(List<Token> tokenList) {
-        Objects.requireNonNull(tokenList);
-        if(tokenList.size() > 3) throw new IllegalArgumentException("tokenList size exceeds 3");
+    public int getTokenQuantity(List<Token> tokenList) {
+        return tokenList.stream()
+                .mapToInt(Token::number)
+                .sum();
+    }
 
-        var totalTokens = getTokenQuantity(tokenList);
-        if(totalTokens == 3 && tokenList.size()==3
-            || totalTokens == 2 && tokenList.size()==1){
+    public void addToken(Map<Color,Integer> tokenMap) {  /* ATTENTIONNNN EN ENTRER UN MAP PLS*/
+        Objects.requireNonNull(tokenMap);
+        if(tokenMap.size() > 3) throw new IllegalArgumentException("tokenList size exceeds 3");
+
+        var totalTokens = tokenMap.values().stream()
+                .mapToInt(i -> i)
+                .sum();
+        if(totalTokens == 3 && tokenMap.size()==3
+            || totalTokens == 2 && tokenMap.size()==1){
             if(getTokenQuantity(tokens)+totalTokens >= 10) throw new IllegalArgumentException("tokenList size exceeds 10");
-            for(var token : tokenList) {
-                tokens.contains(token);
+
+            var newMap = new HashMap<Color,Integer>(tokenMap);
+            for(var token: tokens){
+                newMap.put(token.color(),newMap.getOrDefault(token.color(),0)+token.number());
+            };
+
+            var newList = new ArrayList<Token>();
+            for(var obj: newMap.entrySet()){
+                newList.add(new Token(obj.getKey(),obj.getValue()));
             }
+            this.tokens = newList;
         }
-        if(totalTokens >= 10) {
-            throw new IllegalStateException("Le joueur ne peut pas avoir plus de " + 10);
-        }
-        tokens.put(color, tokens.getOrDefault(color,0) + 1);
     }
 
     public boolean removeToken(Color color) {
@@ -79,11 +89,6 @@ public class PlayerP1 {
     }
 
 
-    public int tokenCount(Color color) {
-        Objects.requireNonNull(color);
-
-        return tokens.getOrDefault(color,0);
-    }
 
 
 

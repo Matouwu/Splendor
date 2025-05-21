@@ -1,6 +1,6 @@
 package fr.uge.splendor.phase1.application;
 
-import fr.uge.splendor.phase1.player.PlayerP1;
+import fr.uge.splendor.phase1.model.player.PlayerP1;
 import java.util.Scanner;
 
 public class ApplicationP1 {

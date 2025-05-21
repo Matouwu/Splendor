@@ -1,6 +1,5 @@
-package fr.uge.splendor.phase1.model;
+package fr.uge.splendor.phase1.model.card;
 
-import fr.uge.splendor.model.token.Color;
 import fr.uge.splendor.model.token.Token;
 
 import java.util.*;
