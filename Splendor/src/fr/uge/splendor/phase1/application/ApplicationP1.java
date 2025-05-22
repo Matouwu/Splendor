@@ -79,11 +79,9 @@ public class ApplicationP1 {
             gameStatus = checkGameEnd(listPlayers);
         }
 
-        System.out.println("""
-                     GAGNÉÉÉÉÉÉEEEEE !
-               Félicitation à toi""" + listPlayers.get(gameStatus).getName()+ """
-               tu a bat
-               """);
+        System.out.println("       GAGNÉÉÉÉÉÉEEEEE !\nFélicitation à toi " + listPlayers.get(gameStatus).getName()+
+               ", tu a batu " + listPlayers.get(gameStatus).getName() + "" +
+                "");
 
 
         scan.close();

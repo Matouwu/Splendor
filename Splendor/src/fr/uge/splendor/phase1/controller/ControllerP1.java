@@ -1,7 +1,5 @@
 package fr.uge.splendor.phase1.controller;
 
-import fr.uge.splendor.phase1.model.card.CardsP1;
-import fr.uge.splendor.phase1.model.card.DevCardsP1;
 import fr.uge.splendor.phase1.model.player.PlayerP1;
 import fr.uge.splendor.phase1.model.token.ColorP1;
 

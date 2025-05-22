@@ -79,15 +79,30 @@ public class GameControllerP1 {
             return color;
     }
 
-    private boolean canBuy(PlayerP1 player, List<TokenP1> tokens) {
-        Map<ColorP1, Integer> playerTokens = player.getTokens().stream()
-                .collect(Collectors.toMap(TokenP1::colorP1, TokenP1::number));
+    private boolean buy(PlayerP1 player, CardsP1 chosenCard) {
+        Objects.requireNonNull(player);
 
-        for (TokenP1 token : tokens) {
+        Map<ColorP1, Integer> playerTokens = player.getTokens()
+                .stream()
+                .collect(Collectors.toMap(TokenP1::colorP1, TokenP1::number));
+        for (TokenP1 token : chosenCard.getTokenRequire()) {
             var tokenPerColor = playerTokens.getOrDefault(token.colorP1(), 0);
             if (tokenPerColor < token.number()) {
+                System.out.println("Vous ne disposez pas assez de jetons pour acheter la carte");
                 return false;
             }
+        }
+        if (player.removeToken(chosenCard.getTokenRequire())){
+            player.addCardsList(chosenCard);
+            cardPickaxe.remove(chosenCard);
+            System.out.println("Carte achetée avec succès !");
+            if (!devCards.isEmpty()) {
+                setCardPickaxe();
+            } else {
+                System.out.println("Il n'y a plus de carte dans la pioche.");
+            }
+        } else {
+            System.out.println("Erreur : les jetons n'ont pas pu être retirés.");
         }
         return true;
     }
@@ -142,14 +157,12 @@ public class GameControllerP1 {
     public void action3() {
         var currentPlayer = players.get(currentPlayerIndex);
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Tu peux acheter des cartes si tu le souhaites, voici les cartes à l'achat :");
         int i = 1;
         for (CardsP1 card : cardPickaxe) {
             System.out.println(i + " -> " + card);
             i++;
         }
-
         System.out.println("Quelle carte voulez-vous acheter ? (Entrez le numéro de 1 à " + cardPickaxe.size() + ")");
         var choice = scanner.nextInt();
         while (choice < 1 || choice > cardPickaxe.size()) {
@@ -162,27 +175,13 @@ public class GameControllerP1 {
 
         var chosenCard = cardPickaxe.get(choice - 1);
         var cardCost = chosenCard.getTokenRequire();
-
         System.out.println("Coût de la carte : " + cardCost);
         System.out.println("Jetons du joueur : " + currentPlayer.getTokens());
 
-        if (canBuy(currentPlayer, cardCost)) {
-            var removed = currentPlayer.removeToken(cardCost);
-            if (removed) {
-                currentPlayer.addCardsList(chosenCard);
-                cardPickaxe.remove(choice - 1);
-                System.out.println("Carte achetée avec succès !");
-                if (!devCards.isEmpty()) {
-                    cardPickaxe.add(devCards.removeFirst());
-                }
-            } else {
-                System.out.println("Erreur : les jetons n'ont pas pu être retirés.");
-            }
-        } else {
-            System.out.println("Vous n'avez pas assez de jetons pour acheter cette carte.");
-        }
+        buy(currentPlayer, chosenCard);
+        System.out.println(currentPlayer);
+        nextPlayer();
     }
-
 
 
     public void oneRound(String action) {
