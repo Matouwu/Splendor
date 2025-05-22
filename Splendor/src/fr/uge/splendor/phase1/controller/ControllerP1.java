@@ -19,22 +19,22 @@ public class ControllerP1 {
         return 1;
     }
 
-    public static boolean checkGameEnd(List<PlayerP1> playerP1List) {
-        for(PlayerP1 p: playerP1List) {
-            if(p.getPrestigePoints() >= 15) {
+    public static boolean isValidEnum(String input) {
+        for (ColorP1 color : ColorP1.values()) {
+            if (color.name().equals(input.toUpperCase())) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean isValidEnum(String input) {
-        for (ColorP1 color : ColorP1.values()) {
-            if (color.name().equals(input.toUpperCase())) {
-                return true; // Si la valeur existe dans l'énum, on retourne true
+    public static int checkGameEnd(List<PlayerP1> playerP1List) {
+        for(PlayerP1 p: playerP1List) {
+            if(p.getPrestigePoints() >= 15) {
+                return playerP1List.indexOf(p);
             }
         }
-        return false; // Sinon, retourne false
+        return -1;
     }
 
 

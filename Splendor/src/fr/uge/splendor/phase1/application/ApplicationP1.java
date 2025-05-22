@@ -26,17 +26,17 @@ public class ApplicationP1 {
     Prêt à devenir le marchand le plus prestigieux de l'époque ?
     
     Pour cette première phase de jeu, j'aurais besoin de 2 joueurs :
-    #============[ Joueur 1 ]============#
-    #Rentrer un surnom :""");
+    #============ [ Joueur 1 ] ============#
+    Rentrer un surnom :""");
         Scanner scan = new Scanner(System.in);
         String name = scan.next();
-        System.out.println("#Rentrer une âge :");
+        System.out.println("Rentrer une âge :");
         int age = scan.nextInt();
         PlayerP1 p1 = new PlayerP1(name, age);
-        System.out.println("#===>[" + p1.getName() + " " + p1.getAge() + "ans]\n");
-        System.out.println("#============[ Joueur 2 ]============#\n Rentrer un surnom :");
+        System.out.println("#===>[" + p1.getName() + " " + p1.getAge() + "ans]");
+        System.out.println("#============ [ Joueur 2 ] ============#\nRentrer un surnom :");
         String name2 = scan.next();
-        System.out.println("#Rentrer une âge :");
+        System.out.println("Rentrer une âge :");
         int age2 = scan.nextInt();
         PlayerP1 p2 = new PlayerP1(name2, age2);
         System.out.println("#===>[" + p2.getName() + " " + p2.getAge() + "ans]");
@@ -49,7 +49,7 @@ public class ApplicationP1 {
         var startPlayer = startPlayer(listPlayers);
         System.out.println(listPlayers.get(startPlayer).getName());
         System.out.println("""
-                Eh ouai, parce que c'est le plus petit HAHAHAHHAHHAHA!!!!!
+                Eh ouai, parce que c'est le plus petit HAHAHAHHAHHAHA (ou juste que c'est le meilleur °*°)!!!!!
                 
                 Hum hum,
                       Let the game begin ! :D
@@ -58,9 +58,11 @@ public class ApplicationP1 {
                 Ah HA! *pointage de doigt* VOUS AVEZ OUBLIÉ LES ACTIONS! je le savais !""");
 
         GameControllerP1 game = new GameControllerP1(listPlayers, startPlayer);
-        while (!checkGameEnd(listPlayers)){
+
+        var gameStatus = checkGameEnd(listPlayers);
+        while (gameStatus == -1){
             System.out.println("""
-                Rentrer a1 pour prendre 3 pierres differentes,
+                Rentrer a1 pour prendre 3 pierres différentes,
                         a2 pour prendre 2 pierres identiques,
                         a3 pour acheter 1 carte.""");
 
@@ -74,8 +76,14 @@ public class ApplicationP1 {
                 command = scan.next();
             }
             game.oneRound(command);
+            gameStatus = checkGameEnd(listPlayers);
         }
 
+        System.out.println("""
+                     GAGNÉÉÉÉÉÉEEEEE !
+               Félicitation à toi""" + listPlayers.get(gameStatus).getName()+ """
+               tu a bat
+               """);
 
 
         scan.close();
