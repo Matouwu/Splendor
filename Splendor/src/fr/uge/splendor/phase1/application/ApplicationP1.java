@@ -80,9 +80,9 @@ public class ApplicationP1 {
         }
 
         System.out.println("       GAGNÉÉÉÉÉÉEEEEE !\nFélicitation à toi " + listPlayers.get(gameStatus).getName()+
-               ", tu a batu " + listPlayers.get(gameStatus).getName() + "" +
-                "");
-
+               ", tu a batu " + listPlayers.get(gameStatus).getName() + """
+                        Je suis fière de toi, tu est maintenant le le marchand le plus prestigieux de l'époque HAHAHAHAHAHHA !
+                        """);
 
         scan.close();
     }
