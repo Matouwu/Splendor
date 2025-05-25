@@ -1,8 +1,8 @@
 package fr.uge.splendor.phase1.model.player;
 
-import fr.uge.splendor.phase1.model.token.ColorP1;
-import fr.uge.splendor.phase1.model.token.TokenP1;
-import fr.uge.splendor.phase1.model.card.CardsP1;
+import fr.uge.splendor.phase1.model.item.token.ColorP1;
+import fr.uge.splendor.phase1.model.item.token.TokenP1;
+import fr.uge.splendor.phase1.model.item.card.CardsP1;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -102,10 +102,4 @@ public class PlayerP1 {
         }
         return false;
     }
-
-
-
-
-
-
 }

@@ -1,4 +1,4 @@
-package fr.uge.splendor.phase1.model.token;
+package fr.uge.splendor.phase1.model.item.token;
 
 import java.util.Objects;
 
@@ -19,6 +19,5 @@ public record TokenP1(ColorP1 colorP1, int number) {
     public String toString() {
         return colorP1.toString() + " :"+ number;
     }
-
 
 }

@@ -1,11 +1,10 @@
-package fr.uge.splendor.phase1.model.card;
+package fr.uge.splendor.phase1.model.item.card;
 
-import fr.uge.splendor.phase1.model.token.TokenP1;
+import fr.uge.splendor.phase1.model.item.token.TokenP1;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static fr.uge.splendor.phase1.model.token.ColorP1.*;
+import static fr.uge.splendor.phase1.model.item.token.ColorP1.*;
 
 public enum DevCardsP1 {
     GREEN_1(List.of(new TokenP1(GREEN,3))),
@@ -53,16 +52,8 @@ public enum DevCardsP1 {
     BLACK_7(List.of(new TokenP1(BLACK,3))),
     BLACK_8(List.of(new TokenP1(BLACK,3)));
 
-    private List<TokenP1> tokenRequire = new ArrayList<>();
+    public final List<TokenP1> tokenRequire;
     DevCardsP1(List<TokenP1> tokenRequire) {
         this.tokenRequire= List.copyOf(tokenRequire);
-    }
-
-    public static List<CardsP1> listDevCards() {
-        List<CardsP1> result = new ArrayList<>();
-        for (DevCardsP1 card : DevCardsP1.values()) {
-            result.add(new CardsP1(card.tokenRequire));
-        }
-        return result;
     }
 }

@@ -1,10 +1,9 @@
 package fr.uge.splendor.controller;
 
-import fr.uge.splendor.model.card.Cards;
 import fr.uge.splendor.model.card.NobleCard;
 import fr.uge.splendor.model.player.Player;
 import fr.uge.splendor.model.token.Color;
-import fr.uge.splendor.phase1.model.card.CardsP1;
+import fr.uge.splendor.phase1.model.item.card.CardsP1;
 
 import java.util.ArrayList;
 import java.util.HashMap;

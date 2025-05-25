@@ -1,7 +1,7 @@
 package fr.uge.splendor.phase1.controller;
 
 import fr.uge.splendor.phase1.model.player.PlayerP1;
-import fr.uge.splendor.phase1.model.token.ColorP1;
+import fr.uge.splendor.phase1.model.item.token.ColorP1;
 
 import java.util.List;
 
