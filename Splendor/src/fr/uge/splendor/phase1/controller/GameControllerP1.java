@@ -58,40 +58,30 @@ public class GameControllerP1 {
 
     public ColorP1 getInputColor(int a) {
         Scanner sc = new Scanner(System.in);
-                    var input = sc.nextLine();
-            while(!isValidEnum(input)){
-                System.out.println("""
-                    (Couleur invalide!)
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
-                    Tu dois rentrer soit green, blue, red, white, black !""");
-                input = sc.nextLine();
-            }
-            ColorP1 color = ColorP1.valueOf(input.toUpperCase());
-            while(a==1 && tokenPickaxe.get(color) < 1 ||
-            a==2 && tokenPickaxe.get(color) < 2) {
-                System.out.println("""
-                    (Couleur indisponible!)
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
-                    Tu dois rentrer une couleur disponible entre :""" + tokenPickaxe);
-                input = sc.nextLine();
-                color = ColorP1.valueOf(input.toUpperCase());
-            }
-            return color;
+        var input = sc.nextLine();
+        while(!isValidEnum(input)){
+            System.out.println("""
+                (Couleur invalide!)
+                ATTENTION A TOI, JE SAIS OU TU HABITE !
+                Tu dois rentrer soit green, blue, red, white, black !""");
+            input = sc.nextLine();
+        }
+        ColorP1 color = ColorP1.valueOf(input.toUpperCase());
+        while(a==1 && tokenPickaxe.get(color) < 1 ||
+        a==2 && tokenPickaxe.get(color) < 2) {
+            System.out.println("""
+                (Couleur indisponible!)
+                ATTENTION A TOI, JE SAIS OU TU HABITE !
+                Tu dois rentrer une couleur disponible entre :""" + tokenPickaxe);
+            input = sc.nextLine();
+            color = ColorP1.valueOf(input.toUpperCase());
+        }
+        sc.close();
+        return color;
     }
 
-    private boolean buy(PlayerP1 player, CardsP1 chosenCard) {
+    private void buy(PlayerP1 player, CardsP1 chosenCard) {
         Objects.requireNonNull(player);
-
-        Map<ColorP1, Integer> playerTokens = player.getTokens()
-                .stream()
-                .collect(Collectors.toMap(TokenP1::colorP1, TokenP1::number));
-        for (TokenP1 token : chosenCard.getTokenRequire()) {
-            var tokenPerColor = playerTokens.getOrDefault(token.colorP1(), 0);
-            if (tokenPerColor < token.number()) {
-                System.out.println("Vous ne disposez pas assez de jetons pour acheter la carte");
-                return false;
-            }
-        }
         if (player.removeToken(chosenCard.getTokenRequire())){
             player.addCardsList(chosenCard);
             cardPickaxe.remove(chosenCard);
@@ -102,9 +92,9 @@ public class GameControllerP1 {
                 System.out.println("Il n'y a plus de carte dans la pioche.");
             }
         } else {
-            System.out.println("Erreur : les jetons n'ont pas pu être retirés.");
+            System.out.println("Erreur : les jetons n'ont pas pu être retirés." +
+                    "Vous ne disposez pas assez de jetons pour acheter la carte\n");
         }
-        return true;
     }
 
 
@@ -181,6 +171,7 @@ public class GameControllerP1 {
         buy(currentPlayer, chosenCard);
         System.out.println(currentPlayer);
         nextPlayer();
+        scanner.close();
     }
 
 
