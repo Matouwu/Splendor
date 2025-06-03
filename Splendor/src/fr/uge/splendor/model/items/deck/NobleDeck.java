@@ -34,10 +34,6 @@ public class NobleDeck {
 	    }
 
 	    @Override
-	    public Color tokenReduction() {
-	        return null;
-	    }
-	    @Override
 	    public int level() {
 	        return 0;
 	    }

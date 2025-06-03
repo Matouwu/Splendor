@@ -1,8 +1,9 @@
 package fr.uge.splendor.model.items.card;
 
-import fr.uge.splendor.model.items.Color;
 
 import java.util.*;
+
+import fr.uge.splendor.model.items.Color;
 
 public enum Noble {
     CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(GREEN, 3, BLUE, 3, RED, 3), 3),
@@ -14,7 +15,7 @@ public enum Noble {
     CHARLES_V ("Charles V", Map.of(BLACK, 3, RED, 3, WHITE, 3), 3),
     FRANCIS_I_OF_FRANCE ("Francis I Of France", Map.of(BLACK, 3, RED, 3, GREEN, 3), 3),
     HENRY_VII ("Henry VII", Map.of(BLACK, 4, RED, 4), 3),
-    MARY_STUART ("Mary Stuart", Map.of(RED, 4, GREEN, 4), 3);
+    MARY_STUART ("Mary Stuart", Map.of(RED, 4, GREEN, 4), 3), GREEN;
 
     private final String name;
     private final Map<Color, Integer> tokenRequire = new HashMap<>();
@@ -33,7 +34,7 @@ public enum Noble {
     public List<NobleCard> listNobleCards() {
         List<NobleCard> nobleCards = new ArrayList<>();
         for (Noble noble : Noble.values()) {
-            nobleCards.add(new NobleCard(noble.name,noble.tokenRequire,noble.prestigePoints));
+            nobleCards.add(new NobleCard(noble.name, noble.prestigePoints, noble.tokenRequire));
         }
         return List.copyOf(nobleCards);
     }

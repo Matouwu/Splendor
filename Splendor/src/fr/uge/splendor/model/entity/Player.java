@@ -1,7 +1,7 @@
 package fr.uge.splendor.model.entity;
 
-import fr.uge.splendor.model.items.card.Card;
 import fr.uge.splendor.model.items.Color;
+import fr.uge.splendor.model.items.card.Card;
 import fr.uge.splendor.model.items.card.DevCard;
 
 import java.util.*;
