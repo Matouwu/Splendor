@@ -5,15 +5,19 @@ import fr.uge.splendor.model.items.card.DevCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DevDeck {
-    private List<DevCard> devDeck = new ArrayList<>();
-
+    private Map<Integer, DevCard> devDeck = new HashMap<>();
     @Override
     public String toString() {
-        return "DevDeck : [level= " + level + "; prestigePoints= " + prestigePoints + "; tokenRequire= " + tokenRequire + "; tokenReduction= " + tokenReduction + "]";
+        return "DevDeck: {" + devDeck.toString() + "}";
     }
+
+
+
+
 
     public boolean isEmpty() {
         return devDeck.isEmpty();
