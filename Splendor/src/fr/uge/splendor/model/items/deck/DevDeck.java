@@ -1,4 +1,6 @@
-package fr.uge.splendor.model.items;
+package fr.uge.splendor.model.items.deck;
+
+import fr.uge.splendor.model.items.Color;
 
 public class DevDeck {
 	
