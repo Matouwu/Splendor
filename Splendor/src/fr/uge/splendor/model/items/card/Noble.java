@@ -33,7 +33,7 @@ public enum Noble {
     public List<NobleCard> listNobleCards() {
         List<NobleCard> nobleCards = new ArrayList<>();
         for (Noble noble : Noble.values()) {
-            nobleCards.add(new NobleCard(noble.name,noble.tokenRequire,noble.prestigePoints));
+            nobleCards.add(new NobleCard(noble.name, noble.prestigePoints, noble.tokenRequire));
         }
         return List.copyOf(nobleCards);
     }
