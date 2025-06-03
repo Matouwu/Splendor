@@ -7,14 +7,11 @@ import java.util.Map;
 
 import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.Token;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class DevDeck {
 	
-	private Map<Color, Integer> tokenRequire = new HashMap<>();
+	private Map<Color, Integer> tokenRequire;
     private final Color tokenReduction;
     private final int prestigePoints;
     private final int level;
@@ -29,27 +26,9 @@ public class DevDeck {
         this.tokenRequire = tokenRequire;
         this.tokenReduction = tokenReduction;
     }
-
-    public Map<Color, Integer> tokenRequire() {
-        return tokenRequire;
-    }
-
-    public Color tokenReduction() {
-        return tokenReduction;
-    }
-
-    public int prestigePoints() {
-        return prestigePoints;
-    }
-    
-
-    public int level() {
-        return level;
-    }
     
     private static Map<Color, Integer> convertTokenListToCosts(List<Token> tokens) {
         Map<Color, Integer> costs = new HashMap<>();
-        
         for (Color color : Color.values()) {
             costs.put(color, 0);
         }
@@ -59,12 +38,11 @@ public class DevDeck {
             var quantity = token.number();
             costs.put(color, costs.get(color) + quantity);
         }
-        
         return costs;
     }
     
     
-    public static List<Token> convertCostsToTokenList(Map<Color, Integer> costs) {
+/*    public static List<Token> convertCostsToTokenList(Map<Color, Integer> costs) {
         List<Token> tokens = new ArrayList<>();
         
         for (Map.Entry<Color, Integer> entry : costs.entrySet()) {
@@ -74,7 +52,7 @@ public class DevDeck {
         }
         
         return tokens;
-    }
+    }*/
     
     
     public boolean canBePurchasedBy(Map<Color, Integer> playerTokens, Map<Color, Integer> costs) {
