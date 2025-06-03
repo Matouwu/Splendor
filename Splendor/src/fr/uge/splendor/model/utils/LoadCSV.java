@@ -25,7 +25,7 @@ public class LoadCSV {
 	    }
 	    
 	    // Lecture du fichier CSV 
-	    InputStream inputStream = DevCard.class.getResourceAsStream("/Card-dev.csv");
+	    InputStream inputStream = DevCard.class.getResourceAsStream("/cards-dev.csv");
 	    if (inputStream == null) {
 	        throw new IOException("Fichier splendor_Card.csv non trouvé dans les resources");
 	    }
