@@ -1,5 +1,7 @@
 package fr.uge.splendor.model.items;
 
+import java.util.Objects;
+
 public record Token(Color color, int number) {
 	
 	 public Token {

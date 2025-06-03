@@ -1,5 +1,9 @@
 package fr.uge.splendor.model.items.deck;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import fr.uge.splendor.model.items.Color;
 
 public class NobleDeck {
@@ -9,6 +13,7 @@ public class NobleDeck {
 	    private final int prestigePoints;
 
 	    public NobleCard(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
+	    	
 	        Objects.requireNonNull(name);
 	        Objects.requireNonNull(tokenRequire);
 	        if(prestigePoints < 0) throw new IllegalArgumentException();

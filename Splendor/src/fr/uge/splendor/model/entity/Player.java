@@ -7,6 +7,7 @@ import fr.uge.splendor.model.items.card.DevCard;
 import java.util.*;
 
 public class Player {
+	
     private final String name;
     private final int age;
     private final int prestigePoints;

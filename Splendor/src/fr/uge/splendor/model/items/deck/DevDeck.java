@@ -1,5 +1,8 @@
 package fr.uge.splendor.model.items.deck;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.uge.splendor.model.items.Color;
 
 public class DevDeck {
