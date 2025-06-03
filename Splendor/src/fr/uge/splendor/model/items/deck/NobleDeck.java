@@ -23,19 +23,13 @@ public class NobleDeck {
 	        this.prestigePoints = prestigePoints;
 	    }
 
-	    @Override
 	    public Map<Color, Integer> tokenRequire() {
 	        return tokenRequire;
 	    }
 
-	    @Override
 	    public int prestigePoints() {
+	    	
 	        return prestigePoints;
-	    }
-
-	    @Override
-	    public int level() {
-	        return 0;
 	    }
 
 	    @Override

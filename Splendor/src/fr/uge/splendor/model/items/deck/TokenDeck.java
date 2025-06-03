@@ -11,14 +11,14 @@ public class TokenDeck {
 	private final HashMap<Color, Integer> tokenDeck = new HashMap<>();
 
     public TokenDeck() {
-        settokenDeck();
+    	setTokenDeck();
     }
     
     public Map<Color, Integer> getTokens(){
-		return new HashMap<>(tokenDeck);
+		return tokenDeck;
     }
 
-    public void settokenDeck() {
+    public void setTokenDeck() {
         tokenDeck.put(Color.GREEN, 4);
         tokenDeck.put(Color.BLUE, 4);
         tokenDeck.put(Color.RED, 4);
@@ -26,12 +26,12 @@ public class TokenDeck {
         tokenDeck.put(Color.BLACK, 4);
     }
 
-    public void addtokenDeck(Color color, int amount) {
+    public void addTokenDeck(Color color, int amount) {
         Objects.requireNonNull(color);
         tokenDeck.put(color, tokenDeck.get(color)+ amount);
     }
     
-    public void removetokenDeck(Color color) {
+    public void removeTokenDeck(Color color) {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
         tokenDeck.put(color, tokenDeck.get(color)-1); 
