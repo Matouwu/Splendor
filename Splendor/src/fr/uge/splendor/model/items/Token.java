@@ -10,13 +10,6 @@ public record Token(Color color, int number) {
 	        if(number < 0) throw new IllegalArgumentException();
 	    }
 
-	    public Color color() {
-	        return color;
-	    }
-	    public int number() {
-	        return number;
-	    }
-
 	    @Override
 	    public String toString() {
 	        return color.toString() + " :"+ number;
