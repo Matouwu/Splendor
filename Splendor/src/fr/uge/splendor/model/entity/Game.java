@@ -8,6 +8,6 @@ import java.util.Map;
 
 public class Game {
     private final Map<Integer, DevDeck> devDeck = new HashMap<>();
-    private final TokenDeck = new TokenDeck();
+    private final TokenDeck tokenDeck = new TokenDeck();
 
 }

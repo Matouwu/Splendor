@@ -26,13 +26,12 @@ public class DevDeck {
         this.tokenRequire = tokenRequire;
         this.tokenReduction = tokenReduction;
     }
-    
+
     private static Map<Color, Integer> convertTokenListToCosts(List<Token> tokens) {
         Map<Color, Integer> costs = new HashMap<>();
         for (Color color : Color.values()) {
             costs.put(color, 0);
         }
-        
         for (Token token : tokens) {
             Color color = token.color();
             var quantity = token.number();
@@ -40,36 +39,32 @@ public class DevDeck {
         }
         return costs;
     }
-    
-    
-/*    public static List<Token> convertCostsToTokenList(Map<Color, Integer> costs) {
+
+    public static List<Token> convertCostsToTokenList(Map<Color, Integer> costs) {
         List<Token> tokens = new ArrayList<>();
-        
         for (Map.Entry<Color, Integer> entry : costs.entrySet()) {
             if (entry.getValue() > 0) {
                 tokens.add(new Token(entry.getKey(), entry.getValue()));
             }
         }
-        
         return tokens;
-    }*/
-    
-    
-    public boolean canBePurchasedBy(Map<Color, Integer> playerTokens, Map<Color, Integer> costs) {
-     
-    		for (Map.Entry<Color, Integer> cost : costs.entrySet()) {
-    		Color color = cost.getKey();
-    		var required = cost.getValue();
-    		var available = playerTokens.getOrDefault(color, 0) + costs.getOrDefault(color, 0);
-
-    		if (available < required) {
-    				return false;
-    			}
-    		}
-    		return true;
     }
-    
-    
+
+    public boolean canBePurchasedBy(Map<Color, Integer> playerTokens, Map<Color, Integer> costs) {
+
+        for (Map.Entry<Color, Integer> cost : costs.entrySet()) {
+            Color color = cost.getKey();
+            var required = cost.getValue();
+            var available = playerTokens.getOrDefault(color, 0) + costs.getOrDefault(color, 0);
+
+            if (available < required) {
+                return false;
+            }
+        }
+        return true ;
+    }
+
+
     @Override
     public String toString() {
         return "DevDeck : [level= " + level + "; prestigePoints= " + prestigePoints + "; tokenRequire= " + tokenRequire + "; tokenReduction= " + tokenReduction + "]";
