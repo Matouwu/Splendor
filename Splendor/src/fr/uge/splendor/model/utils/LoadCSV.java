@@ -14,25 +14,27 @@ import fr.uge.splendor.model.items.Token;
 import fr.uge.splendor.model.items.card.Card;
 import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
+import fr.uge.splendor.model.items.deck.TokenDeck;
 
 public class LoadCSV {
 	
 	public static Map<Integer, List<Card>> loadCardFromCSV() throws IOException {
+		
 	    Map<Integer, List<  Card>> CardByLevel = new HashMap<>();
 	    
-	    // Initialiser les listes pour chaque niveau
+	   
 	    for (int i = 1; i <= 3; i++) {
+	    	
 	        CardByLevel.put(i, new ArrayList<>());
 	    }
 	    
-	    // Lecture du fichier CSV 
 	    InputStream inputStream = DevCard.class.getResourceAsStream("/cards-dev.csv"); 
 	    if (inputStream == null) {
-	        throw new IOException("Fichier splendor_Card.csv non trouvé dans les resources");
+	        throw new IOException("Fichier cards-dev.csv non trouvé dans les resources");
 	    }
 	    
 	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-	        String line = reader.readLine(); // Ignorer l'en-tête du fichier csv
+	        String line = reader.readLine(); 
 	        
 	        while ((line = reader.readLine()) != null) {
 	            line = line.trim();
@@ -50,7 +52,7 @@ public class LoadCSV {
 	    return CardByLevel;
 	}
 
-	private static DevDeck parseCardFromCSVLine(String csvLine) {
+	private static DevCard parseCardFromCSVLine(String csvLine) {
 	    try {
 	        String[] parts = csvLine.split(",");
 	        if (parts.length < 8) {
@@ -58,11 +60,13 @@ public class LoadCSV {
 	            return null;
 	        }
 	        
-	        int level = Integer.parseInt(parts[0].trim());
-	        Color gemColor = parseColor(parts[1].trim());
-	        int prestige = Integer.parseInt(parts[2].trim());
+	        var level = Integer.parseInt(parts[0].trim());
+	        Color tokenReduction = parseColor(parts[1].trim());
+	        var prestigePoints = Integer.parseInt(parts[2].trim());
+
 	        
 	        // Coûts en gemmes
+	        
 	        Map<Color, Integer> costs = new HashMap<>();
 	        costs.put(Color.WHITE, Integer.parseInt(parts[3].trim()));
 	        costs.put(Color.BLUE, Integer.parseInt(parts[4].trim()));
@@ -71,12 +75,13 @@ public class LoadCSV {
 	        costs.put(Color.BLACK, Integer.parseInt(parts[7].trim()));
 	        
 	        // Illustration
-	       // String illustration = parts.length > 4 ? parts[4].trim() : "";
+	        String illustration = parts.length > 4 ? parts[4].trim() : "";
 	        
-	        List<Token> tokenRequire = DevDeck.convertCostsToTokenList(costs); 
+	        //Très moche comme code a modifier 
+	        TokenDeck tokenRequire = (TokenDeck) costs.entrySet(); 
 	        
-	        return new DevDeck(tokenRequire, prestige, prestigePoints, level);
-	        
+	        return new DevCard(level, tokenReduction, prestigePoints, tokenRequire,  illustration);
+	       
 	    } catch (IllegalArgumentException e) {
 	        System.err.println("Erreur de parsing pour la ligne: " + csvLine + " - " + e.getMessage());
 	        return null;
@@ -84,13 +89,16 @@ public class LoadCSV {
 	}
 
 	private static Color parseColor(String colorStr) {
+		
 	    return switch (colorStr.toLowerCase()) {
+	    
 	        case "white" -> Color.WHITE;
 	        case "blue" -> Color.BLUE;
 	        case "green" -> Color.GREEN;
 	        case "red" -> Color.RED;
 	        case "black" -> Color.BLACK;
 	        default -> throw new IllegalArgumentException("Couleur inconnue: " + colorStr);
+	        
 	    };
 	}
 
