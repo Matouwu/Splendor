@@ -30,23 +30,6 @@ public class DevDeck {
         this.tokenReduction = tokenReduction;
     }
 
-    public Map<Color, Integer> tokenRequire() {
-        return tokenRequire;
-    }
-
-    public Color tokenReduction() {
-        return tokenReduction;
-    }
-
-    public int prestigePoints() {
-        return prestigePoints;
-    }
-    
-
-    public int level() {
-        return level;
-    }
-    
     private static Map<Color, Integer> convertTokenListToCosts(List<Token> tokens) {
         Map<Color, Integer> costs = new HashMap<>();
         
