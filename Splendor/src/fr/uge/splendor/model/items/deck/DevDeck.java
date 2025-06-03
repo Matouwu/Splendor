@@ -77,19 +77,19 @@ public class DevDeck {
     }
     
     
-    /*public boolean canBePurchasedBy(Map<Color, Integer> playerTokens, Map<Color, Integer> playerGems) {
+    public boolean canBePurchasedBy(Map<Color, Integer> playerTokens, Map<Color, Integer> costs) {
      
     		for (Map.Entry<Color, Integer> cost : costs.entrySet()) {
     		Color color = cost.getKey();
     		var required = cost.getValue();
-    		var available = playerTokens.getOrDefault(color, 0) + playerGems.getOrDefault(color, 0);
+    		var available = playerTokens.getOrDefault(color, 0) + costs.getOrDefault(color, 0);
 
     		if (available < required) {
     				return false;
     			}
     		}
     		return true;
-    }*/
+    }
     
     
     @Override
