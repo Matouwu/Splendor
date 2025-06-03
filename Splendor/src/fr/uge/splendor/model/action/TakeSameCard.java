@@ -5,8 +5,8 @@ import fr.uge.splendor.model.entity.Player;
 
 import java.util.Objects;
 
-public record BuyCard(Player player, Game game) implements Action {
-    public BuyCard {
+public record TakeSameCard(Player player, Game game) implements Action {
+    public TakeSameCard {
         Objects.requireNonNull(player);
         Objects.requireNonNull(game);
     }
