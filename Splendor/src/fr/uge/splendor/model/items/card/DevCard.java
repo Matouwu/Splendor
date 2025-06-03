@@ -1,11 +1,6 @@
 package fr.uge.splendor.model.items.card;
 
 import fr.uge.splendor.model.items.Color;
-import fr.uge.splendor.model.items.Token;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 

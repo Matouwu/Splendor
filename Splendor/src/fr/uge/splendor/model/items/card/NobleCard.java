@@ -13,5 +13,4 @@ public record NobleCard(String name, int prestigePoints, Map<Color, Integer> tok
         Objects.requireNonNull(tokenRequire);
     }
 
-
 }

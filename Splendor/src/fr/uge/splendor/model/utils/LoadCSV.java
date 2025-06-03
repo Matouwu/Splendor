@@ -50,7 +50,7 @@ public class LoadCSV {
 	    return CardByLevel;
 	}
 
-	private static DevCard parseCardFromCSVLine(String csvLine) {
+	private static DevDeck parseCardFromCSVLine(String csvLine) {
 	    try {
 	        String[] parts = csvLine.split(",");
 	        if (parts.length < 8) {
@@ -71,7 +71,7 @@ public class LoadCSV {
 	        costs.put(Color.BLACK, Integer.parseInt(parts[7].trim()));
 	        
 	        // Illustration
-	        String illustration = parts.length > 4 ? parts[4].trim() : "";
+	       // String illustration = parts.length > 4 ? parts[4].trim() : "";
 	        
 	        List<Token> tokenRequire = DevDeck.convertCostsToTokenList(costs); 
 	        

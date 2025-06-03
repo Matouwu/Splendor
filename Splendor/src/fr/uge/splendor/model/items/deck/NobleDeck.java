@@ -12,7 +12,7 @@ public class NobleDeck {
 	    private final Map<Color, Integer> tokenRequire = new HashMap<>();
 	    private final int prestigePoints;
 
-	    public NobleCard(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
+	    public NobleDeck(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
 	    	
 	        Objects.requireNonNull(name);
 	        Objects.requireNonNull(tokenRequire);
