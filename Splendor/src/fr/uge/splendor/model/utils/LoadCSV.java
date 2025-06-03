@@ -16,9 +16,9 @@ import fr.uge.splendor.model.items.deck.TokenDeck;
 
 public class LoadCSV {
 	
-	public static Map<Integer, List<Card>> loadCardFromCSV() throws IOException {
+	public static Map<Integer, List<DevCard>> loadCardFromCSV() throws IOException {
 		
-	    Map<Integer, List<  Card>> CardByLevel = new HashMap<>();
+	    Map<Integer, List<DevCard>> CardByLevel = new HashMap<>();
 	    
 	   
 	    for (int i = 1; i <= 3; i++) {
