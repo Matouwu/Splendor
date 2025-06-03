@@ -1,0 +1,5 @@
+package fr.uge.splendor.model.config;
+
+public class Config {
+
+}
