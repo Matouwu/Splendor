@@ -26,7 +26,7 @@ public class LoadCSV {
 	        CardByLevel.put(i, new ArrayList<>());
 	    }
 	    
-	    InputStream inputStream = DevCard.class.getResourceAsStream("/cards-dev.csv"); 
+	    InputStream inputStream = DevCard.class.getResourceAsStream("utils/cards-dev.csv"); 
 	    if (inputStream == null) {
 	        throw new IOException("Fichier cards-dev.csv non trouvé dans les resources");
 	    }
