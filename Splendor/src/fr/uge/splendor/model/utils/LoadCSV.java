@@ -11,7 +11,6 @@ import java.util.Map;
 
 import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.card.DevCard;
-import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
 
 public class LoadCSV {
