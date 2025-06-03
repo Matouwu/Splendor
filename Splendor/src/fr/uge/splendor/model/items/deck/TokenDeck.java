@@ -34,6 +34,6 @@ public class TokenDeck {
     public void removetokenDeck(Color color) {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
-        tokenDeck.put(color, tokenDeck.get(color)-1);
+        tokenDeck.put(color, tokenDeck.get(color)-1); 
     }
 }

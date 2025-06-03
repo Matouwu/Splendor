@@ -13,6 +13,7 @@ import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.Token;
 import fr.uge.splendor.model.items.card.Card;
 import fr.uge.splendor.model.items.card.DevCard;
+import fr.uge.splendor.model.items.deck.DevDeck;
 
 public class LoadCSV {
 	
@@ -25,7 +26,7 @@ public class LoadCSV {
 	    }
 	    
 	    // Lecture du fichier CSV 
-	    InputStream inputStream = DevCard.class.getResourceAsStream("/cards-dev.csv");
+	    InputStream inputStream = DevCard.class.getResourceAsStream("/cards-dev.csv"); 
 	    if (inputStream == null) {
 	        throw new IOException("Fichier splendor_Card.csv non trouvé dans les resources");
 	    }
@@ -72,9 +73,9 @@ public class LoadCSV {
 	        // Illustration
 	        String illustration = parts.length > 4 ? parts[4].trim() : "";
 	        
-	        List<Token> tokenRequire = DevCard.convertCostsToTokenList(costs); 
+	        List<Token> tokenRequire = DevDeck.convertCostsToTokenList(costs); 
 	        
-	        return new DevCard(tokenRequire, prestige, level, gemColor, costs, illustration);
+	        return new DevDeck(tokenRequire, prestige, prestigePoints, level);
 	        
 	    } catch (IllegalArgumentException e) {
 	        System.err.println("Erreur de parsing pour la ligne: " + csvLine + " - " + e.getMessage());
