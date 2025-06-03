@@ -7,18 +7,18 @@ import java.util.Objects;
 import fr.uge.splendor.model.items.Color;
 
 public class TokenDeck {
-	
-	private final HashMap<Color, Integer> tokenDeck = new HashMap<>();
+	private Map<Color, Integer> tokenDeck = new HashMap<>();
 
-    public TokenDeck() {
-    	setTokenDeck();
-    }
-    
+/*    public TokenDeck(Map<Color, Integer> tokenDeck) {
+        Objects.requireNonNull(tokenDeck);
+        this.tokenDeck = tokenDeck;
+    }*/
+
     public Map<Color, Integer> getTokens(){
 		return tokenDeck;
     }
 
-    public void setTokenDeck() {
+    public void initBoardTokenDeck() {
         tokenDeck.put(Color.GREEN, 4);
         tokenDeck.put(Color.BLUE, 4);
         tokenDeck.put(Color.RED, 4);

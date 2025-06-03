@@ -1,7 +1,6 @@
 package fr.uge.splendor.model.items.card;
 
 import fr.uge.splendor.model.items.Color;
-import fr.uge.splendor.model.items.Token;
 import fr.uge.splendor.model.items.deck.TokenDeck;
 
 import java.util.List;

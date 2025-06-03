@@ -10,4 +10,9 @@ public class Game {
     private final Map<Integer, DevDeck> devDeck = new HashMap<>();
     private final TokenDeck tokenDeck = new TokenDeck();
 
+    public Game(int gameId) {
+
+    }
+
+
 }
