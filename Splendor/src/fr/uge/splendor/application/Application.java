@@ -17,6 +17,6 @@ public class Application {
         deck.addDevCard(c1);
         deck.addDevCard(c2);
 
-        System.out.println(deck);
+        System.out.println(deck.toString());
     }
 }
