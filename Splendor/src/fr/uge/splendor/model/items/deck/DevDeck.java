@@ -3,23 +3,20 @@ package fr.uge.splendor.model.items.deck;
 
 import fr.uge.splendor.model.items.card.DevCard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DevDeck {
-    private Map<Integer, DevCard> devDeck = new HashMap<>();
-    @Override
-    public String toString() {
-        return "DevDeck: {" + devDeck.toString() + "}";
+    private final Map<Integer, List<DevCard>> devDeck = new HashMap<>();
+
+    public boolean addDevCard(DevCard devCard) {
+        Objects.requireNonNull(devCard);
+        return devDeck.get(devCard.level()).add(devCard);
     }
 
 
 
 
-
-    public boolean isEmpty() {
+/*    public boolean isEmpty() {
         return devDeck.isEmpty();
     }
 
@@ -33,5 +30,5 @@ public class DevDeck {
     public CardsP1 drawDevCardDeck() {
         if(devCard.isEmpty()) throw new IllegalStateException("DevCards is empty");
         return devCard.removeFirst();
-    }
+    }*/
 }

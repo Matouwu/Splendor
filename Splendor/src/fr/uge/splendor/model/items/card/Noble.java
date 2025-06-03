@@ -5,6 +5,8 @@ import java.util.*;
 
 import fr.uge.splendor.model.items.Color;
 
+import static fr.uge.splendor.model.items.Color.*;
+
 public enum Noble {
     CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(GREEN, 3, BLUE, 3, RED, 3), 3),
     ELISABETH_OF_AUSTRIA ("Elisabeth Of Austria", Map.of(BLACK, 3, BLUE, 3, WHITE, 3), 3),
