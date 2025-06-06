@@ -22,15 +22,15 @@ public enum Noble {
     private final String name;
     private final TokenDeck tokenRequire;
     private final int prestigePoints;
-
-    Noble(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
+    private final Color color; 
+    
+    public Noble(String name, TokenDeck tokenRequire, int prestigePoints) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(tokenRequire);
         if (prestigePoints < 0) throw new IllegalArgumentException();
-
         this.name = name;
         //this.tokenRequire.putAll(tokenRequire); // a modifier 
-        this.tokenRequire.
+        this.tokenRequire.addTokenDeck(color, prestigePoints);
         this.prestigePoints = prestigePoints;
     }
 
