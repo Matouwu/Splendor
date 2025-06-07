@@ -1,11 +1,10 @@
+/*
 package fr.uge.splendor.model.items.card;
 
 
 import java.util.*;
 
-import fr.uge.splendor.model.items.Color;
-
-import static fr.uge.splendor.model.items.Color.*;
+import fr.uge.splendor.model.items.Color.*;
 
 public enum Noble {
     CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(GREEN, 3, BLUE, 3, RED, 3), 3),
@@ -20,7 +19,7 @@ public enum Noble {
     MARY_STUART ("Mary Stuart", Map.of(RED, 4, GREEN, 4), 3), GREEN;
 
     private final String name;
-    private final Map<Color, Integer> tokenRequire = new HashMap<>();
+    private Map<Color, Integer> tokenRequire = new HashMap<>();
     private final int prestigePoints;
 
     Noble(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
@@ -29,15 +28,18 @@ public enum Noble {
         if (prestigePoints < 0) throw new IllegalArgumentException();
 
         this.name = name;
-        this.tokenRequire.putAll(tokenRequire);
+        this.tokenRequire =tokenRequire;
         this.prestigePoints = prestigePoints;
     }
 
-    public List<NobleCard> listNobleCards() {
+*/
+/*    public List<NobleCard> listNobleCards() {
         List<NobleCard> nobleCards = new ArrayList<>();
         for (Noble noble : Noble.values()) {
             nobleCards.add(new NobleCard(noble.name, noble.prestigePoints, noble.tokenRequire));
         }
         return List.copyOf(nobleCards);
-    }
+    }*//*
+
 }
+*/

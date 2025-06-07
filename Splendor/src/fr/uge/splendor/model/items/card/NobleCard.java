@@ -13,10 +13,9 @@ public record NobleCard(String name, int prestigePoints, TokenDeck tokenRequire)
 
     @Override
     public String toString() {
-        return "NobleCard [name= " + name +
+        return "NobleCard (name= " + name +
                 ", prestigePoints= " + prestigePoints +
                 ", tokenRequire= " + tokenRequire +
-                "]";
+                ")";
     }
-
 }

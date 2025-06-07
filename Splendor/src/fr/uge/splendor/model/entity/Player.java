@@ -3,6 +3,9 @@ package fr.uge.splendor.model.entity;
 import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.items.card.NobleCard;
+import fr.uge.splendor.model.items.deck.DevDeck;
+import fr.uge.splendor.model.items.deck.NobleDeck;
+import fr.uge.splendor.model.items.deck.TokenDeck;
 
 import java.util.*;
 
@@ -11,10 +14,10 @@ public class Player {
     private final String name;
     private final int age;
     private int prestigePoints;
-    private final Map<Color, Integer> tokens;
-    private final List<DevCard> cardsReservedList;
-    private final List<DevCard> cardsList;
-    private final List<NobleCard> noblesList;
+    private final TokenDeck tokens;
+    private DevDeck devDeckReserved;
+    private DevDeck devDeck;
+    private NobleDeck nobleDeck;
 
     public Player(String name, int age) {
         Objects.requireNonNull(name);
@@ -23,10 +26,10 @@ public class Player {
         this.name = name;
         this.age = age;
         this.prestigePoints = 0;
-        this.tokens = new HashMap<>();
-        this.cardsReservedList = new ArrayList<>();
-        this.cardsList = new ArrayList<>();
-        this.noblesList = new ArrayList<>();
+        this.tokens = new TokenDeck();
+        this.devDeckReserved = new DevDeck();
+        this.devDeck = new DevDeck();
+        this.nobleDeck = new NobleDeck();
     }
 
     @Override
@@ -34,9 +37,9 @@ public class Player {
         return "[Player " + name + " " + age + "y :" +
                 "\n     PointPrestige=" + prestigePoints +
                 "\n     Token=" + tokens +
-                "\n     CardReserved= " + cardsReservedList +
-                "\n     CardList= " + cardsList +
-                "\n     NoblesList= " + noblesList +
+                "\n     DevDeckReserved= " + devDeckReserved.toString() +
+                "\n     DevDeck= " + devDeck.toString() +
+                "\n     NobleDeck= " + nobleDeck.toString() +
                 "]\n";
     }
     private void addPrestigePoints(DevCard card) {
@@ -63,7 +66,7 @@ public class Player {
 
     public void addNoble(NobleCard noble) {
         Objects.requireNonNull(noble);
-        noblesList.add(noble);
+        nobleDeck.add(noble);
         addPrestigePoints(noble);
     }
 

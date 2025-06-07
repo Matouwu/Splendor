@@ -16,12 +16,12 @@ public record DevCard(int level, Color tokenReduction, int prestigePoints, Token
 
     @Override
     public String toString() {
-        return "DevCard [level=" + level +
-                ", prestigePoints=" + prestigePoints +
-                ", tokenRequire=" + tokenRequire +
-                ", tokenReduction=" + tokenReduction +
-                ", illustration=" + illustration +
-                "]";
+        return "DevCard (level= " + level +
+                ", prestigePoints= " + prestigePoints +
+                ", tokenRequire= " + tokenRequire.toString() +
+                ", tokenReduction= " + tokenReduction +
+                ", illustration= " + illustration +
+                ")";
     }
    
 }
