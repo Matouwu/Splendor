@@ -1,5 +1,7 @@
 package fr.uge.splendor.view.console;
 
+import fr.uge.splendor.model.entity.Player;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -18,6 +20,13 @@ public class ConsoleView {
                     - (F) - Final
                 """);
         return scanner.nextLine();
+    }
+
+    public String inputString(){
+        return scanner.next();
+    }
+    public int inputInt(){
+        return scanner.nextInt();
     }
 
 

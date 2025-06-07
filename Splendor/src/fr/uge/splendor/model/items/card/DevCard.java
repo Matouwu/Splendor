@@ -5,10 +5,10 @@ import fr.uge.splendor.model.items.deck.TokenDeck;
 
 import java.util.Objects;
 
-public record DevCard(int level, Color tokenReduction, int prestigePoints, TokenDeck tokenRequire, String illustration) {
+public record DevCard(int level, Color tokenReduction, int prestigePoint, TokenDeck tokenRequire, String illustration) {
 
     public DevCard {
-        if (level < 0 ||prestigePoints < 0) throw new IllegalArgumentException();
+        if (level < 0 ||prestigePoint < 0) throw new IllegalArgumentException();
         Objects.requireNonNull(tokenRequire);
         Objects.requireNonNull(tokenReduction);
         Objects.requireNonNull(illustration);
@@ -17,7 +17,7 @@ public record DevCard(int level, Color tokenReduction, int prestigePoints, Token
     @Override
     public String toString() {
         return "DevCard (level= " + level +
-                ", prestigePoints= " + prestigePoints +
+                ", prestigePoint= " + prestigePoint +
                 ", tokenRequire= " + tokenRequire.toString() +
                 ", tokenReduction= " + tokenReduction +
                 ", illustration= " + illustration +

@@ -20,7 +20,7 @@ public enum Noble {
 
     private final String name;
     private Map<Color, Integer> tokenRequire = new HashMap<>();
-    private final int prestigePoints;
+    private final int prestigePoint;
 
     Noble(String name, Map<Color, Integer> tokenRequire, int prestigePoints) {
         Objects.requireNonNull(name);
@@ -29,7 +29,7 @@ public enum Noble {
 
         this.name = name;
         this.tokenRequire =tokenRequire;
-        this.prestigePoints = prestigePoints;
+        this.prestigePoint = prestigePoint;
     }
 
 */

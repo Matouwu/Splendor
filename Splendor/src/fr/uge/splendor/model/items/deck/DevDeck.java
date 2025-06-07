@@ -1,6 +1,9 @@
 package fr.uge.splendor.model.items.deck;
 
 import fr.uge.splendor.model.items.card.DevCard;
+import fr.uge.splendor.model.utils.LoadCSV;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,13 +14,6 @@ public class DevDeck {
         for(int i=0; i<3; i++){
             devDeck.put(i+1, new ArrayList<>());
         }
-    }
-
-    @Override
-    public String toString() {
-        return devDeck.entrySet().stream()
-                .map(entry -> "level " + entry.getKey() + "= " + entry.getValue())
-                .collect(Collectors.joining("\n", "DevDeck : {", "}"));
     }
 
     public boolean addDevCard(DevCard devCard) {
@@ -35,22 +31,32 @@ public class DevDeck {
         return devDeck.get(devCard.level()).remove(devCard);
     }
 
-
-
-
-/*    public boolean isEmpty() {
-        return devDeck.isEmpty();
-    }
-
-    public void setListDevCardDeck() {
-        for (var card : devDeck) {
-            devDeck.add(new DevCard(card.tokenRequire()));
+    /* Game Board Deck */
+    public void loadAllCards() throws IOException {
+        Map<Integer, List<DevCard>> loadedCards = LoadCSV.loadCardFromCSV();
+        for (var entry : loadedCards.entrySet()) {
+            for (DevCard card : entry.getValue()) {
+                addDevCard(card);
+            }
         }
-        Collections.shuffle(devCard);
+        for(var list: loadedCards.values()){
+            Collections.shuffle(list);
+        }
     }
 
+
+
+
+
+/*
     public CardsP1 drawDevCardDeck() {
         if(devCard.isEmpty()) throw new IllegalStateException("DevCards is empty");
         return devCard.removeFirst();
     }*/
+    @Override
+    public String toString() {
+        return devDeck.entrySet().stream()
+                .map(entry -> "level " + entry.getKey() + "= " + entry.getValue())
+                .collect(Collectors.joining("\n", "DevDeck : {", "}"));
+    }
 }

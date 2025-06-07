@@ -26,6 +26,4 @@ public class NobleDeck {
 				.map(NobleCard::toString)
 				.collect(Collectors.joining("\n","NobleDeck :",""));
 	}
-
-
 }

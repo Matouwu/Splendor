@@ -3,11 +3,17 @@ package fr.uge.splendor.model.items.deck;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import fr.uge.splendor.model.items.Color;
 
 public class TokenDeck {
-	private final Map<Color, Integer> tokenDeck = new HashMap<>();
+	private final Map<Color, Integer> tokenDeck;
+
+    public TokenDeck(Map<Color, Integer> tokenDeck){
+        Objects.requireNonNull(tokenDeck);
+        this.tokenDeck = tokenDeck;
+    }
 
     public Map<Color, Integer> getTokens(){
 		return tokenDeck;
@@ -30,5 +36,12 @@ public class TokenDeck {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
         tokenDeck.put(color, tokenDeck.get(color)-1); 
+    }
+
+    @Override
+    public String toString(){
+        return tokenDeck.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .collect(Collectors.joining(", "));
     }
 }
