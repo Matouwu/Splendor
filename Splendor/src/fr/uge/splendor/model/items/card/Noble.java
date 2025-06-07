@@ -6,6 +6,8 @@ import java.util.*;
 import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.deck.TokenDeck;
 
+import static fr.uge.splendor.model.items.Color.*;
+
 public enum Noble {
 	
     CATHERINE_DE_MEDICI ("Catherine de' Medici", Map.of(Color.GREEN, 3, Color.BLUE, 3, Color.RED, 3), 3),
