@@ -3,11 +3,11 @@ package fr.uge.splendor.model.items.deck;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import fr.uge.splendor.model.items.card.Noble;
 import fr.uge.splendor.model.items.card.NobleCard;
 
 public class NobleDeck {
 	private List<NobleCard> nobleDeck = new ArrayList<>();
-
 
 	public void addNobleCard(NobleCard nobleCard){
 		Objects.requireNonNull(nobleCard);
@@ -18,6 +18,14 @@ public class NobleDeck {
 	public boolean removeNobleCard(NobleCard nobleCard){
 		Objects.requireNonNull(nobleCard);
 		return nobleDeck.remove(nobleCard);
+	}
+
+
+
+	/* Game Board Deck */
+	public void loadAllNoble(){
+		this.nobleDeck = Noble.listNobleCards();
+		Collections.shuffle(nobleDeck);
 	}
 
 	@Override

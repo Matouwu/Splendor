@@ -19,23 +19,33 @@ public class TokenDeck {
 		return tokenDeck;
     }
 
-    public void initBoardTokenDeck() {
-        tokenDeck.put(Color.GREEN, 4);
-        tokenDeck.put(Color.BLUE, 4);
-        tokenDeck.put(Color.RED, 4);
-        tokenDeck.put(Color.WHITE, 4);
-        tokenDeck.put(Color.BLACK, 4);
-    }
-
     public void addTokenDeck(Color color, int amount) {
         Objects.requireNonNull(color);
         tokenDeck.put(color, tokenDeck.get(color)+ amount);
     }
-    
+
     public void removeTokenDeck(Color color) {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
-        tokenDeck.put(color, tokenDeck.get(color)-1); 
+        tokenDeck.put(color, tokenDeck.get(color)-1);
+    }
+
+    /* Game Board Deck */
+
+    public void initBoardTokenDeck(int nbPlayer, boolean beta) {
+        for(var color:Color.values()){
+            if(!color.equals(Color.YELLOW)) {
+                if(nbPlayer==4){
+                    tokenDeck.put(color, 7);
+                } else {
+                    tokenDeck.put(color, nbPlayer + 2);
+                }
+            }
+        }
+
+        if(!beta){
+            tokenDeck.put(Color.YELLOW, 5);
+        }
     }
 
     @Override

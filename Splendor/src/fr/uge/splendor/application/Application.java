@@ -1,24 +1,18 @@
 package fr.uge.splendor.application;
 
-import fr.uge.splendor.model.items.Color;
-import fr.uge.splendor.model.items.card.DevCard;
-import fr.uge.splendor.model.items.deck.DevDeck;
-import fr.uge.splendor.model.items.deck.TokenDeck;
+import fr.uge.splendor.controller.GameController;
+import fr.uge.splendor.view.console.ConsoleView;
 
-import java.util.Map;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        DevDeck deck = new DevDeck();
-        DevCard c1 = new DevCard(1, Color.BLUE, 2, new TokenDeck(Map.of(Color.BLACK, 1)), "Belle");
-        DevCard c2 = new DevCard(2, Color.BLUE, 4, new TokenDeck(Map.of(Color.GREEN, 3)), "Choupette");
+        Scanner scanner = new Scanner(System.in);
+        var consoleView = new ConsoleView(scanner);
+        var gameController = new GameController(consoleView);
 
-        deck.addDevCard(c1);
-        deck.addDevCard(c2);
-        System.out.println(deck+"\n");
-
-        System.out.println(deck.removeDevCard(c1));
-        System.out.println(deck);
+        gameController.run();
     }
 }

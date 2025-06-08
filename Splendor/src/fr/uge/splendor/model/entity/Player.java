@@ -7,7 +7,7 @@ import fr.uge.splendor.model.items.deck.TokenDeck;
 import java.util.*;
 
 public class Player {
-	
+	private final boolean beta;
     private final String name;
     private final int age;
     private int prestigePoint;
@@ -16,7 +16,7 @@ public class Player {
     private final DevDeck devDeck;
     private final NobleDeck nobleDeck;
 
-    public Player(String name, int age) {
+    public Player(String name, int age, boolean beta) {
         Objects.requireNonNull(name);
         if (age < 0) throw new IllegalArgumentException("Age must be a positive integer.");
 
@@ -26,20 +26,45 @@ public class Player {
         this.tokens = new TokenDeck(new HashMap<>());
         this.devDeckReserved = new DevDeck();
         this.devDeck = new DevDeck();
-        this.nobleDeck = new NobleDeck();
+        this.beta = beta;
+        if(beta){
+            this.nobleDeck = null;
+        } else {
+            this.nobleDeck = new NobleDeck();
+        }
+    }
+    public int age(){
+        return age;
+    }
+    public int prestigePoint() {
+        return prestigePoint;
     }
 
 
     @Override
     public String toString() {
-        return "[Player " + name + " " + age + "y :" +
-                "\n     PointPrestige=" + prestigePoint +
-                "\n     Token=" + tokens +
-                "\n     DevDeckReserved= " + devDeckReserved.toString() +
-                "\n     DevDeck= " + devDeck.toString() +
-                "\n     NobleDeck= " + nobleDeck.toString() +
-                "]\n";
+        String string;
+        if (beta){
+            string = "[Player " + name + " " + age + "y :" +
+                    "\n     PointPrestige=" + prestigePoint +
+                    "\n     Token=" + tokens +
+                    "\n     DevDeckReserved= " + devDeckReserved.toString() +
+                    "\n     DevDeck= " + devDeck.toString() +
+                    "]\n";
+        } else {
+            assert nobleDeck != null;
+            string = "[Player " + name + " " + age + "y :" +
+                    "\n     PointPrestige=" + prestigePoint +
+                    "\n     Token=" + tokens +
+                    "\n     DevDeckReserved= " + devDeckReserved.toString() +
+                    "\n     DevDeck= " + devDeck.toString() +
+                    "\n     NobleDeck= " + nobleDeck.toString() +
+                    "]\n";
+        }
+        return string;
     }
+
+    
 
 
 /*    private void addPrestigePoints(DevCard card) {

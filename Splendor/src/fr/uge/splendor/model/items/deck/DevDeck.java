@@ -8,12 +8,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DevDeck {
-    private final Map<Integer, List<DevCard>> devDeck = new HashMap<>();
+    private Map<Integer, List<DevCard>> devDeck = new HashMap<>();
 
     public DevDeck(){
         for(int i=0; i<3; i++){
             devDeck.put(i+1, new ArrayList<>());
         }
+    }
+    public Map<Integer, List<DevCard>> getDevDeck(){
+        return this.devDeck;
     }
 
     public boolean addDevCard(DevCard devCard) {
@@ -33,13 +36,8 @@ public class DevDeck {
 
     /* Game Board Deck */
     public void loadAllCards() throws IOException {
-        Map<Integer, List<DevCard>> loadedCards = LoadCSV.loadCardFromCSV();
-        for (var entry : loadedCards.entrySet()) {
-            for (DevCard card : entry.getValue()) {
-                addDevCard(card);
-            }
-        }
-        for(var list: loadedCards.values()){
+        this.devDeck = LoadCSV.loadCardFromCSV();
+        for(var list: devDeck.values()){
             Collections.shuffle(list);
         }
     }
@@ -57,6 +55,6 @@ public class DevDeck {
     public String toString() {
         return devDeck.entrySet().stream()
                 .map(entry -> "level " + entry.getKey() + "= " + entry.getValue())
-                .collect(Collectors.joining("\n", "DevDeck : {", "}"));
+                .collect(Collectors.joining(", ", "DevDeck : {", "}"));
     }
 }
