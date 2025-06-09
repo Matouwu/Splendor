@@ -1,6 +1,6 @@
 package fr.uge.splendor.model.items.deck;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -15,19 +15,34 @@ public class TokenDeck {
         this.tokenDeck = tokenDeck;
     }
 
-    public Map<Color, Integer> getTokens(){
+    public Map<Color, Integer> getTokenDeck(){
 		return tokenDeck;
     }
 
-    public void addTokenDeck(Color color, int amount) {
-        Objects.requireNonNull(color);
-        tokenDeck.put(color, tokenDeck.get(color)+ amount);
+    public boolean isEmpty(){
+        return tokenDeck.isEmpty();
     }
 
-    public void removeTokenDeck(Color color) {
+    public void addTokenDeck(TokenDeck tokenDeck){
+        Objects.requireNonNull(tokenDeck);
+        for(var token: tokenDeck.getTokenDeck().entrySet()){
+            addTokenDeck(token.getKey(), token.getValue());
+        }
+    }
+    public void addTokenDeck(Color color, int amount) {
+        Objects.requireNonNull(color);
+        if(amount < 0) throw new IllegalArgumentException();
+        tokenDeck.put(color, tokenDeck.getOrDefault(color, 0)+ amount);
+    }
+
+    public boolean removeTokenDeck(Color color, int amount) {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
-        tokenDeck.put(color, tokenDeck.get(color)-1);
+        if(tokenDeck.get(color)>=amount){
+            tokenDeck.put(color, tokenDeck.get(color)-amount);
+            return true;
+        }
+        return false;
     }
 
     /* Game Board Deck */
@@ -51,7 +66,7 @@ public class TokenDeck {
     @Override
     public String toString(){
         return tokenDeck.entrySet().stream()
-                .map(entry -> entry.getKey() + ": " + entry.getValue())
-                .collect(Collectors.joining(", "));
+                .map(entry -> entry.getKey().toString().substring(0, 1).toUpperCase() + entry.getKey().toString().substring(1).toLowerCase() + ": " + entry.getValue())
+                .collect(Collectors.joining(", ", "{", "}"));
     }
 }

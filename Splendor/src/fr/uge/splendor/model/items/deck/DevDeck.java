@@ -15,6 +15,7 @@ public class DevDeck {
             devDeck.put(i+1, new ArrayList<>());
         }
     }
+
     public Map<Integer, List<DevCard>> getDevDeck(){
         return this.devDeck;
     }

@@ -34,6 +34,19 @@ public class Game {
         this.playerList = playerList;
         this.currentPlayerIndex = currentPlayerIndex;
     }
+    public DevDeck getDevDeck() {
+        return devDeck;
+    }
+    public TokenDeck getTokenDeck(){
+        return tokenDeck;
+    }
+    public List<Player> getPlayerList(){
+        return playerList;
+    }
+
+    public int getCurrentPlayerIndex(){
+        return currentPlayerIndex;
+    }
 
     public void nextPlayer() {
         this.currentPlayerIndex = (currentPlayerIndex + 1)%2;
@@ -41,7 +54,7 @@ public class Game {
 
     public int checkGameEnd() {
         for(var p: playerList) {
-            if(p.prestigePoint() >= 15) {
+            if(p.getPrestigePoint() >= 15) {
                 return playerList.indexOf(p);
             }
         }

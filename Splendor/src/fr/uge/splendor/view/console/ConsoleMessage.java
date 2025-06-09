@@ -1,6 +1,12 @@
 package fr.uge.splendor.view.console;
 
 import fr.uge.splendor.model.entity.Player;
+import fr.uge.splendor.model.items.Color;
+import fr.uge.splendor.model.items.card.DevCard;
+import fr.uge.splendor.model.items.deck.DevDeck;
+import fr.uge.splendor.model.items.deck.TokenDeck;
+
+import java.util.Objects;
 
 public class ConsoleMessage {
 
@@ -13,23 +19,104 @@ public class ConsoleMessage {
                 """);
     }
 
-    public static void startRound(){ //TODO
-        System.out.println(" ??? Faire Message de debut de game comme lets the game begin ??? ");
+    public static void startRound(){
+        System.out.println("""
+                The game begins now!
+                    It's time to strategize, trade, and collect your gems.
+                The path to victory starts now!
+                """);    }
+
+    public static void enGame(Player p){ //TODO
+        System.out.println("Congratulation player "+ p.getName() + "you won !!");
     }
 
-    public static void wrongInputMessage(){
-        System.out.println("""
-                - Wrong input -
-                BE CAREFUL, I KNOW WHERE YOU LIVE!
-                """);
+
+    public static void wrongInputMessage(int code, TokenDeck tokenDeck){ //TODO
+        switch (code){
+            case 100 -> //Config
+                System.out.println("""
+                    - Wrong mode input -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must enter "B" or "F" to select the game mode.
+                    """);
+            case 200 -> //Player
+                System.out.println("""
+                    - Invalid age number -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must enter a valid age number (0 < ageNumber < 150).
+                    """);
+            case 300 -> //Token
+                System.out.println("""
+                    - Wrong color -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must enter a valid color (green, blue, red, white, black):
+                    """);
+            case 301 ->
+                System.out.println("""
+                    - Same color -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must enter a different color (green, blue, red, white, black):
+                    """);
+            case 302 -> {
+                System.out.println("""
+                    - Unavailable color -
+                    Unavailable Color avec le dec qu'il reste a choisir :
+                    """);
+                tokenDeckMessage(tokenDeck);
+            }
+            case 400 -> //Card
+                System.out.println("""
+                    - Wrong card level -
+                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    Tu dois rentrer le niveau de carte que tu veux acheter valide !""");
+            case 401 ->
+                System.out.println("""
+                    - Wrong card number -
+                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    Tu dois rentrer un nombre entre 1 et 4 pour choisir la carte que tu veux acheter du plateau !""");
+            case 402 ->
+                    System.out.println("""
+                    - Not enough ressources -
+                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    Pas asser de ressource pour acheter une carte, choisi une autre action.""");
+
+        }
+    }
+
+    public static void tokenDeckMessage(TokenDeck tokenDeck){ //TODO
+        System.out.println("??? Il reste dans la pile de tokens :" + tokenDeck);
+    }
+    public static void cardDeckMessage(DevDeck devDeck){
+        System.out.println("Tu peux acheter des cartes si tu le souhaites, voici les cartes à l'achat :");
+        int i = 1;
+        for (var level : devDeck.getDevDeck().entrySet()){
+            System.out.println("Level " + level.getKey() + " :");
+            for (var card : level.getValue()) {
+                if(i<4){
+                    System.out.println("    " + i + " -> " + card);
+                    i++;
+                }
+            }
+            i = 1;
+        }
+    }
+
+    public static void buyCardMessage(int code, DevDeck devDeck){ //TODO
+        switch (code){
+            case 1 -> {
+                cardDeckMessage(devDeck);
+                System.out.println("Quelle niveau de carte voulez-vous acheter ? (Entrez le numéro de 1 à " + devDeck.getDevDeck().size() + ")");
+            }
+            case 2 -> System.out.println("Choisir entre 1 à 3 pour choisir la carte.");
+        }
     }
 
     public static void successBuyMessage(){
         System.out.println("You’ve successfully bought the card!");
     }
 
-    public static void successTakeMessage(){
-        System.out.println("Tokens successfully collected.");
+    public static void successTakeMessage(TokenDeck tokenDeck){
+        System.out.println("You successfully collected :" + tokenDeck);
     }
 
 
@@ -41,25 +128,38 @@ public class ConsoleMessage {
         System.out.println("Enter your age: ");
     }
 
-    public static void firstPlayer(Player player){ //TODO
-        System.out.println("??? en mode le player joue dab et : Eh ouai, parce que c'est le plus petit HAHAHAHHAHHAHA (ou juste que c'est le meilleur °*°)!!!!! ???");
+    public static void firstPlayer(Player player){
+        System.out.println(player.getName() + " goes first! Because... well, this player is the smallest! NIHAHAHA ");
     }
 
-    public static void selectAction(){//TODO
-        System.out.println("??? en mode choose commande  :" +
-                "- (1) Take 3 gemstones of different colors\n" +
-                "- (2) Take 2 gemstones of the same color\n" +
-                "- (3) Purchase 1 development card using gemstones???");
+    public static void selectAction(Player p){
+        System.out.println("===== " + p.getName() + " turn =====");
+        System.out.println("""
+                        Choose your action  :
+                        - (1) Take 3 gemstones of different colors
+                        - (2) Take 2 gemstones of the same color
+                        - (3) Purchase 1 development card using gemstones
+                        """);
     }
-    public static void actionOne(){//TODO
-        System.out.println("??? En mode ta choisi l'action 1 donc du pren 3 diff " +
-                "You have to enter the colors you want (green, blue, red, white, black): ???");
-    }
-    public static void actionTwo(){//TODO
-        System.out.println("??? En mode ta choisi l'action 2 donc du pren 2 id ???");
-    }
-    public static void actionThree(){//TODO
-        System.out.println("??? En mode ta choisi l'action 3 donc du achete une carte ???");
+    public static void action(int code, TokenDeck tokenDeck){
+        switch (code){
+            case 1 ->
+                System.out.println("""
+                    You've chosen Action 1: Take 3 different gemstones.
+                    Please enter the colors you want (green, blue, red, white, black) between :""" +
+                    tokenDeck);
+            case 2 ->
+                System.out.println("""
+                    Action 2 selected! Doubling up, are we?
+                    Enter the color you want two of (green, blue, red, white, black) :""" +
+                    tokenDeck);
+            case 3 ->
+                System.out.println("""
+                    You're going for the big move: buying a development card!
+                    Specify which one you want by giving its level and position.
+                    Remember: every point counts!""");
+
+        }
     }
 
     /* - Beta Mode Message - */

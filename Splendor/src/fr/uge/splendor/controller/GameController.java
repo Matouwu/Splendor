@@ -1,11 +1,11 @@
 package fr.uge.splendor.controller;
 
 import fr.uge.splendor.model.action.BuyCard;
-import fr.uge.splendor.model.action.TakeDiffCard;
-import fr.uge.splendor.model.action.TakeSameCard;
+import fr.uge.splendor.model.action.TakeToken;
 import fr.uge.splendor.model.entity.Game;
 import fr.uge.splendor.model.entity.Player;
 import fr.uge.splendor.model.items.Color;
+import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.NobleDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
@@ -13,10 +13,7 @@ import fr.uge.splendor.view.console.ConsoleMessage;
 import fr.uge.splendor.view.console.ConsoleView;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GameController {
     private final ConsoleView consoleView;
@@ -54,8 +51,8 @@ public class GameController {
             var name = consoleView.inputString();
             ConsoleMessage.createPlayerAgeMessage();
             var age = consoleView.inputInt();
-            while(age<0){
-                ConsoleMessage.wrongInputMessage();
+            while(age<0 || age > 150){
+                ConsoleMessage.wrongInputMessage(1,null);
                 age = consoleView.inputInt();
             }
             Player p = new Player(name, age, gameMode);
@@ -71,7 +68,7 @@ public class GameController {
         Player younger = playerList.getFirst();
         int i=0;
         for(var p :playerList){
-            if(p.age()< younger.age()){
+            if(p.getAge()< younger.getAge()){
                 index = i;
                 younger = p;
             }
@@ -111,37 +108,105 @@ public class GameController {
     private void gameConfig() throws IOException {
         var mode = consoleView.gameMode();
         while(!mode.equalsIgnoreCase("B") && !mode.equalsIgnoreCase("F")){
-            ConsoleMessage.wrongInputMessage();
+            ConsoleMessage.wrongInputMessage(100, null);
             mode = consoleView.gameMode();
         }
         switch (mode.toUpperCase()){
             case "B" -> setupBetaMode();
             case "F" -> setupFinalMode();
+
         }
     }
 
-    private Color inputColor(){
-        var color = consoleView.inputString();
-        while(!color.equals(Color.values())){
-            color = consoleView.inputString();
+    private Color getInputColor(int nbTake) {
+        var input = consoleView.inputString();
+        while(!Color.isValidEnum(input)){
+            ConsoleMessage.wrongInputMessage(300, null);
+            input = consoleView.inputString();
         }
+        Color color = Color.valueOf(input.toUpperCase());
+        while(nbTake==1 && game.getTokenDeck().getTokenDeck().get(color) < 1 ||
+                nbTake==2 && game.getTokenDeck().getTokenDeck().get(color) < 2) {
+            ConsoleMessage.wrongInputMessage(302, game.getTokenDeck());
+            input = consoleView.inputString();
+            while(!Color.isValidEnum(input)){
+                ConsoleMessage.wrongInputMessage(300, null);
+                input = consoleView.inputString();
+            }
+            color = Color.valueOf(input.toUpperCase());
+        }
+        return color;
     }
+
+    private TokenDeck setupDiffTokenDeck(){
+        TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
+        Set<String> tmp = new HashSet<>();
+        while(tokenDeck.getTokenDeck().size() < 3){
+            var color = getInputColor(1);
+            if(tmp.contains(color.name())){
+                ConsoleMessage.wrongInputMessage(301, game.getTokenDeck());
+            } else {
+                game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color)-1);
+                tmp.add(color.name());
+                tokenDeck.addTokenDeck(color, 1);
+            }
+        }
+        return tokenDeck;
+    }
+
+    private TokenDeck setupSameTokenDeck(){
+        TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
+        var color = getInputColor(2);
+        game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color)-2);
+        tokenDeck.addTokenDeck(color, 2);
+        return tokenDeck;
+    }
+
+    private DevCard setupBuyCard(){
+        ConsoleMessage.buyCardMessage(1,game.getDevDeck());
+        var level = consoleView.inputInt();
+        while (level<0 || level>game.getDevDeck().getDevDeck().size()){
+            ConsoleMessage.wrongInputMessage(400, null);
+            level = consoleView.inputInt();
+        }
+        ConsoleMessage.buyCardMessage(2, null);
+        var card = consoleView.inputInt();
+        while (card<0 || card > 4){
+            ConsoleMessage.wrongInputMessage(401, null);
+            card = consoleView.inputInt();
+        }
+        return game.getDevDeck().getDevDeck().get(level).remove(card);
+    }
+
     private void gameRound(){
-        ConsoleMessage.selectAction();
+        ConsoleMessage.selectAction(game.getPlayerList().get(game.getCurrentPlayerIndex()));
         var action = consoleView.inputInt();
         while(action!=1 && action!=2 && action !=3){
             action = consoleView.inputInt();
         }
         switch(action){
             case 1 -> {
-                ConsoleMessage.actionOne();
-                var color1 = consoleView.inputString();
-                TakeDiffCard.excecute(game);
+                ConsoleMessage.cardDeckMessage(game.getDevDeck());
+                ConsoleMessage.action(1, game.getTokenDeck());
+                var diffTokenDeck = setupDiffTokenDeck();
+                TakeToken.execute(game, diffTokenDeck);
             }
-            case 2 -> TakeSameCard.excecute(game);
-            case 3 -> BuyCard.excecute(game);
+            case 2 -> {
+                ConsoleMessage.cardDeckMessage(game.getDevDeck());
+                ConsoleMessage.action(2, game.getTokenDeck());
+                var sameTokenDeck = setupSameTokenDeck();
+                TakeToken.execute(game, sameTokenDeck);
+            }
+            case 3 -> {
+                if(game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck().getTokenDeck().isEmpty()){
+                    ConsoleMessage.wrongInputMessage(402, null);
+                } else {
+                    ConsoleMessage.action(3, null);
+                    var cardToBuy = setupBuyCard();
+                    BuyCard.execute(game, cardToBuy);
+                }
+            }
         }
-
     }
 
     public void run() throws IOException {
@@ -155,9 +220,7 @@ public class GameController {
             gameRound();
             winnerIndex = game.checkGameEnd();
         }
-
-
-
+        ConsoleMessage.enGame(game.getPlayerList().get(winnerIndex));
     }
 
 }

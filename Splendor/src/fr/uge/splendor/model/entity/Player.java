@@ -1,5 +1,7 @@
 package fr.uge.splendor.model.entity;
 
+import fr.uge.splendor.model.items.card.DevCard;
+import fr.uge.splendor.model.items.card.NobleCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.NobleDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
@@ -11,7 +13,7 @@ public class Player {
     private final String name;
     private final int age;
     private int prestigePoint;
-    private final TokenDeck tokens;
+    private final TokenDeck tokenDeck;
     private final DevDeck devDeckReserved;
     private final DevDeck devDeck;
     private final NobleDeck nobleDeck;
@@ -23,7 +25,7 @@ public class Player {
         this.name = name;
         this.age = age;
         this.prestigePoint = 0;
-        this.tokens = new TokenDeck(new HashMap<>());
+        this.tokenDeck = new TokenDeck(new HashMap<>());
         this.devDeckReserved = new DevDeck();
         this.devDeck = new DevDeck();
         this.beta = beta;
@@ -33,11 +35,52 @@ public class Player {
             this.nobleDeck = new NobleDeck();
         }
     }
-    public int age(){
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge(){
         return age;
     }
-    public int prestigePoint() {
+    public int getPrestigePoint() {
         return prestigePoint;
+    }
+    public TokenDeck getTokenDeck(){
+        return tokenDeck;
+    }
+
+    private void addPrestigePoints(DevCard card) {
+        prestigePoint += card.prestigePoint();
+    }
+    private void addPrestigePoints(NobleCard card) {
+        prestigePoint += card.prestigePoints();
+    }
+
+    public void addToken(TokenDeck tokenDeck) {
+        Objects.requireNonNull(tokenDeck);
+        var totalTokens = this.tokenDeck.getTokenDeck().values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        if(totalTokens >= 10) {
+            throw new IllegalStateException("Player cannot have more then " + 10 + " tokens.");
+        }
+        this.tokenDeck.addTokenDeck(tokenDeck);
+    }
+
+    private void removeToken(TokenDeck tokenDeck) {
+        Objects.requireNonNull(tokenDeck);
+        for(var color : tokenDeck.getTokenDeck().entrySet()){
+            tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+        }
+    }
+
+    public void addCardsList(DevCard devcard) {
+        Objects.requireNonNull(devcard);
+        removeToken(devcard.tokenRequire());
+        devDeck.addDevCard(devcard);
+        addPrestigePoints(devcard);
     }
 
 
@@ -47,7 +90,7 @@ public class Player {
         if (beta){
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
-                    "\n     Token=" + tokens +
+                    "\n     Token=" + tokenDeck +
                     "\n     DevDeckReserved= " + devDeckReserved.toString() +
                     "\n     DevDeck= " + devDeck.toString() +
                     "]\n";
@@ -55,7 +98,7 @@ public class Player {
             assert nobleDeck != null;
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
-                    "\n     Token=" + tokens +
+                    "\n     Token=" + tokenDeck +
                     "\n     DevDeckReserved= " + devDeckReserved.toString() +
                     "\n     DevDeck= " + devDeck.toString() +
                     "\n     NobleDeck= " + nobleDeck.toString() +
@@ -67,12 +110,10 @@ public class Player {
     
 
 
-/*    private void addPrestigePoints(DevCard card) {
-        prestigePoint += card.prestigePoints();
-    }
-    private void addPrestigePoints(NobleCard card) {
-        prestigePoint += card.prestigePoints();
-    }
+
+
+/*
+
 
     public void addCardsReservedList(DevCard card) {
         Objects.requireNonNull(card);
@@ -95,27 +136,7 @@ public class Player {
         addPrestigePoints(noble);
     }
 
-    public void addToken(Color color) {
-        Objects.requireNonNull(color);
-        var totalTokens = tokens.values()
-                .stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        if(totalTokens >= 10) {
-            throw new IllegalStateException("Player cannot have more then " + 10 + " tokens.");
-        }
-        tokens.put(color, tokens.getOrDefault(color,0) + 1);
-    }
 
-    public boolean removeToken(Color color) {
-        Objects.requireNonNull(color);
-        int count = tokens.getOrDefault(color, 0);
-        if (count > 0) {
-            tokens.put(color, count - 1);
-            return true;
-        } else {
-            return false;
-        }
     }*/
 
 /*    public int tokenCount(Color color) {
