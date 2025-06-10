@@ -55,7 +55,6 @@ public class TokenDeck {
                 }
             }
         }
-
         if(!beta){
             tokenDeck.put(Color.YELLOW, 5);
         }

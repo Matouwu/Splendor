@@ -1,12 +1,8 @@
 package fr.uge.splendor.view.console;
 
 import fr.uge.splendor.model.entity.Player;
-import fr.uge.splendor.model.items.Color;
-import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
-
-import java.util.Objects;
 
 public class ConsoleMessage {
 
@@ -45,6 +41,12 @@ public class ConsoleMessage {
                     BE CAREFUL, I KNOW WHERE YOU LIVE!
                     You must enter a valid age number (0 < ageNumber < 150).
                     """);
+            case 201 ->
+                    System.out.println("""
+                    - Invalid number of player -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must enter a valid number of player (between 2 and 4).
+                    """);
             case 300 -> //Token
                 System.out.println("""
                     - Wrong color -
@@ -64,6 +66,11 @@ public class ConsoleMessage {
                     """);
                 tokenDeckMessage(1, tokenDeck);
             }
+            case 303 ->
+                System.out.println("""
+                    - TokenDeck full -
+                    Atteint le nombre maximum de token, veuille acheter une carte.
+                    """);
             case 400 -> //Card
                 System.out.println("""
                     - Wrong card level -
@@ -75,10 +82,20 @@ public class ConsoleMessage {
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
                     Tu dois rentrer un nombre entre 1 et 4 pour choisir la carte que tu veux acheter du plateau !""");
             case 402 ->
-                    System.out.println("""
+                System.out.println("""
                     - Not enough ressources -
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
                     Pas asser de ressource pour acheter une carte, choisi une autre action.""");
+            case 500 -> //ReservedCard
+                System.out.println("""
+                    - Reserve card full -
+                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    Atteint le nombre maximum de carte reservé possible.""");
+            case 501 ->
+                System.out.println("""
+                    - Wrong reserve card number -
+                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    Tu dois rentrer un nombre pour choisir la carte reservé à acheter.""");
 
         }
     }
@@ -90,8 +107,8 @@ public class ConsoleMessage {
         }
 
     }
-    public static void cardDeckMessage(DevDeck devDeck, boolean mode){
-        System.out.println("Tu peux acheter des cartes si tu le souhaites, voici les cartes à l'achat :");
+    public static void cardDeckMessage(DevDeck devDeck, boolean mode){ //TODO
+        System.out.println("Voici les cartes en vitrine :");
         if(mode){
             int i = 1;
             for(var card : devDeck.getDevDeck().get(0)){
@@ -105,7 +122,7 @@ public class ConsoleMessage {
             for (var level : devDeck.getDevDeck().entrySet()){
                 System.out.println("Level " + level.getKey() + " :");
                 for (var card : level.getValue()) {
-                    if(i<4){
+                    if(i<=4){
                         System.out.println("    " + i + " -> " + card);
                         i++;
                     }
@@ -115,20 +132,18 @@ public class ConsoleMessage {
         }
     }
 
-    public static void buyCardMessage(int code, DevDeck devDeck, boolean mode){ //TODO
+    public static void takeCardMessage(int code){ //TODO
         switch (code){
-            case 1 -> {
-                cardDeckMessage(devDeck, mode);
-                System.out.println("Quelle niveau de carte voulez-vous acheter ? (Entrez le numéro de 1 à " + devDeck.getDevDeck().size() + ")");
+            case 1 ->
+                System.out.println("Quelle niveau de carte voulez-vous choisir? Entrez le niveau de 1 à 3 :");
+            case 2 ->
                 System.out.println("Choisir entre 1 à 4 pour choisir la carte.");
-            }
-            case 2 -> {
-                cardDeckMessage(devDeck, mode);
-                System.out.println("Choisir entre 1 à 4 pour choisir la carte.");
-            }
         }
     }
 
+    public static void successReserveMessage(){
+        System.out.println("You’ve successfully reserve the card!");
+    }
     public static void successBuyMessage(){
         System.out.println("You’ve successfully bought the card!");
     }
@@ -138,6 +153,9 @@ public class ConsoleMessage {
     }
 
 
+    public static void createNumberPlayerMessage(){ //TODO
+        System.out.println("Combien de joueur joue (entre 2 - 4):");
+    }
     public static void createPlayerNameMessage(int index){
         System.out.println("============ [ Player " + index + " ] ============");
         System.out.println("Enter a nickname:");
@@ -150,14 +168,25 @@ public class ConsoleMessage {
         System.out.println(player.getName() + " goes first! Because... well, this player is the smallest! NIHAHAHA ");
     }
 
-    public static void selectAction(Player p){
+    public static void selectAction(Player p, boolean beta){
         System.out.println("===== " + p.getName() + " turn =====");
-        System.out.println("""
+        if(beta){
+            System.out.println("""
                         Choose your action  :
                         - (1) Take 3 gemstones of different colors
                         - (2) Take 2 gemstones of the same color
                         - (3) Purchase 1 development card using gemstones
                         """);
+        } else {
+            System.out.println("""
+                        Choose your action  :
+                        - (1) Take 3 gemstones of different colors
+                        - (2) Take 2 gemstones of the same color
+                        - (3) Purchase 1 development card using gemstones
+                        - (4) Reserve 1 development card
+                        """);
+        }
+
     }
     public static void action(int code, TokenDeck tokenDeck){
         switch (code){
@@ -174,9 +203,12 @@ public class ConsoleMessage {
             case 3 ->
                 System.out.println("""
                     You're going for the big move: buying a development card!
-                    Specify which one you want by giving its level and position.
+                    Specify which card you want to buy.
                     Remember: every point counts!""");
-
+            case 4 ->
+                System.out.println("""
+                    You're going to reserved a card!
+                    Specify which one you want by giving its level and position.""");
         }
     }
 
@@ -208,6 +240,7 @@ public class ConsoleMessage {
                     - (1) Take 3 gemstones of different colors
                     - (2) Take 2 gemstones of the same color
                     - (3) Purchase 1 development card using gemstones
+                    - (4) Reserve 1 development card
                 Each card gives you 1 prestige point and costs 3 gemstones.
                 
                 A simple game to learn, but with strategic depth that guarantees hours of fun.

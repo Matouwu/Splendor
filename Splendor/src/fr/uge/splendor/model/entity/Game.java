@@ -54,13 +54,12 @@ public class Game {
 
     public int checkGameEnd() {
         for(var p: playerList) {
-            if(p.getPrestigePoint() >= 15) {
+            if(p.getPrestigePoint() >= 3) {
                 return playerList.indexOf(p);
             }
         }
         return -1;
     }
-
 
 
     @Override

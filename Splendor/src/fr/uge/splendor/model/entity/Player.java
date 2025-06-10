@@ -49,6 +49,14 @@ public class Player {
     public TokenDeck getTokenDeck(){
         return tokenDeck;
     }
+    public int getTokenNum(){
+        return tokenDeck.getTokenDeck().values().stream()
+                .mapToInt(i -> i)
+                .sum();
+    }
+    public DevDeck getDevDeckReserved(){
+        return devDeckReserved;
+    }
 
     private void addPrestigePoints(DevCard card) {
         prestigePoint += card.prestigePoint();
@@ -76,13 +84,17 @@ public class Player {
         }
     }
 
-    public void addCardsList(DevCard devcard) {
-        Objects.requireNonNull(devcard);
-        removeToken(devcard.tokenRequire());
-        devDeck.addDevCard(devcard);
-        addPrestigePoints(devcard);
+    public void addCardsList(DevCard devCard) {
+        Objects.requireNonNull(devCard);
+        removeToken(devCard.tokenRequire());
+        devDeck.addDevCard(devCard);
+        addPrestigePoints(devCard);
     }
 
+    public void addCardsReserveList(DevCard devCard){
+        Objects.requireNonNull(devCard);
+        devDeckReserved.addDevCard(devCard);
+    }
 
     @Override
     public String toString() {
@@ -91,7 +103,7 @@ public class Player {
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
                     "\n     Token=" + tokenDeck +
-                    "\n     DevDeck= " + devDeck+
+                    "\n     DevDeck= " + devDeck.toString() +
                     "]\n";
         } else {
             assert nobleDeck != null;

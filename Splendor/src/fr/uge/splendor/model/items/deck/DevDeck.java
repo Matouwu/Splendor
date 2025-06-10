@@ -33,7 +33,7 @@ public class DevDeck {
     }
 
     public DevCard removeDevCard(int level, int index){
-        if(index<0 || index>=devDeck.size()){
+        if(index<0 || index>4){
             return null;
         }
         return devDeck.get(level).remove(index-1);
@@ -68,6 +68,6 @@ public class DevDeck {
         }
         return devDeck.entrySet().stream()
                 .map(entry -> "level " + entry.getKey() + "= " + entry.getValue())
-                .collect(Collectors.joining(", ", "DevDeck : {", "}"));
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 }

@@ -1,7 +1,5 @@
 package fr.uge.splendor.controller;
 
-import fr.uge.splendor.model.action.BuyCard;
-import fr.uge.splendor.model.action.TakeToken;
 import fr.uge.splendor.model.entity.Game;
 import fr.uge.splendor.model.entity.Player;
 import fr.uge.splendor.model.items.Color;
@@ -28,7 +26,6 @@ public class GameController {
 
     /* ========== Setup fiels ========== */
 
-
     private DevDeck setupBetaDevBoardDeck(){
         DevDeck devDeck = new DevDeck(gameMode);
         devDeck.loadBetaCards();
@@ -44,15 +41,21 @@ public class GameController {
         nobleDeck.loadAllNoble();
         return nobleDeck;
     }
-    private TokenDeck setupTokenBoardDeck(boolean mode){
+    private TokenDeck setupTokenBoardDeck(int nbPlayer, boolean beta){
         var tokenDeck = new TokenDeck(new HashMap<>());
-        if(mode){
-            tokenDeck.initBoardTokenDeck(2, true);
-        } else {
-        }
+        tokenDeck.initBoardTokenDeck(nbPlayer, beta);
         return tokenDeck;
     }
 
+    private int setupPlayerNumber(){
+        ConsoleMessage.createNumberPlayerMessage();
+        int nb = consoleView.inputInt();
+        while (nb<0 || nb>4){
+            ConsoleMessage.wrongInputMessage(201, null);
+            nb = consoleView.inputInt();
+        }
+        return nb;
+    }
     private List<Player> setupPlayerList(int index){
         List<Player> playersList = new ArrayList<>();
         for(int i=0; i<index; i++){
@@ -92,21 +95,21 @@ public class GameController {
         this.gameMode = true;
         ConsoleMessage.betaStartMessage();
         var devDeck = setupBetaDevBoardDeck();
-        var tokenDeck = setupTokenBoardDeck(gameMode);
+        var tokenDeck = setupTokenBoardDeck(2, true);
         var playerList = setupPlayerList(2);
         var currentPlayerIndex = setupPlayerIndex(playerList);
         ConsoleMessage.firstPlayer(playerList.get(currentPlayerIndex));
         this.game = new Game(devDeck, null, tokenDeck, playerList, currentPlayerIndex, true);
     }
-    private void setupFinalMode() throws IOException { //FIXME
+    private void setupFinalMode() throws IOException {
         this.gameMode = false;
         ConsoleMessage.finalStartMessage();
         var devDeck = setupDevBoardDeck();
         var nobleDeck = setupNobleDeck();
-        var tokenDeck = setupTokenBoardDeck(gameMode);
-
-        var playerList = setupPlayerList(7);
+        var nbPlayer = setupPlayerNumber();
+        var playerList = setupPlayerList(nbPlayer);
         var currentPlayerIndex = setupPlayerIndex(playerList);
+        var tokenDeck = setupTokenBoardDeck(playerList.size(), false);
         ConsoleMessage.firstPlayer(playerList.get(currentPlayerIndex));
         this.game = new Game(devDeck, nobleDeck, tokenDeck, playerList, currentPlayerIndex, false);
 
@@ -147,76 +150,158 @@ public class GameController {
         return color;
     }
 
-    private TokenDeck setupDiffTokenDeck(){
-        TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
-        Set<String> tmp = new HashSet<>();
-        while(tokenDeck.getTokenDeck().size() < 3){
-            var color = getInputColor(1);
-            if(tmp.contains(color.name())){
-                ConsoleMessage.wrongInputMessage(301, game.getTokenDeck());
-            } else {
-                game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color)-1);
-                tmp.add(color.name());
-                tokenDeck.addTokenDeck(color, 1);
+
+
+    private void actionDiffTokenDeck(){
+        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+        if(player.getTokenNum()+3>10) {
+            ConsoleMessage.wrongInputMessage(303, null);
+        } else {
+            TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
+            Set<String> tmp = new HashSet<>();
+            while (tokenDeck.getTokenDeck().size() < 3) {
+                var color = getInputColor(1);
+                if (tmp.contains(color.name())) {
+                    ConsoleMessage.wrongInputMessage(301, game.getTokenDeck());
+                } else {
+                    game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color) - 1);
+                    tmp.add(color.name());
+                    tokenDeck.addTokenDeck(color, 1);
+                }
             }
+            player.addToken(tokenDeck);
+            ConsoleMessage.successTakeMessage(tokenDeck);
+            ConsoleMessage.tokenDeckMessage(2, game.getTokenDeck());
+            System.out.println(player);
+            game.nextPlayer();
         }
-        return tokenDeck;
     }
 
-    private TokenDeck setupSameTokenDeck(){
-        TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
-        var color = getInputColor(2);
-        game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color)-2);
-        tokenDeck.addTokenDeck(color, 2);
-        return tokenDeck;
+    private void actionSameTokenDeck(){
+        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+        if(player.getTokenNum()+3>10) {
+            ConsoleMessage.wrongInputMessage(303, null);
+        } else {
+            TokenDeck tokenDeck = new TokenDeck(new HashMap<>());
+            var color = getInputColor(2);
+            game.getTokenDeck().getTokenDeck().put(color, game.getTokenDeck().getTokenDeck().get(color) - 2);
+            tokenDeck.addTokenDeck(color, 2);
+            player.addToken(tokenDeck);
+            ConsoleMessage.successTakeMessage(tokenDeck);
+            ConsoleMessage.tokenDeckMessage(2, game.getTokenDeck());
+            System.out.println(player);
+            game.nextPlayer();
+        }
     }
 
-    private DevCard setupBuyCard(){
+    private void actionBuyCard(){
         int level = 0;
         if(!gameMode){
+            ConsoleMessage.takeCardMessage(1);
+            System.out.println("(ou 4 pour acheter une carte réservée)");
             level = consoleView.inputInt();
-            while (level<0 || level>game.getDevDeck().getDevDeck().size()){
+            while (level<0 || level>game.getDevDeck().getDevDeck().size()+1){
                 ConsoleMessage.wrongInputMessage(400, null);
                 level = consoleView.inputInt();
             }
         }
-        ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
-        ConsoleMessage.buyCardMessage(2,game.getDevDeck() , gameMode);
-        var card = consoleView.inputInt();
-        while (card<0 || card > 4){
-            ConsoleMessage.wrongInputMessage(401, null);
+        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+        int card;
+        DevCard devCard;
+        if(level == 4) {
+            System.out.println("You have chosen to purchase a reserved card:");
+            ConsoleMessage.takeCardMessage(1);
+            level = consoleView.inputInt();
+            while (level<0 || level>game.getDevDeck().getDevDeck().size()+1) {
+                ConsoleMessage.wrongInputMessage(400, null);
+                level = consoleView.inputInt();
+            }
+            ConsoleMessage.cardDeckMessage(game.getPlayerList().get(game.getCurrentPlayerIndex()).getDevDeckReserved(), gameMode);
+            ConsoleMessage.takeCardMessage(2);
             card = consoleView.inputInt();
+            while (card<0 || card>player.getDevDeckReserved().getDevDeck().size()){
+                ConsoleMessage.wrongInputMessage(501, null);
+                card = consoleView.inputInt();
+            }
+            devCard = player.getDevDeckReserved().removeDevCard(level,card);
+        } else {
+            ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
+            ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
+            ConsoleMessage.takeCardMessage(2);
+            card = consoleView.inputInt();
+            while (card<0 || card > 4){
+                ConsoleMessage.wrongInputMessage(401, null);
+                card = consoleView.inputInt();
+            }
+            devCard = game.getDevDeck().removeDevCard(level, card);
         }
-        return game.getDevDeck().removeDevCard(level, card);
+        player.addCardsList(devCard);
+        game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
+        ConsoleMessage.successBuyMessage();
+        System.out.println(player);
+        game.nextPlayer();
+    }
+
+    private void actionReservedCard() {
+        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+        if (player.getDevDeckReserved().getDevDeck().size() > 3){
+            ConsoleMessage.wrongInputMessage(500, null);
+        } else {
+            int level = 0;
+            if (!gameMode) {
+                ConsoleMessage.takeCardMessage(1);
+                level = consoleView.inputInt();
+                while (level < 0 || level > game.getDevDeck().getDevDeck().size()) {
+                    ConsoleMessage.wrongInputMessage(400, null);
+                    level = consoleView.inputInt();
+                }
+            }
+            ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
+            ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
+            ConsoleMessage.takeCardMessage(2);
+            var card = consoleView.inputInt();
+            while (card < 0 || card > 4) {
+                ConsoleMessage.wrongInputMessage(401, null);
+                card = consoleView.inputInt();
+            }
+            var devCard = game.getDevDeck().removeDevCard(level, card);
+
+            player.addCardsReserveList(devCard);
+            game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
+            ConsoleMessage.successReserveMessage();
+            System.out.println(player);
+            game.nextPlayer();
+        }
     }
 
     private void gameRound(){
-        ConsoleMessage.selectAction(game.getPlayerList().get(game.getCurrentPlayerIndex()));
+        ConsoleMessage.selectAction(game.getPlayerList().get(game.getCurrentPlayerIndex()), gameMode);
         var action = consoleView.inputInt();
-        while(action!=1 && action!=2 && action !=3){
+        while(action!=1 && action!=2 && action!=3 && action!=4){
             action = consoleView.inputInt();
         }
         switch(action){
             case 1 -> {
                 ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
                 ConsoleMessage.action(1, game.getTokenDeck());
-                var diffTokenDeck = setupDiffTokenDeck();
-                TakeToken.execute(game, diffTokenDeck);
+                actionDiffTokenDeck();
             }
             case 2 -> {
                 ConsoleMessage.cardDeckMessage(game.getDevDeck(),gameMode);
                 ConsoleMessage.action(2, game.getTokenDeck());
-                var sameTokenDeck = setupSameTokenDeck();
-                TakeToken.execute(game, sameTokenDeck);
+                actionSameTokenDeck();
             }
             case 3 -> {
                 if(game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck().getTokenDeck().isEmpty()){
                     ConsoleMessage.wrongInputMessage(402, null);
                 } else {
                     ConsoleMessage.action(3, null);
-                    var cardToBuy = setupBuyCard();
-                    BuyCard.execute(game, cardToBuy);
+                    actionBuyCard();
                 }
+            }
+            case 4 -> {
+                ConsoleMessage.action(4, null);
+                actionReservedCard();
             }
         }
     }
