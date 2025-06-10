@@ -28,8 +28,14 @@ public class GameController {
 
     /* ========== Setup fiels ========== */
 
+
+    private DevDeck setupBetaDevBoardDeck(){
+        DevDeck devDeck = new DevDeck(gameMode);
+        devDeck.loadBetaCards();
+        return devDeck;
+    }
     private DevDeck setupDevBoardDeck() throws IOException {
-        var devDeck = new DevDeck();
+        var devDeck = new DevDeck(gameMode);
         devDeck.loadAllCards();
         return devDeck;
     }
@@ -38,9 +44,12 @@ public class GameController {
         nobleDeck.loadAllNoble();
         return nobleDeck;
     }
-    private TokenDeck setupTokenBoardDeck(){
+    private TokenDeck setupTokenBoardDeck(boolean mode){
         var tokenDeck = new TokenDeck(new HashMap<>());
-        tokenDeck.initBoardTokenDeck(2,true);
+        if(mode){
+            tokenDeck.initBoardTokenDeck(2, true);
+        } else {
+        }
         return tokenDeck;
     }
 
@@ -79,11 +88,11 @@ public class GameController {
 
     /* ========== Setup Game mode ========== */
 
-    private void setupBetaMode() throws IOException {
+    private void setupBetaMode(){
         this.gameMode = true;
         ConsoleMessage.betaStartMessage();
-        var devDeck = setupDevBoardDeck();
-        var tokenDeck = setupTokenBoardDeck();
+        var devDeck = setupBetaDevBoardDeck();
+        var tokenDeck = setupTokenBoardDeck(gameMode);
         var playerList = setupPlayerList(2);
         var currentPlayerIndex = setupPlayerIndex(playerList);
         ConsoleMessage.firstPlayer(playerList.get(currentPlayerIndex));
@@ -94,7 +103,7 @@ public class GameController {
         ConsoleMessage.finalStartMessage();
         var devDeck = setupDevBoardDeck();
         var nobleDeck = setupNobleDeck();
-        var tokenDeck = setupTokenBoardDeck();
+        var tokenDeck = setupTokenBoardDeck(gameMode);
 
         var playerList = setupPlayerList(7);
         var currentPlayerIndex = setupPlayerIndex(playerList);
@@ -163,19 +172,22 @@ public class GameController {
     }
 
     private DevCard setupBuyCard(){
-        ConsoleMessage.buyCardMessage(1,game.getDevDeck());
-        var level = consoleView.inputInt();
-        while (level<0 || level>game.getDevDeck().getDevDeck().size()){
-            ConsoleMessage.wrongInputMessage(400, null);
+        int level = 0;
+        if(!gameMode){
             level = consoleView.inputInt();
+            while (level<0 || level>game.getDevDeck().getDevDeck().size()){
+                ConsoleMessage.wrongInputMessage(400, null);
+                level = consoleView.inputInt();
+            }
         }
-        ConsoleMessage.buyCardMessage(2, null);
+        ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
+        ConsoleMessage.buyCardMessage(2,game.getDevDeck() , gameMode);
         var card = consoleView.inputInt();
         while (card<0 || card > 4){
             ConsoleMessage.wrongInputMessage(401, null);
             card = consoleView.inputInt();
         }
-        return game.getDevDeck().getDevDeck().get(level).remove(card);
+        return game.getDevDeck().removeDevCard(level, card);
     }
 
     private void gameRound(){
@@ -186,13 +198,13 @@ public class GameController {
         }
         switch(action){
             case 1 -> {
-                ConsoleMessage.cardDeckMessage(game.getDevDeck());
+                ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
                 ConsoleMessage.action(1, game.getTokenDeck());
                 var diffTokenDeck = setupDiffTokenDeck();
                 TakeToken.execute(game, diffTokenDeck);
             }
             case 2 -> {
-                ConsoleMessage.cardDeckMessage(game.getDevDeck());
+                ConsoleMessage.cardDeckMessage(game.getDevDeck(),gameMode);
                 ConsoleMessage.action(2, game.getTokenDeck());
                 var sameTokenDeck = setupSameTokenDeck();
                 TakeToken.execute(game, sameTokenDeck);

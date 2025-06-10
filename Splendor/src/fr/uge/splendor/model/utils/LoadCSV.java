@@ -81,7 +81,7 @@ public class LoadCSV {
         }
         
         TokenDeck tokenDeck = new TokenDeck(costs);
-        return new DevCard(level, gemColor, prestigePoints, tokenDeck, illustration);
+        return new DevCard(level, gemColor, prestigePoints, tokenDeck, illustration, false);
     }
 
     private static boolean isValidLevel(int level) {

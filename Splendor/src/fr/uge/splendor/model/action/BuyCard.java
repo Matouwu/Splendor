@@ -14,6 +14,7 @@ public class BuyCard {
 
         var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
         player.addCardsList(devCard);
+        game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
         ConsoleMessage.successBuyMessage();
         System.out.println(player);
         game.nextPlayer();

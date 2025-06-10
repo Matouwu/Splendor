@@ -35,14 +35,12 @@ public class TokenDeck {
         tokenDeck.put(color, tokenDeck.getOrDefault(color, 0)+ amount);
     }
 
-    public boolean removeTokenDeck(Color color, int amount) {
+    public void removeTokenDeck(Color color, int amount) {
         Objects.requireNonNull(color);
         if(tokenDeck.get(color) < 0) throw new IllegalArgumentException();
         if(tokenDeck.get(color)>=amount){
             tokenDeck.put(color, tokenDeck.get(color)-amount);
-            return true;
         }
-        return false;
     }
 
     /* Game Board Deck */

@@ -26,8 +26,8 @@ public class Player {
         this.age = age;
         this.prestigePoint = 0;
         this.tokenDeck = new TokenDeck(new HashMap<>());
-        this.devDeckReserved = new DevDeck();
-        this.devDeck = new DevDeck();
+        this.devDeckReserved = new DevDeck(beta);
+        this.devDeck = new DevDeck(beta);
         this.beta = beta;
         if(beta){
             this.nobleDeck = null;
@@ -72,7 +72,7 @@ public class Player {
     private void removeToken(TokenDeck tokenDeck) {
         Objects.requireNonNull(tokenDeck);
         for(var color : tokenDeck.getTokenDeck().entrySet()){
-            tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+            this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
         }
     }
 
@@ -91,17 +91,16 @@ public class Player {
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
                     "\n     Token=" + tokenDeck +
-                    "\n     DevDeckReserved= " + devDeckReserved.toString() +
-                    "\n     DevDeck= " + devDeck.toString() +
+                    "\n     DevDeck= " + devDeck+
                     "]\n";
         } else {
             assert nobleDeck != null;
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
                     "\n     Token=" + tokenDeck +
-                    "\n     DevDeckReserved= " + devDeckReserved.toString() +
-                    "\n     DevDeck= " + devDeck.toString() +
-                    "\n     NobleDeck= " + nobleDeck.toString() +
+                    "\n     DevDeckReserved= " + devDeckReserved +
+                    "\n     DevDeck= " + devDeck +
+                    "\n     NobleDeck= " + nobleDeck+
                     "]\n";
         }
         return string;

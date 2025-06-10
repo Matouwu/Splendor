@@ -49,7 +49,7 @@ public class Game {
     }
 
     public void nextPlayer() {
-        this.currentPlayerIndex = (currentPlayerIndex + 1)%2;
+        this.currentPlayerIndex = (currentPlayerIndex + 1)% playerList.size();
     }
 
     public int checkGameEnd() {
@@ -60,6 +60,8 @@ public class Game {
         }
         return -1;
     }
+
+
 
     @Override
     public String toString(){

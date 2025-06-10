@@ -62,7 +62,7 @@ public class ConsoleMessage {
                     - Unavailable color -
                     Unavailable Color avec le dec qu'il reste a choisir :
                     """);
-                tokenDeckMessage(tokenDeck);
+                tokenDeckMessage(1, tokenDeck);
             }
             case 400 -> //Card
                 System.out.println("""
@@ -83,31 +83,49 @@ public class ConsoleMessage {
         }
     }
 
-    public static void tokenDeckMessage(TokenDeck tokenDeck){ //TODO
-        System.out.println("??? Il reste dans la pile de tokens :" + tokenDeck);
+    public static void tokenDeckMessage(int code, TokenDeck tokenDeck){ //TODO
+        switch(code){
+            case 1 -> System.out.println("??? Il reste dans la pile de tokens :" + tokenDeck); //Liste de token du jeu
+            case 2 -> System.out.println("Ta pile de tokens :" + tokenDeck); //List de token du joueur
+        }
+
     }
-    public static void cardDeckMessage(DevDeck devDeck){
+    public static void cardDeckMessage(DevDeck devDeck, boolean mode){
         System.out.println("Tu peux acheter des cartes si tu le souhaites, voici les cartes à l'achat :");
-        int i = 1;
-        for (var level : devDeck.getDevDeck().entrySet()){
-            System.out.println("Level " + level.getKey() + " :");
-            for (var card : level.getValue()) {
-                if(i<4){
+        if(mode){
+            int i = 1;
+            for(var card : devDeck.getDevDeck().get(0)){
+                if(i<=4){
                     System.out.println("    " + i + " -> " + card);
                     i++;
                 }
             }
-            i = 1;
+        } else {
+            int i = 1;
+            for (var level : devDeck.getDevDeck().entrySet()){
+                System.out.println("Level " + level.getKey() + " :");
+                for (var card : level.getValue()) {
+                    if(i<4){
+                        System.out.println("    " + i + " -> " + card);
+                        i++;
+                    }
+                }
+                i = 1;
+            }
         }
     }
 
-    public static void buyCardMessage(int code, DevDeck devDeck){ //TODO
+    public static void buyCardMessage(int code, DevDeck devDeck, boolean mode){ //TODO
         switch (code){
             case 1 -> {
-                cardDeckMessage(devDeck);
+                cardDeckMessage(devDeck, mode);
                 System.out.println("Quelle niveau de carte voulez-vous acheter ? (Entrez le numéro de 1 à " + devDeck.getDevDeck().size() + ")");
+                System.out.println("Choisir entre 1 à 4 pour choisir la carte.");
             }
-            case 2 -> System.out.println("Choisir entre 1 à 3 pour choisir la carte.");
+            case 2 -> {
+                cardDeckMessage(devDeck, mode);
+                System.out.println("Choisir entre 1 à 4 pour choisir la carte.");
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package fr.uge.splendor.model.items.deck;
 
+import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.utils.LoadCSV;
 
@@ -9,23 +10,26 @@ import java.util.stream.Collectors;
 
 public class DevDeck {
     private Map<Integer, List<DevCard>> devDeck = new HashMap<>();
+    private final boolean mode;
 
-    public DevDeck(){
-        for(int i=0; i<3; i++){
-            devDeck.put(i+1, new ArrayList<>());
-        }
+    public DevDeck(boolean mode){
+        this.mode = mode;
     }
 
     public Map<Integer, List<DevCard>> getDevDeck(){
         return this.devDeck;
     }
 
-    public boolean addDevCard(DevCard devCard) {
+    public void addDevCard(DevCard devCard) {
         Objects.requireNonNull(devCard);
-        if(!devDeck.containsKey(devCard.level())) return false;
-        var val = devDeck.get(devCard.level());
-        val.add(devCard);
-        return true;
+        if(devDeck.containsKey(devCard.level())){
+            var val = devDeck.get(devCard.level());
+            val.add(devCard);
+        } else {
+            List<DevCard> list = new ArrayList<>();
+            list.add(devCard);
+            devDeck.put(devCard.level(),list);
+        }
     }
 
     public boolean removeDevCard(DevCard devCard){
@@ -42,18 +46,26 @@ public class DevDeck {
             Collections.shuffle(list);
         }
     }
+    public void loadBetaCards(){
+        for(var color : Color.values()){
+            for(int i=0; i<8; i++){
+                if(!color.equals(Color.YELLOW)) {
+                    Map<Color, Integer> map = new HashMap<>();
+                    map.put(color, 3);
+                    addDevCard(new DevCard(0, null, 1, new TokenDeck(map), "", true));
+                }
+            }
+        }
+        for(var list: devDeck.values()){
+            Collections.shuffle(list);
+        }
+    }
 
-
-
-
-
-/*
-    public CardsP1 drawDevCardDeck() {
-        if(devCard.isEmpty()) throw new IllegalStateException("DevCards is empty");
-        return devCard.removeFirst();
-    }*/
     @Override
     public String toString() {
+        if(mode){
+            return devDeck.values().toString();
+        }
         return devDeck.entrySet().stream()
                 .map(entry -> "level " + entry.getKey() + "= " + entry.getValue())
                 .collect(Collectors.joining(", ", "DevDeck : {", "}"));

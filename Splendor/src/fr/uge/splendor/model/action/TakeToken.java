@@ -16,7 +16,7 @@ public class TakeToken {
         var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
         player.addToken(tokenDeck);
         ConsoleMessage.successTakeMessage(tokenDeck);
-        ConsoleMessage.tokenDeckMessage(game.getTokenDeck());
+        ConsoleMessage.tokenDeckMessage(2,game.getTokenDeck());
         System.out.println(player);
         game.nextPlayer();
     }
