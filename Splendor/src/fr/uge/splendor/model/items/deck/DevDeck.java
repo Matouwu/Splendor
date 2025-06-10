@@ -32,11 +32,11 @@ public class DevDeck {
         }
     }
 
-    public boolean removeDevCard(DevCard devCard){
-        Objects.requireNonNull(devCard);
-        var devList = devDeck.get(devCard.level());
-        if(devList == null || !devList.contains(devCard)) return false;
-        return devDeck.get(devCard.level()).remove(devCard);
+    public DevCard removeDevCard(int level, int index){
+        if(index<0 || index>=devDeck.size()){
+            return null;
+        }
+        return devDeck.get(level).remove(index-1);
     }
 
     /* Game Board Deck */
