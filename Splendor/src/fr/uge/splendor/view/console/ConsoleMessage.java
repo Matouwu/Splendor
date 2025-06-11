@@ -42,10 +42,16 @@ public class ConsoleMessage {
                     You must enter a valid age number (0 < ageNumber < 150).
                     """);
             case 201 ->
-                    System.out.println("""
+                System.out.println("""
                     - Invalid number of player -
                     BE CAREFUL, I KNOW WHERE YOU LIVE!
                     You must enter a valid number of player (between 2 and 4).
+                    """);
+            case 202 ->
+                System.out.println("""
+                    - Invalid ressources -
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You do not have enough ressources to buy card, please select an other action or card.
                     """);
             case 300 -> //Token
                 System.out.println("""
@@ -75,7 +81,7 @@ public class ConsoleMessage {
                 System.out.println("""
                     - Wrong card level -
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
-                    Tu dois rentrer le niveau de carte que tu veux acheter valide !""");
+                    Tu dois rentrer un niveau de carte valide !""");
             case 401 ->
                 System.out.println("""
                     - Wrong card number -
@@ -95,7 +101,7 @@ public class ConsoleMessage {
                 System.out.println("""
                     - Wrong reserve card number -
                     ATTENTION A TOI, JE SAIS OU TU HABITE !
-                    Tu dois rentrer un nombre pour choisir la carte reservé à acheter.""");
+                    Tu dois rentrer un nombre valid pour choisir la carte reservé à acheter.""");
 
         }
     }
@@ -132,12 +138,32 @@ public class ConsoleMessage {
         }
     }
 
+    /*        ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
+        ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
+        ConsoleMessage.takeCardMessage(2);
+        var card = consoleView.inputInt();
+        while (card<0 || card > 4){
+            ConsoleMessage.wrongInputMessage(401, null);
+            card = consoleView.inputInt();
+        }
+        var devCard = game.getDevDeck().removeDevCard(0, card);
+        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+        player.addCardsList(devCard);
+        game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
+        ConsoleMessage.successBuyMessage();
+        System.out.println(player);
+        game.nextPlayer();
+    }*/
+
     public static void takeCardMessage(int code){ //TODO
         switch (code){
             case 1 ->
                 System.out.println("Quelle niveau de carte voulez-vous choisir? Entrez le niveau de 1 à 3 :");
             case 2 ->
                 System.out.println("Choisir entre 1 à 4 pour choisir la carte.");
+            case 3 ->
+                System.out.println("You have chosen to purchase a reserved card.");
+
         }
     }
 

@@ -188,58 +188,86 @@ public class GameController {
             tokenDeck.addTokenDeck(color, 2);
             player.addToken(tokenDeck);
             ConsoleMessage.successTakeMessage(tokenDeck);
-            ConsoleMessage.tokenDeckMessage(2, game.getTokenDeck());
+            ConsoleMessage.tokenDeckMessage(1, game.getTokenDeck());
             System.out.println(player);
             game.nextPlayer();
         }
     }
 
-    private void actionBuyCard(){
+    private int buyLevel(boolean code){
         int level = 0;
-        if(!gameMode){
-            ConsoleMessage.takeCardMessage(1);
-            System.out.println("(ou 4 pour acheter une carte réservée)");
+        if(!gameMode) {
+            if (code) {
+                ConsoleMessage.takeCardMessage(1);
+                System.out.println("(ou 4 pour acheter une carte réservée)");
+
+            } else {
+                ConsoleMessage.takeCardMessage(3);
+                ConsoleMessage.takeCardMessage(1);
+            }
             level = consoleView.inputInt();
-            while (level<0 || level>game.getDevDeck().getDevDeck().size()+1){
+            while (level < 0 || level > game.getDevDeck().getDevDeck().size() + 1) {
                 ConsoleMessage.wrongInputMessage(400, null);
                 level = consoleView.inputInt();
             }
         }
-        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
-        int card;
-        DevCard devCard;
-        if(level == 4) {
-            System.out.println("You have chosen to purchase a reserved card:");
-            ConsoleMessage.takeCardMessage(1);
-            level = consoleView.inputInt();
-            while (level<0 || level>game.getDevDeck().getDevDeck().size()+1) {
-                ConsoleMessage.wrongInputMessage(400, null);
-                level = consoleView.inputInt();
-            }
+        return level;
+    }
+    private int buyCardIndex(boolean isReserved){
+        if(isReserved){
             ConsoleMessage.cardDeckMessage(game.getPlayerList().get(game.getCurrentPlayerIndex()).getDevDeckReserved(), gameMode);
-            ConsoleMessage.takeCardMessage(2);
-            card = consoleView.inputInt();
-            while (card<0 || card>player.getDevDeckReserved().getDevDeck().size()){
-                ConsoleMessage.wrongInputMessage(501, null);
-                card = consoleView.inputInt();
-            }
-            devCard = player.getDevDeckReserved().removeDevCard(level,card);
         } else {
             ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
-            ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
-            ConsoleMessage.takeCardMessage(2);
-            card = consoleView.inputInt();
-            while (card<0 || card > 4){
-                ConsoleMessage.wrongInputMessage(401, null);
-                card = consoleView.inputInt();
-            }
-            devCard = game.getDevDeck().removeDevCard(level, card);
         }
-        player.addCardsList(devCard);
-        game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
-        ConsoleMessage.successBuyMessage();
-        System.out.println(player);
-        game.nextPlayer();
+        ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
+        ConsoleMessage.takeCardMessage(2);
+        var cardIndex = consoleView.inputInt();
+
+        int code = 401;
+        boolean test = cardIndex > 4;
+        if(isReserved){
+            code = 501;
+            test = cardIndex>game.getPlayerList().get(game.getCurrentPlayerIndex()).getDevDeckReserved().getDevDeck().size();
+        }
+        while (cardIndex<0 || test){
+            ConsoleMessage.wrongInputMessage(code, null);
+            cardIndex = consoleView.inputInt();
+        }
+        return cardIndex;
+    }
+    private DevCard buyDevCard(int level, int cardIndex, boolean reserved){
+        DevCard devCard;
+        if(reserved){
+            devCard = game.getPlayerList().get(game.getCurrentPlayerIndex()).getDevDeckReserved().removeDevCard(level,cardIndex);
+        } else {
+            devCard = game.getDevDeck().removeDevCard(level, cardIndex);
+        }
+        return devCard;
+    }
+
+    private void actionBuyCard(){
+        if(game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck().isEmpty()){
+            ConsoleMessage.wrongInputMessage(202, null);
+        } else {
+            int level = buyLevel(true);
+            boolean reserved = false;
+            if(level==4){
+                level = buyLevel(false);
+                reserved = true;
+            }
+            var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
+            int cardIndex = buyCardIndex(reserved);
+            var devCard = buyDevCard(level, cardIndex, reserved);
+            if(player.checkCanBuy(devCard.tokenRequire())){
+                player.addCardsList(devCard);
+                game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
+                ConsoleMessage.successBuyMessage();
+                System.out.println(player);
+                game.nextPlayer();
+            } else {
+                ConsoleMessage.wrongInputMessage(402,null);
+            }
+        }
     }
 
     private void actionReservedCard() {

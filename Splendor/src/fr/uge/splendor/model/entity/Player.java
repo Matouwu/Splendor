@@ -14,6 +14,7 @@ public class Player {
     private final int age;
     private int prestigePoint;
     private final TokenDeck tokenDeck;
+    private final TokenDeck tokenDeckReduction;
     private final DevDeck devDeckReserved;
     private final DevDeck devDeck;
     private final NobleDeck nobleDeck;
@@ -26,6 +27,7 @@ public class Player {
         this.age = age;
         this.prestigePoint = 0;
         this.tokenDeck = new TokenDeck(new HashMap<>());
+        this.tokenDeckReduction = new TokenDeck(new HashMap<>());
         this.devDeckReserved = new DevDeck(beta);
         this.devDeck = new DevDeck(beta);
         this.beta = beta;
@@ -48,6 +50,9 @@ public class Player {
     }
     public TokenDeck getTokenDeck(){
         return tokenDeck;
+    }
+    public TokenDeck getTokenDeckReduction(){
+        return tokenDeckReduction;
     }
     public int getTokenNum(){
         return tokenDeck.getTokenDeck().values().stream()
@@ -87,6 +92,7 @@ public class Player {
     public void addCardsList(DevCard devCard) {
         Objects.requireNonNull(devCard);
         removeToken(devCard.tokenRequire());
+        tokenDeckReduction.addTokenDeck(devCard.tokenReduction(), 1);
         devDeck.addDevCard(devCard);
         addPrestigePoints(devCard);
     }
@@ -94,6 +100,14 @@ public class Player {
     public void addCardsReserveList(DevCard devCard){
         Objects.requireNonNull(devCard);
         devDeckReserved.addDevCard(devCard);
+    }
+
+    public boolean checkCanBuy(TokenDeck tokenDeck){
+        for(var token: tokenDeck.getTokenDeck().entrySet()){
+            if(this.tokenDeck.getTokenDeck().get(token.getKey()) < token.getValue())
+                return false;
+        }
+        return true;
     }
 
     @Override
