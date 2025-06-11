@@ -1,5 +1,6 @@
 package fr.uge.splendor.model.entity;
 
+import fr.uge.splendor.model.items.Color;
 import fr.uge.splendor.model.items.card.DevCard;
 import fr.uge.splendor.model.items.card.NobleCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
@@ -86,7 +87,13 @@ public class Player {
         Objects.requireNonNull(tokenDeck);
         for(var color : tokenDeck.getTokenDeck().entrySet()){
             if(color.getValue()!=0){
-                this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+                int diff = this.tokenDeck.getTokenDeck().get(color.getKey())-color.getValue();
+                if(diff<0){
+                    this.tokenDeck.removeTokenDeck(color.getKey(),this.tokenDeck.getTokenDeck().get(color.getKey()));
+                    this.tokenDeck.removeTokenDeck(Color.YELLOW,-diff);
+                } else {
+                    this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+                }
             }
         }
     }
@@ -106,14 +113,14 @@ public class Player {
 
     public boolean checkCanBuy(TokenDeck tokenDeck){
         Objects.requireNonNull(tokenDeck);
+        int diff =0;
+
         for(var token: tokenDeck.getTokenDeck().entrySet()){
             if(token.getValue()!=0){
-                if(this.tokenDeck.getTokenDeck().get(token.getKey()) < token.getValue()) {
-                    return false;
-                }
+                diff = this.tokenDeck.getTokenDeck().get(token.getKey()) + this.tokenDeckReduction.getTokenDeck().getOrDefault(token.getKey(), 0) - token.getValue();
             }
         }
-        return true;
+        return (diff + this.tokenDeck.getTokenDeck().get(Color.YELLOW))>=0;
     }
 
     @Override
