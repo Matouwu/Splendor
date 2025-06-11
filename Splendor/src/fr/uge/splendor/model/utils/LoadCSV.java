@@ -40,15 +40,29 @@ public class LoadCSV {
             } else if (!line.isEmpty() && !line.startsWith("Level") && !line.startsWith("Detailed")) {
                 String[] parts = line.split(",", -1);
                 
+                while (parts.length > 0 && (parts[0] == null || parts[0].trim().isEmpty())) {
+                    String[] newParts = new String[parts.length - 1];
+                    System.arraycopy(parts, 1, newParts, 0, parts.length - 1);
+                    parts = newParts;
+                }
+                
                 if (parts.length >= 10) {
-                    if (!parts[0].isEmpty() && !parts[1].isEmpty()) {
+                    if (!parts[0].isEmpty() && isNumeric(parts[0])) {
                         currentLevel = parseIntOrDefault(parts[0], currentLevel);
-                        currentGemColor = parseColorOrNull(parts[1]);
                     }
                     
-                    DevCard card = parseCardFromCSVLine(parts, currentLevel, currentGemColor);
-                    if (card != null && isValidLevel(currentLevel)) {
-                        cardByLevel.get(currentLevel).add(card);
+                    if (!parts[1].isEmpty()) {
+                        Color newColor = parseColorOrNull(parts[1]);
+                        if (newColor != null) {
+                            currentGemColor = newColor;
+                        }
+                    }
+                    
+                    if (hasCardData(parts)) {
+                        DevCard card = parseCardFromCSVLine(parts, currentLevel, currentGemColor);
+                        if (card != null && isValidLevel(currentLevel)) {
+                            cardByLevel.get(currentLevel).add(card);
+                        }
                     }
                 }
             }
@@ -60,8 +74,31 @@ public class LoadCSV {
         return cardByLevel;
     }
 
+    private static boolean hasCardData(String[] parts) {
+        if (parts.length < 10) return false;
+        
+        for (int i = 2; i < Math.min(parts.length, 10); i++) {
+            if (!parts[i].isEmpty() && !parts[i].equals("0")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private static boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            Integer.parseInt(str.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     private static DevCard parseCardFromCSVLine(String[] parts, int level, Color gemColor) {
-        if (!isValidLevel(level) || parts.length < 10) {
+        if (!isValidLevel(level) || parts.length < 10 || gemColor == null) {
             return null;
         }
         
@@ -92,7 +129,11 @@ public class LoadCSV {
         if (value == null || value.isBlank()) {
             return defaultValue;
         }
-        return Integer.parseInt(value.trim());
+        try {
+            return Integer.parseInt(value.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
     private static Color parseColorOrNull(String colorStr) {
