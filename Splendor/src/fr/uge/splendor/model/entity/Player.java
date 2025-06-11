@@ -85,7 +85,9 @@ public class Player {
     private void removeToken(TokenDeck tokenDeck) {
         Objects.requireNonNull(tokenDeck);
         for(var color : tokenDeck.getTokenDeck().entrySet()){
-            this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+            if(color.getValue()!=0){
+                this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
+            }
         }
     }
 
@@ -103,9 +105,13 @@ public class Player {
     }
 
     public boolean checkCanBuy(TokenDeck tokenDeck){
+        Objects.requireNonNull(tokenDeck);
         for(var token: tokenDeck.getTokenDeck().entrySet()){
-            if(this.tokenDeck.getTokenDeck().get(token.getKey()) < token.getValue())
-                return false;
+            if(token.getValue()!=0){
+                if(this.tokenDeck.getTokenDeck().get(token.getKey()) < token.getValue()) {
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -117,13 +123,14 @@ public class Player {
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
                     "\n     Token=" + tokenDeck +
-                    "\n     DevDeck= " + devDeck.toString() +
+                    "\n     DevDeck= " + devDeck +
                     "]\n";
         } else {
             assert nobleDeck != null;
             string = "[Player " + name + " " + age + "y :" +
                     "\n     PointPrestige=" + prestigePoint +
                     "\n     Token=" + tokenDeck +
+                    "\n     TokenReduction=" + tokenDeckReduction +
                     "\n     DevDeckReserved= " + devDeckReserved +
                     "\n     DevDeck= " + devDeck +
                     "\n     NobleDeck= " + nobleDeck+

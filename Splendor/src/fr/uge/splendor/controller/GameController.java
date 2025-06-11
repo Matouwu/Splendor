@@ -150,8 +150,6 @@ public class GameController {
         return color;
     }
 
-
-
     private void actionDiffTokenDeck(){
         var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
         if(player.getTokenNum()+3>10) {
@@ -296,6 +294,7 @@ public class GameController {
 
             player.addCardsReserveList(devCard);
             player.getTokenDeck().addTokenDeck(Color.YELLOW,1);
+            game.getTokenDeck().getTokenDeck().put(Color.YELLOW, game.getTokenDeck().getTokenDeck().get(Color.YELLOW) - 1);
             ConsoleMessage.successReserveMessage();
             System.out.println(player);
             game.nextPlayer();

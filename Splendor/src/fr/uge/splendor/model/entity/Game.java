@@ -61,6 +61,55 @@ public class Game {
         return -1;
     }
 
+/*    public int checkNobleVisit() {
+        if (beta || nobleDeck == null) {
+            return -1;
+        }
+
+        Player currentPlayer = playerList.get(currentPlayerIndex);
+
+        Map<Color, Integer> playerBonuses = new HashMap<>();
+        for (Color color : Color.values()) {
+            if (!color.equals(Color.YELLOW)) {
+                playerBonuses.put(color, 0);
+            }
+        }
+
+        for (List<DevCard> levelCards : currentPlayer.getDevDeck().getDevDeck().values()) {
+            for (DevCard card : levelCards) {
+                Color bonusColor = card.tokenReduction();
+                if (bonusColor != null && !bonusColor.equals(Color.YELLOW)) {
+                    int currentBonus = playerBonuses.get(bonusColor);
+                    playerBonuses.put(bonusColor, currentBonus + 1);
+                }
+            }
+        }
+
+        List<NobleCard> nobles = nobleDeck.getNobleDeck();
+        for (int i = 0; i < nobles.size(); i++) {
+            NobleCard noble = nobles.get(i);
+            Map<Color, Integer> requirements = noble.getBonusRequirement();
+
+            var allRequirementsMet = true;
+
+            for (Map.Entry<Color, Integer> entry : requirements.entrySet()) {
+                Color color = entry.getKey();
+                int requiredAmount = entry.getValue();
+                int playerAmount = playerBonuses.getOrDefault(color, 0);
+
+                if (playerAmount < requiredAmount) {
+                    allRequirementsMet = false;
+                }
+            }
+
+            if (allRequirementsMet) {
+                return i;
+            }
+        }
+
+        return -1;
+    }*/
+
 
     @Override
     public String toString(){

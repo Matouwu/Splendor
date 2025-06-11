@@ -31,55 +31,74 @@ public class LoadCSV {
         int currentLevel = 0;
         Color currentGemColor = null;
         boolean skipFirstLine = true;
-        
+
         while ((line = reader.readLine()) != null) {
             line = line.trim();
-            
+
             if (skipFirstLine) {
                 skipFirstLine = false;
-            } else if (!line.isEmpty() && !line.startsWith("Level") && !line.startsWith("Detailed")) {
-                String[] parts = line.split(",", -1);
-                
-                if (parts.length >= 10) {
-                    if (!parts[0].isEmpty() && !parts[1].isEmpty()) {
-                        currentLevel = parseIntOrDefault(parts[0], currentLevel);
-                        currentGemColor = parseColorOrNull(parts[1]);
+                continue;
+            }
+
+            if (line.isEmpty() || line.startsWith("Level") || line.startsWith("Detailed")) {
+                continue;
+            }
+
+            String[] parts = line.split(",", -1);
+
+            if (parts.length >= 10) {
+                // Mise à jour du niveau - première colonne
+                if (!parts[0].trim().isEmpty()) {
+                    currentLevel = parseIntOrDefault(parts[0].trim(), currentLevel);
+                }
+
+                // Mise à jour de la couleur - deuxième colonne
+                if (!parts[1].trim().isEmpty()) {
+                    currentGemColor = parseColorOrNull(parts[1].trim());
+                }
+
+                // Vérification spéciale : si première colonne vide mais deuxième a une couleur
+                // Cela signifie un changement de couleur dans le même niveau
+                if (parts[0].trim().isEmpty() && !parts[1].trim().isEmpty()) {
+                    Color newColor = parseColorOrNull(parts[1].trim());
+                    if (newColor != null) {
+                        currentGemColor = newColor;
                     }
-                    
-                    DevCard card = parseCardFromCSVLine(parts, currentLevel, currentGemColor);
-                    if (card != null && isValidLevel(currentLevel)) {
-                        cardByLevel.get(currentLevel).add(card);
-                    }
+                }
+
+                DevCard card = parseCardFromCSVLine(parts, currentLevel, currentGemColor);
+                if (card != null && isValidLevel(currentLevel)) {
+                    cardByLevel.get(currentLevel).add(card);
                 }
             }
         }
-        
+
         reader.close();
         inputStream.close();
-        
+
         return cardByLevel;
     }
 
     private static DevCard parseCardFromCSVLine(String[] parts, int level, Color gemColor) {
-        if (!isValidLevel(level) || parts.length < 10) {
+        if (!isValidLevel(level) || parts.length < 10 || gemColor == null) {
             return null;
         }
-        
-        int prestigePoints = parseIntOrDefault(parts[2], 0);
-        String illustration = parts.length > 4 && !parts[4].isBlank() ? 
-                            parts[4].trim().replace("\"", "") : "default";
-        
+
+        int prestigePoints = parseIntOrDefault(parts[2].trim(), 0);
+        String illustration = parts.length > 4 && !parts[4].trim().isBlank() ?
+                parts[4].trim().replace("\"", "") : "default";
+
         Map<Color, Integer> costs = new HashMap<>();
-        costs.put(Color.WHITE, parseIntOrDefault(parts[5], 0));
-        costs.put(Color.BLUE, parseIntOrDefault(parts[6], 0));
-        costs.put(Color.GREEN, parseIntOrDefault(parts[7], 0));
-        costs.put(Color.RED, parseIntOrDefault(parts[8], 0));
-        costs.put(Color.BLACK, parseIntOrDefault(parts[9], 0));
-        
+        costs.put(Color.WHITE, parseIntOrDefault(parts[5].trim(), 0));
+        costs.put(Color.BLUE, parseIntOrDefault(parts[6].trim(), 0));
+        costs.put(Color.GREEN, parseIntOrDefault(parts[7].trim(), 0));
+        costs.put(Color.RED, parseIntOrDefault(parts[8].trim(), 0));
+        costs.put(Color.BLACK, parseIntOrDefault(parts[9].trim(), 0));
+
         if (costs.values().stream().allMatch(cost -> cost == 0)) {
             return null;
         }
-        
+
         TokenDeck tokenDeck = new TokenDeck(costs);
         return new DevCard(level, gemColor, prestigePoints, tokenDeck, illustration, false);
     }
@@ -92,14 +111,19 @@ public class LoadCSV {
         if (value == null || value.isBlank()) {
             return defaultValue;
         }
-        return Integer.parseInt(value.trim());
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 
     private static Color parseColorOrNull(String colorStr) {
         if (colorStr == null || colorStr.isBlank()) {
             return null;
         }
-        return switch (colorStr.toLowerCase().trim()) {
+        String cleanColor = colorStr.toLowerCase().trim();
+        return switch (cleanColor) {
             case "white" -> Color.WHITE;
             case "blue" -> Color.BLUE;
             case "green" -> Color.GREEN;

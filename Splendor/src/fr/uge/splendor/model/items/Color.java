@@ -6,6 +6,9 @@ public enum Color {
 
 	public static boolean isValidEnum(String input) {
 		for (Color color : Color.values()) {
+			if (input.equalsIgnoreCase("YELLOW")){
+				return false;
+			}
 			if (color.name().equals(input.toUpperCase())) {
 				return true;
 			}
