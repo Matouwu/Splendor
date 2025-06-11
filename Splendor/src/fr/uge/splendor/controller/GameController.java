@@ -171,7 +171,7 @@ public class GameController {
             }
             player.addToken(tokenDeck);
             ConsoleMessage.successTakeMessage(tokenDeck);
-            ConsoleMessage.tokenDeckMessage(2, game.getTokenDeck());
+            ConsoleMessage.tokenDeckMessage(1, game.getTokenDeck());
             System.out.println(player);
             game.nextPlayer();
         }
@@ -295,7 +295,7 @@ public class GameController {
             var devCard = game.getDevDeck().removeDevCard(level, card);
 
             player.addCardsReserveList(devCard);
-            game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
+            player.getTokenDeck().addTokenDeck(Color.YELLOW,1);
             ConsoleMessage.successReserveMessage();
             System.out.println(player);
             game.nextPlayer();
