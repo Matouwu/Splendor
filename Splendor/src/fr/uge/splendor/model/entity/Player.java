@@ -113,7 +113,7 @@ public class Player {
 
     public boolean checkCanBuy(TokenDeck tokenDeck){
         Objects.requireNonNull(tokenDeck);
-        int diff =0;
+        int diff = 0;
 
         for(var token: tokenDeck.getTokenDeck().entrySet()){
             if(token.getValue()!=0){

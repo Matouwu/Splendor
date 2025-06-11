@@ -10,6 +10,9 @@ public record NobleCard(String name, int prestigePoints, TokenDeck tokenRequire)
         if (prestigePoints < 0) throw new IllegalArgumentException();
         Objects.requireNonNull(tokenRequire);
     }
+    public TokenDeck getTokenRequire(){
+        return tokenRequire;
+    }
 
     @Override
     public String toString() {
