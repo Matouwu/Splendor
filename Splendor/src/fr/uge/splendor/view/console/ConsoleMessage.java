@@ -79,32 +79,32 @@ public class ConsoleMessage {
             case 303 ->
                 System.out.println("""
                     - TokenDeck full -
-                    Atteint le nombre maximum de token, veuille acheter une carte.
+                    Maximum token point is reached, please buy a card.
                     """);
             case 400 -> //Card
                 System.out.println("""
                     - Wrong card level -
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
-                    Tu dois rentrer un niveau de carte valide !""");
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
+                    You must to enter a valid level card !""");
             case 401 ->
                 System.out.println("""
                     - Wrong card number -
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
                     Tu dois rentrer un nombre entre 1 et 4 pour choisir la carte que tu veux acheter du plateau !""");
             case 402 ->
                 System.out.println("""
                     - Not enough ressources -
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                   BE CAREFUL, I KNOW WHERE YOU LIVE!
                     Pas asser de ressource pour acheter une carte, choisi une autre action.""");
             case 500 -> //ReservedCard
                 System.out.println("""
                     - Reserve card full -
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                    BE CAREFUL, I KNOW WHERE YOU LIVE!
                     Atteint le nombre maximum de carte reservé possible.""");
             case 501 ->
                 System.out.println("""
                     - Wrong reserve card number -
-                    ATTENTION A TOI, JE SAIS OU TU HABITE !
+                   BE CAREFUL, I KNOW WHERE YOU LIVE!
                     Tu dois rentrer un nombre valid pour choisir la carte reservé à acheter.""");
 
         }
