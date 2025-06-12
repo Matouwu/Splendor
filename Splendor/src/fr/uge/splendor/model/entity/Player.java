@@ -106,6 +106,12 @@ public class Player {
         addPrestigePoints(devCard);
     }
 
+    public void addNobleCardsList(NobleCard nobleCard){
+        Objects.requireNonNull(nobleCard);
+        this.nobleDeck.addNobleCard(nobleCard);
+        addPrestigePoints(nobleCard);
+    }
+
     public void addCardsReserveList(DevCard devCard){
         Objects.requireNonNull(devCard);
         devDeckReserved.addDevCard(devCard);

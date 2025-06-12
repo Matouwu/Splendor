@@ -1,5 +1,6 @@
 package fr.uge.splendor.model.entity;
 
+import fr.uge.splendor.model.items.card.NobleCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.NobleDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
@@ -43,6 +44,9 @@ public class Game {
     public List<Player> getPlayerList(){
         return playerList;
     }
+    public NobleDeck getNobleDeck(){
+        return nobleDeck;
+    }
 
     public int getCurrentPlayerIndex(){
         return currentPlayerIndex;
@@ -59,6 +63,29 @@ public class Game {
             }
         }
         return -1;
+    }
+
+    private boolean canNobleVisit(NobleCard noble) {
+        Player currentPlayer = playerList.get(currentPlayerIndex);
+        TokenDeck playerTokenReduction = currentPlayer.getTokenDeckReduction();
+
+        for (var color: noble.getTokenRequire().getTokenDeck().entrySet()) {
+            if (color.getValue() > playerTokenReduction.getTokenDeck().get(color.getKey())) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public NobleCard checkNobleVisit() {
+        Player currentPlayer = playerList.get(currentPlayerIndex);
+        for (int i = 0; i < playerList.size(); i++) {
+            NobleCard noble = nobleDeck.getNobleDeck().remove(i);
+            if (canNobleVisit(noble)) {
+                currentPlayer.addNobleCardsList(noble);
+                return noble;
+            }
+        }
+        return null;
     }
 
 

@@ -11,6 +11,7 @@ import fr.uge.splendor.view.console.ConsoleMessage;
 import fr.uge.splendor.view.console.ConsoleView;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.util.*;
 
 public class GameController {
@@ -239,6 +240,10 @@ public class GameController {
             devCard = game.getPlayerList().get(game.getCurrentPlayerIndex()).getDevDeckReserved().removeDevCard(level,cardIndex);
         } else {
             devCard = game.getDevDeck().removeDevCard(level, cardIndex);
+        }
+        var noble  = game.checkNobleVisit();
+        if(noble != null){
+            ConsoleMessage.visitOfNoble(noble);
         }
         return devCard;
     }

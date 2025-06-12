@@ -9,6 +9,10 @@ import fr.uge.splendor.model.items.card.NobleCard;
 public class NobleDeck {
 	private List<NobleCard> nobleDeck = new ArrayList<>();
 
+	public List<NobleCard> getNobleDeck(){
+		return nobleDeck;
+	}
+
 	public void addNobleCard(NobleCard nobleCard){
 		Objects.requireNonNull(nobleCard);
 		if(nobleDeck.contains(nobleCard)) throw new IllegalArgumentException("This noble is already in the list.");
@@ -19,7 +23,6 @@ public class NobleDeck {
 		Objects.requireNonNull(nobleCard);
 		return nobleDeck.remove(nobleCard);
 	}
-
 
 
 	/* Game Board Deck */

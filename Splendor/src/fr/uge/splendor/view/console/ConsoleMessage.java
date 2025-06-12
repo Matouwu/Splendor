@@ -1,6 +1,7 @@
 package fr.uge.splendor.view.console;
 
 import fr.uge.splendor.model.entity.Player;
+import fr.uge.splendor.model.items.card.NobleCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
 
@@ -138,23 +139,6 @@ public class ConsoleMessage {
         }
     }
 
-    /*        ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
-        ConsoleMessage.tokenDeckMessage(2, game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck());
-        ConsoleMessage.takeCardMessage(2);
-        var card = consoleView.inputInt();
-        while (card<0 || card > 4){
-            ConsoleMessage.wrongInputMessage(401, null);
-            card = consoleView.inputInt();
-        }
-        var devCard = game.getDevDeck().removeDevCard(0, card);
-        var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
-        player.addCardsList(devCard);
-        game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
-        ConsoleMessage.successBuyMessage();
-        System.out.println(player);
-        game.nextPlayer();
-    }*/
-
     public static void takeCardMessage(int code){ //TODO
         switch (code){
             case 1 ->
@@ -167,6 +151,9 @@ public class ConsoleMessage {
         }
     }
 
+    public static void visitOfNoble(NobleCard noble){
+        System.out.println("You had the visit of the noble :"+noble);
+    }
     public static void successReserveMessage(){
         System.out.println("You’ve successfully reserve the card!");
     }
