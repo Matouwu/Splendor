@@ -11,19 +11,18 @@ import fr.uge.splendor.view.console.ConsoleMessage;
 import fr.uge.splendor.view.console.ConsoleView;
 
 import java.io.IOException;
-import java.lang.reflect.Member;
 import java.util.*;
+
 
 public class GameController {
     private final ConsoleView consoleView;
     private Game game;
-
     private boolean gameMode;
-
     public GameController(ConsoleView consoleView){
         Objects.requireNonNull(consoleView);
         this.consoleView = consoleView;
     }
+
 
     /* ========== Setup fiels ========== */
 
@@ -47,11 +46,10 @@ public class GameController {
         tokenDeck.initBoardTokenDeck(nbPlayer, beta);
         return tokenDeck;
     }
-
     private int setupPlayerNumber(){
         ConsoleMessage.createNumberPlayerMessage();
         int nb = consoleView.inputInt();
-        while (nb<0 || nb>4){
+        while (nb<2 || nb>4){
             ConsoleMessage.wrongInputMessage(201, null);
             nb = consoleView.inputInt();
         }
@@ -90,6 +88,7 @@ public class GameController {
         return index;
     }
 
+
     /* ========== Setup Game mode ========== */
 
     private void setupBetaMode(){
@@ -116,6 +115,7 @@ public class GameController {
 
     }
 
+
     /* ========== Game log ========== */
 
     private void gameConfig() throws IOException {
@@ -127,9 +127,11 @@ public class GameController {
         switch (mode.toUpperCase()){
             case "B" -> setupBetaMode();
             case "F" -> setupFinalMode();
-
         }
     }
+
+
+    /* ========== Input ========== */
 
     private Color getInputColor(int nbTake) {
         var input = consoleView.inputString();
@@ -150,6 +152,8 @@ public class GameController {
         }
         return color;
     }
+
+    /* ========== Action method ========== */
 
     private void actionDiffTokenDeck(){
         var player = game.getPlayerList().get(game.getCurrentPlayerIndex());
@@ -241,10 +245,6 @@ public class GameController {
         } else {
             devCard = game.getDevDeck().removeDevCard(level, cardIndex);
         }
-        var noble  = game.checkNobleVisit();
-        if(noble != null){
-            ConsoleMessage.visitOfNoble(noble);
-        }
         return devCard;
     }
 
@@ -265,6 +265,10 @@ public class GameController {
                 player.addCardsList(devCard);
                 game.getTokenDeck().addTokenDeck(devCard.tokenRequire());
                 ConsoleMessage.successBuyMessage();
+                var noble  = game.checkNobleVisit();
+                if(noble != null){
+                    ConsoleMessage.visitOfNoble(noble);
+                }
                 System.out.println(player);
                 game.nextPlayer();
             } else {
@@ -306,7 +310,7 @@ public class GameController {
         }
     }
 
-    private void gameRound(){
+    private void gameRound(){;
         ConsoleMessage.selectAction(game.getPlayerList().get(game.getCurrentPlayerIndex()), gameMode);
         var action = consoleView.inputInt();
         while(action!=1 && action!=2 && action!=3 && action!=4){
@@ -314,11 +318,13 @@ public class GameController {
         }
         switch(action){
             case 1 -> {
+                ConsoleMessage.nobleDeckMessage(game.getNobleDeck(), game.getPlayerList().size());
                 ConsoleMessage.cardDeckMessage(game.getDevDeck(), gameMode);
                 ConsoleMessage.action(1, game.getTokenDeck());
                 actionDiffTokenDeck();
             }
             case 2 -> {
+                ConsoleMessage.nobleDeckMessage(game.getNobleDeck(), game.getPlayerList().size());
                 ConsoleMessage.cardDeckMessage(game.getDevDeck(),gameMode);
                 ConsoleMessage.action(2, game.getTokenDeck());
                 actionSameTokenDeck();
@@ -327,11 +333,13 @@ public class GameController {
                 if(game.getPlayerList().get(game.getCurrentPlayerIndex()).getTokenDeck().getTokenDeck().isEmpty()){
                     ConsoleMessage.wrongInputMessage(402, null);
                 } else {
+                    ConsoleMessage.nobleDeckMessage(game.getNobleDeck(), game.getPlayerList().size());
                     ConsoleMessage.action(3, null);
                     actionBuyCard();
                 }
             }
             case 4 -> {
+                ConsoleMessage.nobleDeckMessage(game.getNobleDeck(), game.getPlayerList().size());
                 ConsoleMessage.action(4, null);
                 actionReservedCard();
             }

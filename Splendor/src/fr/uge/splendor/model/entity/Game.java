@@ -58,7 +58,7 @@ public class Game {
 
     public int checkGameEnd() {
         for(var p: playerList) {
-            if(p.getPrestigePoint() >= 3) {
+            if(p.getPrestigePoint() >= 15) {
                 return playerList.indexOf(p);
             }
         }
@@ -70,7 +70,7 @@ public class Game {
         TokenDeck playerTokenReduction = currentPlayer.getTokenDeckReduction();
 
         for (var color: noble.getTokenRequire().getTokenDeck().entrySet()) {
-            if (color.getValue() > playerTokenReduction.getTokenDeck().get(color.getKey())) {
+            if (color.getValue() > playerTokenReduction.getTokenDeck().getOrDefault(color.getKey(), 0)) {
                 return false;
             }
         }
@@ -79,8 +79,9 @@ public class Game {
     public NobleCard checkNobleVisit() {
         Player currentPlayer = playerList.get(currentPlayerIndex);
         for (int i = 0; i < playerList.size(); i++) {
-            NobleCard noble = nobleDeck.getNobleDeck().remove(i);
+            NobleCard noble = nobleDeck.getNobleDeck().get(i);
             if (canNobleVisit(noble)) {
+                noble = nobleDeck.getNobleDeck().remove(i);
                 currentPlayer.addNobleCardsList(noble);
                 return noble;
             }

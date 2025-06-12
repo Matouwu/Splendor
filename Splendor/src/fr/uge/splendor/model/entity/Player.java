@@ -87,9 +87,9 @@ public class Player {
         Objects.requireNonNull(tokenDeck);
         for(var color : tokenDeck.getTokenDeck().entrySet()){
             if(color.getValue()!=0){
-                int diff = this.tokenDeck.getTokenDeck().get(color.getKey())-color.getValue();
+                int diff = this.tokenDeck.getTokenDeck().getOrDefault(color.getKey(), 0)-color.getValue();
                 if(diff<0){
-                    this.tokenDeck.removeTokenDeck(color.getKey(),this.tokenDeck.getTokenDeck().get(color.getKey()));
+                    this.tokenDeck.removeTokenDeck(color.getKey(),this.tokenDeck.getTokenDeck().getOrDefault(color.getKey(),0));
                     this.tokenDeck.removeTokenDeck(Color.YELLOW,-diff);
                 } else {
                     this.tokenDeck.removeTokenDeck(color.getKey(),color.getValue());
@@ -123,10 +123,10 @@ public class Player {
 
         for(var token: tokenDeck.getTokenDeck().entrySet()){
             if(token.getValue()!=0){
-                diff = this.tokenDeck.getTokenDeck().get(token.getKey()) + this.tokenDeckReduction.getTokenDeck().getOrDefault(token.getKey(), 0) - token.getValue();
+                diff = this.tokenDeck.getTokenDeck().getOrDefault(token.getKey(), 0) + this.tokenDeckReduction.getTokenDeck().getOrDefault(token.getKey(), 0) - token.getValue();
             }
         }
-        return (diff + this.tokenDeck.getTokenDeck().get(Color.YELLOW))>=0;
+        return (diff + this.tokenDeck.getTokenDeck().getOrDefault(Color.YELLOW, 0))>=0;
     }
 
     @Override

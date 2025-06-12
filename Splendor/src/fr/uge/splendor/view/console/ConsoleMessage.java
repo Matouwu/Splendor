@@ -3,7 +3,10 @@ package fr.uge.splendor.view.console;
 import fr.uge.splendor.model.entity.Player;
 import fr.uge.splendor.model.items.card.NobleCard;
 import fr.uge.splendor.model.items.deck.DevDeck;
+import fr.uge.splendor.model.items.deck.NobleDeck;
 import fr.uge.splendor.model.items.deck.TokenDeck;
+
+import javax.xml.transform.Source;
 
 public class ConsoleMessage {
 
@@ -114,6 +117,16 @@ public class ConsoleMessage {
         }
 
     }
+    public static void nobleDeckMessage(NobleDeck nobleDeck, int number){
+        System.out.println("The nobility : (Watch, you can just stare and hope they come visit you. THAT ALL !)");
+        int i = 1;
+        for(var card : nobleDeck.getNobleDeck()){
+            if(i<=4){
+                System.out.println("    " + i + " -> " + card);
+                i++;
+            }
+        }
+    }
     public static void cardDeckMessage(DevDeck devDeck, boolean mode){ //TODO
         System.out.println("Voici les cartes en vitrine :");
         if(mode){
@@ -183,6 +196,7 @@ public class ConsoleMessage {
 
     public static void selectAction(Player p, boolean beta){
         System.out.println("===== " + p.getName() + " turn =====");
+        System.out.println(p);
         if(beta){
             System.out.println("""
                         Choose your action  :
