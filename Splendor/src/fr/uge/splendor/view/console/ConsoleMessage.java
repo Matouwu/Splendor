@@ -95,12 +95,12 @@ public class ConsoleMessage {
                 System.out.println("""
                     - Not enough ressources -
                    BE CAREFUL, I KNOW WHERE YOU LIVE!
-                    Pas asser de ressource pour acheter une carte, choisi une autre action.""");
+                    You don't have enought ressources to buy a card, please chose an other action.""");
             case 500 -> //ReservedCard
                 System.out.println("""
                     - Reserve card full -
                     BE CAREFUL, I KNOW WHERE YOU LIVE!
-                    Atteint le nombre maximum de carte reservé possible.""");
+                    Maximum reserved card is reached. """);
             case 501 ->
                 System.out.println("""
                     - Wrong reserve card number -
